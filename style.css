@@ -47,6 +47,7 @@ nav ul li a:hover {
     align-items: center;
     text-align: center;
     position: relative;
+    padding: 20px;
 }
 
 .hero .profile img {
@@ -71,13 +72,12 @@ nav ul li a:hover {
 }
 
 /* Section Titles */
-h2 {
+h2{
     text-align: center;
     margin: 50px 0;
     font-size: 2.5em;
     color: #ff944d;
     position: relative;
-    display: inline-block;
 }
 h3 {
     text-align: center;
@@ -85,9 +85,7 @@ h3 {
     font-size: 2.5em;
     color: #333;
     position: relative;
-    display: inline-block;
 }
-
 h2::after {
     content: '';
     width: 50px;
@@ -220,11 +218,34 @@ footer {
         flex-direction: column;
     }
 
+    .hero {
+        height: auto;
+        padding: 50px 20px;
+    }
+
     .hero h1 {
         font-size: 2.5em;
     }
 
+    .about, .projects, .skills {
+        padding: 20px;
+    }
+
     .project-gallery {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 2em;
+    }
+
+    .hero p {
+        font-size: 1em;
+    }
+
+    .skill-grid {
         grid-template-columns: 1fr;
     }
 }
