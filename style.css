@@ -228,3 +228,28 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+/* Video Section */
+.video {
+    text-align: center;
+    padding: 50px;
+    background-color: #333;
+    color: white;
+}
+
+.video h2 {
+    color: #ff7f50;
+    margin-bottom: 20px;
+}
+
+.video-frame {
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.video-frame:hover {
+    transform: scale(1.05);
+}
