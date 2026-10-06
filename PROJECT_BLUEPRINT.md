@@ -37,9 +37,9 @@ All UI color classes MUST use CSS variables so Light/Dark inversion only rewrite
 | Card Surface | `--bg-surface` | `#091A32` |
 | Primary Text | `--text-primary` | `#F0ECE1` |
 | Muted Text | `--text-muted` | `#94A3B8` |
-| Blueprint Border | `--border-cyan` | `rgba(0, 229, 255, 0.2)` |
+| Blueprint Border | `--border-cyan` | `rgba(240, 236, 225, 0.38)` (warm sand/beige; mirrors light canvas `#F0ECE1`) |
 | Accent Cyan | `--accent-cyan` | `#00E5FF` |
-| Crosshair Mark | `--crosshair` | `rgba(0, 229, 255, 0.4)` |
+| Crosshair Mark | `--crosshair` | `rgba(240, 236, 225, 0.55)` |
 | Status Online | `--status-online` | `#12B76A` |
 
 ## 3. Typography Rules

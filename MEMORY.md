@@ -121,3 +121,7 @@
 
 - [`TypingSequence`](src/components/TypingSequence.tsx) / [`TypingLine`](src/components/TypingSequence.tsx): one block at a time, per-line [`useLineInView`](src/hooks/useLineInView.ts), retrigger on card/section leave via [`useInViewRetype`](src/hooks/useInViewOnce.ts).
 - [`ProjectMatrix`](src/components/ProjectMatrix.tsx) header and [`ProjectCard`](src/components/ProjectCard.tsx) body use the queue; carousel captions use [`IndependentTypingLine`](src/components/TypingSequence.tsx). `[ARCH_SPECS]` stays static.
+
+### [2026-10-07] Dark mode blueprint outlines (beige)
+
+- Dark `[data-theme='dark']` `--border-cyan` and `--crosshair` now use warm sand `rgba(240, 236, 225, …)` instead of cyan so CAD borders/grid strokes match light-mode canvas beige; accent cyan unchanged for HUD labels and links.

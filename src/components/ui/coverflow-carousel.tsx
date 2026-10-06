@@ -48,6 +48,8 @@ export interface CoverflowCarouselProps {
   cardClassName?: string;
   navButtonClassName?: string;
   onSelectedChange?: (index: number) => void;
+  /** Ms of idle time before advancing one slide; repeats while idle. Pass `0` to disable. */
+  autoAdvanceAfterMs?: number;
 }
 
 const NAV_DEFAULT =
@@ -71,6 +73,7 @@ export function CoverflowCarousel({
   cardClassName,
   navButtonClassName,
   onSelectedChange,
+  autoAdvanceAfterMs = 5000,
 }: CoverflowCarouselProps) {
   const count = slides.length;
   const reducedMotion = usePrefersReducedMotion();
@@ -90,8 +93,16 @@ export function CoverflowCarousel({
     v: number;
     t: number;
   } | null>(null);
+  const idleTimerRef = React.useRef<number | null>(null);
 
   const [selected, setSelected] = React.useState(0);
+
+  const clearIdleAdvance = React.useCallback(() => {
+    if (idleTimerRef.current !== null) {
+      window.clearTimeout(idleTimerRef.current);
+      idleTimerRef.current = null;
+    }
+  }, []);
 
   const indexAt = React.useCallback(
     (pos: number) => ((Math.round(pos) % count) + count) % count,
@@ -184,7 +195,46 @@ export function CoverflowCarousel({
     [clamp, settle],
   );
 
+  const nudgeRef = React.useRef(nudge);
+  nudgeRef.current = nudge;
+
+  const scheduleIdleAdvance = React.useCallback(() => {
+    clearIdleAdvance();
+    if (autoAdvanceAfterMs <= 0 || reducedMotion || count < 2) return;
+
+    idleTimerRef.current = window.setTimeout(() => {
+      idleTimerRef.current = null;
+      if (dragRef.current) {
+        scheduleIdleAdvance();
+        return;
+      }
+      nudgeRef.current(1);
+      scheduleIdleAdvance();
+    }, autoAdvanceAfterMs);
+  }, [autoAdvanceAfterMs, clearIdleAdvance, count, reducedMotion]);
+
+  const noteUserActivity = React.useCallback(() => {
+    if (autoAdvanceAfterMs <= 0) return;
+    scheduleIdleAdvance();
+  }, [autoAdvanceAfterMs, scheduleIdleAdvance]);
+
+  React.useEffect(() => {
+    scheduleIdleAdvance();
+    return () => clearIdleAdvance();
+  }, [scheduleIdleAdvance, clearIdleAdvance]);
+
+  React.useEffect(() => {
+    if (autoAdvanceAfterMs <= 0) return;
+    const onVisibility = () => {
+      if (document.hidden) clearIdleAdvance();
+      else scheduleIdleAdvance();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, [autoAdvanceAfterMs, clearIdleAdvance, scheduleIdleAdvance]);
+
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    clearIdleAdvance();
     if (rafRef.current !== null) {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
@@ -224,6 +274,7 @@ export function CoverflowCarousel({
     dragRef.current = null;
     const carried = Math.max(-2, Math.min(2, drag.v * 0.18));
     settle(clamp(Math.round(posRef.current + carried)));
+    noteUserActivity();
   };
 
   useIsoLayoutEffect(() => {
@@ -272,9 +323,11 @@ export function CoverflowCarousel({
           onKeyDown={(event) => {
             if (event.key === 'ArrowLeft') {
               event.preventDefault();
+              noteUserActivity();
               nudge(-1);
             } else if (event.key === 'ArrowRight') {
               event.preventDefault();
+              noteUserActivity();
               nudge(1);
             }
           }}
@@ -329,7 +382,10 @@ export function CoverflowCarousel({
             <button
               type="button"
               aria-label="Previous slide"
-              onClick={() => nudge(-1)}
+              onClick={() => {
+                noteUserActivity();
+                nudge(-1);
+              }}
               className={cn('absolute left-0 top-1/2 z-[200] -translate-y-1/2', navClass)}
             >
               <ChevronLeft className="size-5" />
@@ -337,7 +393,10 @@ export function CoverflowCarousel({
             <button
               type="button"
               aria-label="Next slide"
-              onClick={() => nudge(1)}
+              onClick={() => {
+                noteUserActivity();
+                nudge(1);
+              }}
               className={cn('absolute right-0 top-1/2 z-[200] -translate-y-1/2', navClass)}
             >
               <ChevronRight className="size-5" />

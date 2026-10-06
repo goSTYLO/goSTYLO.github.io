@@ -46,9 +46,9 @@
   --bg-surface: #091a32;
   --text-primary: #f0ece1;
   --text-muted: #94a3b8;
-  --border-cyan: rgba(0, 229, 255, 0.2);
+  --border-cyan: rgba(240, 236, 225, 0.38);
   --accent-cyan: #00e5ff;
-  --crosshair: rgba(0, 229, 255, 0.4);
+  --crosshair: rgba(240, 236, 225, 0.55);
   --status-online: #12b76a;
 
   --background: var(--bg-primary);
