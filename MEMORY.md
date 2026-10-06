@@ -19,6 +19,12 @@
 
 ## Change Log
 
+### [2026-10-07] Mobile HUD, CV toolbar, project carousel
+
+- [`HeaderHUD.tsx`](src/components/HeaderHUD.tsx): below `lg`, compact SYS_ID row + `[MENU]` sheet (nav, clock, theme, chatbot); desktop bar unchanged. Sheet/backdrop use CSS enter/exit (`hud-menu-*` in `globals.css`); `prefers-reduced-motion` disables them.
+- [`CvAstOverlay.tsx`](src/components/CvAstOverlay.tsx): overlay starts below header (`top-14` / `lg:top-[4.5rem]`); sticky toolbar with `[X]` on row one so controls stay visible on small screens.
+- [`ProjectCard.tsx`](src/components/ProjectCard.tsx): wide slides `aspect-[16/10]` + absolute `object-cover`; mobile artboards drop fixed min-height well on phones.
+
 ### [2026-10-07] CV PDF sync & footer download cleanup
 
 - Deployed CV now copies from `assets/AARON AST friendly resume with portfolio.pdf` into `public/cv/aaron-tamayo-resume.pdf` on each Vite build (`vite.config.ts`); replaced stale public PDF.

@@ -249,21 +249,23 @@ export default function CvAstOverlay({ onClose }: CvAstOverlayProps) {
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
-      className={`fixed inset-0 z-30 overflow-y-auto bg-[color-mix(in_srgb,var(--bg-primary)_96%,transparent)] pt-24 backdrop-blur-[2px] ${
+      className={`fixed bottom-0 left-0 right-0 top-14 z-30 overflow-y-auto bg-[color-mix(in_srgb,var(--bg-primary)_96%,transparent)] backdrop-blur-[2px] lg:top-[4.5rem] ${
         reducedMotion ? '' : 'cv-overlay-enter'
       }`}
     >
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 pb-12 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
-          <span id={titleId} className="text-[var(--accent-cyan)]">
-            [CV_AST_VIEWER]
-          </span>
-          <div className="flex flex-wrap items-center gap-2">
+        <div className="sticky top-0 z-10 -mx-4 border-b border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_96%,transparent)] px-4 py-2 font-mono text-xs backdrop-blur-[2px] sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span id={titleId} className="text-[var(--accent-cyan)]">
+              [CV_AST_VIEWER]
+            </span>
+            <ToolbarButton onClick={onClose}>[X]</ToolbarButton>
+          </div>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
             <ToolbarButton onClick={zoomOut}>[ZOOM −]</ToolbarButton>
             <span className="min-w-[3rem] text-center text-[var(--text-muted)]">{zoomLabel}</span>
             <ToolbarButton onClick={zoomIn}>[ZOOM +]</ToolbarButton>
             <ToolbarButton onClick={() => downloadResumePdf()}>[DOWNLOAD_CV_PDF]</ToolbarButton>
-            <ToolbarButton onClick={onClose}>[X]</ToolbarButton>
           </div>
         </div>
 

@@ -30,9 +30,9 @@ function contextTag(project: Project): string {
 
 function slideFrameClass(layout: ProjectImageLayout = 'wide') {
   if (layout === 'mobile') {
-    return 'flex min-h-[300px] flex-col justify-end border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))] p-3 sm:min-h-[360px] lg:min-h-[380px]';
+    return 'relative flex flex-col items-center justify-center overflow-hidden border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))] py-3 sm:min-h-[320px] lg:min-h-[360px]';
   }
-  return 'flex aspect-[4/3] flex-col justify-end border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))] p-3 sm:aspect-[16/10]';
+  return 'relative aspect-[16/10] overflow-hidden border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))]';
 }
 
 function SlideMedia({
@@ -48,7 +48,7 @@ function SlideMedia({
 }) {
   if (!image.src) {
     return (
-      <div className="flex flex-1 items-center justify-center font-mono text-xs text-[var(--text-muted)]">
+      <div className="flex min-h-[8rem] w-full items-center justify-center font-mono text-xs text-[var(--text-muted)]">
         {nda ? '[VISUAL: REDACTED]' : '[IMG_PLACEHOLDER]'}
       </div>
     );
@@ -56,11 +56,11 @@ function SlideMedia({
 
   const media =
     layout === 'mobile' ? (
-      <div className="relative mx-auto flex w-full max-w-[240px] flex-1 items-center justify-center sm:max-w-[280px]">
+      <div className="relative mx-auto w-full max-w-[220px] px-2 sm:max-w-[280px]">
         <img
           src={image.src}
           alt={image.alt}
-          className="max-h-[min(52vh,420px)] w-full object-contain object-center"
+          className="max-h-[min(48vh,380px)] w-full object-contain object-center"
           loading="lazy"
         />
       </div>
@@ -68,7 +68,7 @@ function SlideMedia({
       <img
         src={image.src}
         alt={image.alt}
-        className="size-full min-h-0 flex-1 object-cover object-top"
+        className="absolute inset-0 size-full object-cover object-top"
         loading="lazy"
       />
     );
@@ -77,7 +77,10 @@ function SlideMedia({
     <button
       type="button"
       onClick={onOpen}
-      className="group relative flex min-h-0 flex-1 cursor-zoom-in flex-col focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]"
+      className={cn(
+        'group relative block w-full cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]',
+        layout === 'wide' && 'absolute inset-0',
+      )}
       aria-label={`View fullscreen: ${image.alt}`}
     >
       {media}
@@ -129,7 +132,7 @@ function ProjectCarousel({
             const layout = image.layout ?? 'wide';
             return (
               <CarouselItem key={`${project.id}-slide-${index}`} className="pl-0">
-                <div className={cn(slideFrameClass(layout), 'relative border-0 p-3 pb-0')}>
+                <div className={cn(slideFrameClass(layout), 'relative border-0')}>
                   <SlideMedia
                     image={image}
                     layout={layout}

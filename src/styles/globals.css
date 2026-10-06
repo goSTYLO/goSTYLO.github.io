@@ -481,6 +481,13 @@ body {
     animation: none;
   }
 
+  .hud-menu-backdrop-enter,
+  .hud-menu-backdrop-exit,
+  .hud-menu-sheet-enter,
+  .hud-menu-sheet-exit {
+    animation: none;
+  }
+
   .cv-ast-collapse {
     transition: none;
   }
@@ -510,6 +517,64 @@ body {
 
 .cv-overlay-enter {
   animation: cv-overlay-fade-in 220ms ease-out;
+}
+
+@keyframes hud-menu-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hud-menu-backdrop-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes hud-menu-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hud-menu-sheet-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+.hud-menu-backdrop-enter {
+  animation: hud-menu-backdrop-in 220ms ease-out both;
+}
+
+.hud-menu-backdrop-exit {
+  animation: hud-menu-backdrop-out 180ms ease-in both;
+}
+
+.hud-menu-sheet-enter {
+  animation: hud-menu-sheet-in 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top center;
+}
+
+.hud-menu-sheet-exit {
+  animation: hud-menu-sheet-out 180ms ease-in both;
+  transform-origin: top center;
 }
 
 .status-pulse {

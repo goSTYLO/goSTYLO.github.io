@@ -393,7 +393,7 @@ export function CoverflowCarousel({
                 noteUserActivity();
                 nudge(-1);
               }}
-              className={cn('absolute left-0 top-1/2 z-[200] -translate-y-1/2', navClass)}
+              className={cn('absolute left-0 top-1/2 z-10 -translate-y-1/2', navClass)}
             >
               <ChevronLeft className="size-5" />
             </button>
@@ -404,7 +404,7 @@ export function CoverflowCarousel({
                 noteUserActivity();
                 nudge(1);
               }}
-              className={cn('absolute right-0 top-1/2 z-[200] -translate-y-1/2', navClass)}
+              className={cn('absolute right-0 top-1/2 z-10 -translate-y-1/2', navClass)}
             >
               <ChevronRight className="size-5" />
             </button>
