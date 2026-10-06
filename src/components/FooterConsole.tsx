@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import BlueprintCard from '@/components/BlueprintCard';
 import { mailtoHref, profile } from '@/data/profile';
-import { downloadResumeMarkdown } from '@/lib/downloadResume';
 import { downloadResumePdf } from '@/lib/downloadResumePdf';
 
 const PS_PATH = 'C:\\portfolio\\footer';
@@ -184,11 +183,6 @@ export default function FooterConsole() {
     }
   }, []);
 
-  const onDownloadCv = useCallback(() => {
-    downloadResumeMarkdown();
-    setStatusLine('EXPORT: resume.md OK');
-  }, []);
-
   const onDownloadCvPdf = useCallback(() => {
     downloadResumePdf();
     setStatusLine('EXPORT: resume.pdf OK');
@@ -257,7 +251,6 @@ export default function FooterConsole() {
 
         <div className="mt-5 flex flex-wrap gap-3">
           <BracketButton href={mailtoHref()}>[SEND_MESSAGE]</BracketButton>
-          <BracketButton onClick={onDownloadCv}>[DOWNLOAD_CV]</BracketButton>
           <BracketButton onClick={onDownloadCvPdf}>[DOWNLOAD_CV_PDF]</BracketButton>
           <BracketButton href={profile.githubUrl} external>
             [VIEW_GITHUB]

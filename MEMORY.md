@@ -19,6 +19,11 @@
 
 ## Change Log
 
+### [2026-10-07] CV PDF sync & footer download cleanup
+
+- Deployed CV now copies from `assets/AARON AST friendly resume with portfolio.pdf` into `public/cv/aaron-tamayo-resume.pdf` on each Vite build (`vite.config.ts`); replaced stale public PDF.
+- Removed footer `[DOWNLOAD_CV]` (markdown export); `[DOWNLOAD_CV_PDF]` remains. Download filename → `Aaron_Tamayo_Portfolio_CV.pdf`.
+
 ### [2026-10-06] Initial System Blueprint & Rules Established
 
 - Linked https://www.sutera.ch/ as visual structural anchor.

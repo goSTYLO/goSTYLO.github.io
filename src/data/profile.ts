@@ -13,7 +13,7 @@ export const profile = {
   copyrightLine: `© ${new Date().getFullYear()} Aaron Christian B. Tamayo · All rights reserved.`,
   cvDownloadFileName: 'Aaron_Tamayo_Resume.md',
   cvPdfUrl: '/cv/aaron-tamayo-resume.pdf',
-  cvPdfDownloadFileName: 'Aaron_Tamayo_CV.pdf',
+  cvPdfDownloadFileName: 'Aaron_Tamayo_Portfolio_CV.pdf',
   mailtoSubject: 'Portfolio inquiry — Aaron Tamayo',
 } as const;
 

@@ -13,6 +13,10 @@ function portfolioDocumentPlugin(): Plugin {
 
   const syncPublicArtifacts = () => {
     writeFileSync('public/llms.txt', buildLlmsTxt(), 'utf8');
+    copyFileSync(
+      'assets/AARON AST friendly resume with portfolio.pdf',
+      'public/cv/aaron-tamayo-resume.pdf',
+    );
   };
 
   return {
