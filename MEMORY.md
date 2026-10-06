@@ -116,3 +116,8 @@
 
 - Lifted caption into [`SkillRaster.tsx`](src/components/SkillRaster.tsx) (`SkillCaptionPanel`): surface + border panel, fast typewriter title and sequential skill chips via [`useTypewriter.ts`](src/hooks/useTypewriter.ts); carousel `showCaption={false}`.
 - Simplified section helper line; removed per-slide entry-count subtitle.
+
+### [2026-10-07] Systems sequential scroll typing
+
+- [`TypingSequence`](src/components/TypingSequence.tsx) / [`TypingLine`](src/components/TypingSequence.tsx): one block at a time, per-line [`useLineInView`](src/hooks/useLineInView.ts), retrigger on card/section leave via [`useInViewRetype`](src/hooks/useInViewOnce.ts).
+- [`ProjectMatrix`](src/components/ProjectMatrix.tsx) header and [`ProjectCard`](src/components/ProjectCard.tsx) body use the queue; carousel captions use [`IndependentTypingLine`](src/components/TypingSequence.tsx). `[ARCH_SPECS]` stays static.

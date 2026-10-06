@@ -16,7 +16,7 @@ type TypeTextProps = {
 export default function TypeText({
   text,
   active,
-  charDelayMs = 4,
+  charDelayMs = 2,
   className,
   showCursor = false,
   resetKey = 'run',

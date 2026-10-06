@@ -1,5 +1,5 @@
 import ProjectCard from '@/components/ProjectCard';
-import TypeText from '@/components/TypeText';
+import { TypingLine, TypingSequence } from '@/components/TypingSequence';
 import { projects } from '@/data/projects';
 import { useInViewRetype } from '@/hooks/useInViewOnce';
 
@@ -7,31 +7,27 @@ export default function ProjectMatrix() {
   const featured = projects.find((p) => p.featured);
   const grid = projects.filter((p) => !p.featured);
   const { ref, inView, typingGeneration } = useInViewRetype();
-  const typingKey = String(typingGeneration);
+  const sessionKey = String(typingGeneration);
 
   return (
     <section id="project-matrix" className="w-full scroll-mt-24">
       <div ref={ref}>
-        <p className="font-mono text-xs text-[var(--accent-cyan)]">
-          <TypeText
+        <TypingSequence key={sessionKey} enabled={inView} sessionKey={sessionKey}>
+          <TypingLine
+            as="p"
+            className="font-mono text-xs text-[var(--accent-cyan)]"
             text="[PROJECT_MATRIX]"
-            active={inView}
-            resetKey={typingKey}
-            charDelayMs={6}
+            charDelayMs={4}
             showCursor
           />
-        </p>
-        <h2 className="mt-2 font-sans text-xl">
-          <TypeText text="Systems Portfolio" active={inView} resetKey={typingKey} charDelayMs={5} />
-        </h2>
-        <p className="mt-1 font-mono text-sm text-[var(--text-muted)]">
-          <TypeText
+          <TypingLine as="h2" className="mt-2 font-sans text-xl" text="Systems Portfolio" charDelayMs={3} />
+          <TypingLine
+            as="p"
+            className="mt-1 font-mono text-sm text-[var(--text-muted)]"
             text="Role-first telemetry · NDA-safe industry cards"
-            active={inView}
-            resetKey={typingKey}
-            charDelayMs={3}
+            charDelayMs={2}
           />
-        </p>
+        </TypingSequence>
       </div>
 
       <div className="mt-5 flex w-full flex-col gap-5">
