@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Plus } from 'lucide-react';
 
 import { CoverflowCarousel } from '@/components/ui/coverflow-carousel';
@@ -112,9 +112,29 @@ function SkillCaptionPanel({ group }: { group: SkillGroup }) {
   );
 }
 
+/** Same viewport band as HUD scroll-spy in App.tsx — section is "active" when centered in view. */
+const SKILLS_IN_VIEW_OPTIONS: IntersectionObserverInit = {
+  rootMargin: '-25% 0px -55% 0px',
+  threshold: [0, 0.15, 0.35],
+};
+
 export default function SkillRaster() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [skillsInView, setSkillsInView] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const group = SKILL_GROUPS[selectedIndex] ?? SKILL_GROUPS[0];
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      setSkillsInView(entry.isIntersecting && entry.intersectionRatio >= 0.15);
+    }, SKILLS_IN_VIEW_OPTIONS);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const slides = SKILL_GROUPS.map((g) => ({
     alt: g.hudTag,
@@ -124,7 +144,7 @@ export default function SkillRaster() {
   }));
 
   return (
-    <section id="skills" className="w-full scroll-mt-24">
+    <section ref={sectionRef} id="skills" className="w-full scroll-mt-24">
       <p className="font-mono text-xs text-[var(--accent-cyan)]">[TECHNICAL_SKILLS]</p>
       <h2 className="mt-2 font-sans text-xl">Skill Raster</h2>
       <p className="mt-1 font-mono text-sm text-[var(--text-muted)]">
@@ -140,6 +160,7 @@ export default function SkillRaster() {
           label="Technical skill categories"
           cardWidth="clamp(160px, 24vw, 240px)"
           onSelectedChange={setSelectedIndex}
+          autoAdvanceActive={skillsInView}
         />
         <SkillCaptionPanel group={group} />
       </div>

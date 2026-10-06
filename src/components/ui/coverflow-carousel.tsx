@@ -50,6 +50,8 @@ export interface CoverflowCarouselProps {
   onSelectedChange?: (index: number) => void;
   /** Ms of idle time before advancing one slide; repeats while idle. Pass `0` to disable. */
   autoAdvanceAfterMs?: number;
+  /** When false, idle auto-advance is paused (e.g. section scrolled out of view). */
+  autoAdvanceActive?: boolean;
 }
 
 const NAV_DEFAULT =
@@ -74,6 +76,7 @@ export function CoverflowCarousel({
   navButtonClassName,
   onSelectedChange,
   autoAdvanceAfterMs = 5000,
+  autoAdvanceActive = true,
 }: CoverflowCarouselProps) {
   const count = slides.length;
   const reducedMotion = usePrefersReducedMotion();
@@ -200,7 +203,7 @@ export function CoverflowCarousel({
 
   const scheduleIdleAdvance = React.useCallback(() => {
     clearIdleAdvance();
-    if (autoAdvanceAfterMs <= 0 || reducedMotion || count < 2) return;
+    if (autoAdvanceAfterMs <= 0 || !autoAdvanceActive || reducedMotion || count < 2) return;
 
     idleTimerRef.current = window.setTimeout(() => {
       idleTimerRef.current = null;
@@ -211,7 +214,7 @@ export function CoverflowCarousel({
       nudgeRef.current(1);
       scheduleIdleAdvance();
     }, autoAdvanceAfterMs);
-  }, [autoAdvanceAfterMs, clearIdleAdvance, count, reducedMotion]);
+  }, [autoAdvanceActive, autoAdvanceAfterMs, clearIdleAdvance, count, reducedMotion]);
 
   const noteUserActivity = React.useCallback(() => {
     if (autoAdvanceAfterMs <= 0) return;
@@ -219,9 +222,13 @@ export function CoverflowCarousel({
   }, [autoAdvanceAfterMs, scheduleIdleAdvance]);
 
   React.useEffect(() => {
+    if (!autoAdvanceActive) {
+      clearIdleAdvance();
+      return;
+    }
     scheduleIdleAdvance();
     return () => clearIdleAdvance();
-  }, [scheduleIdleAdvance, clearIdleAdvance]);
+  }, [autoAdvanceActive, scheduleIdleAdvance, clearIdleAdvance]);
 
   React.useEffect(() => {
     if (autoAdvanceAfterMs <= 0) return;

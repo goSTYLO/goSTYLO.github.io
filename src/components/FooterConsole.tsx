@@ -87,7 +87,7 @@ function BracketButton({
   external?: boolean;
 }) {
   const className =
-    'group relative border border-[var(--accent-cyan)] px-4 py-2 font-mono text-xs font-medium text-[var(--text-primary)] transition-colors duration-200 hover:bg-[var(--accent-cyan)] hover:text-[var(--bg-primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]';
+    'group relative border border-[var(--border-cyan)] bg-[var(--bg-surface)] px-4 py-2 font-mono text-xs font-medium text-[var(--text-primary)] transition-colors duration-200 hover:border-[var(--accent-cyan)] hover:bg-[var(--accent-cyan)] hover:text-[var(--bg-primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]';
 
   if (href) {
     return (
@@ -199,7 +199,7 @@ export default function FooterConsole() {
       <BlueprintCard frameless>
         <div className="powershell-window w-full" role="region" aria-label="Windows PowerShell console">
           <div className="powershell-titlebar" aria-hidden="true">
-            <span>Windows PowerShell</span>
+            <span>terminal</span>
             <div className="powershell-titlebar-controls">
               <span>—</span>
               <span>□</span>
