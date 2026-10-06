@@ -69,3 +69,13 @@
 - Project carousels use [`public/projects/`](public/projects/) (copied from [`assets/`](assets/)); Serbisyo mobile artboards use `layout: mobile` + `object-contain`. Enterprise Warehouse folder pending assets.
 - Installed shadcn `carousel` + `button`; carousel nav restyled to blueprint borders.
 - Mounted matrix at `#project-matrix` in [`App.tsx`](src/App.tsx); updated `PROJECT_BLUEPRINT.md` §4.
+
+### [2026-10-06] HUD crosshair cursor follower
+
+- Added [`BlueprintCrosshairCursor`](src/components/BlueprintCrosshairCursor.tsx): spring-trailing Lucide `Plus` (`--crosshair`), mouse-always-on-page vs touch-while-pressed, `prefers-reduced-motion` off, mounted in [`App.tsx`](src/App.tsx).
+- Documented in `PROJECT_BLUEPRINT.md` §5.
+
+### [2026-10-06] Crosshair click / tap ping
+
+- CAD registration ping on pointer down/up: expanding square ring + Plus press/release (`crosshair-*` keyframes in [`globals.css`](src/styles/globals.css)); mouse, touch, and pen.
+- Updated `PROJECT_BLUEPRINT.md` §5 item 6.

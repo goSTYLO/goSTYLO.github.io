@@ -354,14 +354,62 @@ body {
   background-size: 3px 3px;
 }
 
+@keyframes crosshair-ping-ring {
+  from {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
+
+@keyframes crosshair-plus-release {
+  0% {
+    transform: scale(0.82);
+  }
+  55% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.crosshair-ping-ring {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--border-cyan);
+  animation: crosshair-ping-ring 400ms ease-out forwards;
+}
+
+.crosshair-plus-pressed {
+  transform: scale(0.82);
+  transition: transform 80ms ease-out;
+}
+
+.crosshair-plus-idle {
+  transform: scale(1);
+}
+
+.crosshair-plus-idle.crosshair-plus-release {
+  animation: crosshair-plus-release 220ms ease-out forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .status-pulse,
   .blueprint-card,
   .blueprint-data-lane,
   .blueprint-orb,
-  .blueprint-spark {
+  .blueprint-spark,
+  .crosshair-ping-ring,
+  .crosshair-plus-pressed,
+  .crosshair-plus-idle,
+  .crosshair-plus-release {
     animation: none;
     transition: none;
+    transform: none;
   }
 
   ::view-transition-group(root),

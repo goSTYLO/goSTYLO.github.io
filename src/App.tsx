@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import BlueprintCard from './components/BlueprintCard';
+import BlueprintCrosshairCursor from './components/BlueprintCrosshairCursor';
 import BlueprintGridBackground from './components/BlueprintGridBackground';
 import HeaderHUD from './components/HeaderHUD';
 import HeroSection from './components/HeroSection';
@@ -50,6 +51,7 @@ export default function App() {
   return (
     <div className="relative min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
       <BlueprintGridBackground />
+      <BlueprintCrosshairCursor />
 
       <div className="relative z-[1]">
         <HeaderHUD

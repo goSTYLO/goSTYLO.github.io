@@ -79,7 +79,8 @@ Fixed full-viewport layer: [`src/components/BlueprintGridBackground.tsx`](src/co
 2. **Data highway lanes:** Horizontal and vertical glowing segments aligned to 32px grid rails; CSS `@keyframes` with desynced durations (6–18s). Intensity tokens: `--motion-grid-lane-opacity`, `--motion-lane-glow`, `--motion-orb-glow`, `--motion-orb-blur` (light mode uses high lane/orb opacity and stronger teal mix on sand canvas).
 3. **Orbs & sparks:** Soft blurred accent orbs plus tiny spark dots; drift keyframes (25–40s). Intensity token: `--motion-orb-opacity`.
 4. **Theme crossfade:** View Transitions API (`document.startViewTransition`) on HUD `[THEME: …]` toggle (~450ms opacity crossfade on `:root`). Theme tokens apply inside `flushSync` so the new snapshot matches CSS variables. Implemented in [`src/context/ThemeContext.tsx`](src/context/ThemeContext.tsx).
-5. **`prefers-reduced-motion`:** Lanes, orbs, sparks, and theme crossfade disabled; instant theme swap.
+5. **`prefers-reduced-motion`:** Lanes, orbs, sparks, theme crossfade, and HUD crosshair follower disabled; instant theme swap.
+6. **HUD crosshair follower:** [`src/components/BlueprintCrosshairCursor.tsx`](src/components/BlueprintCrosshairCursor.tsx) — fixed `pointer-events: none` layer (`z-index: 90`), centered Lucide `Plus` using `var(--crosshair)`. Spring-smoothed rAF trail (slight lag + bounce). **Mouse:** visible while the pointer is over the page; hides on `mouseleave` of `<html>`. **Touch / pen:** visible only during active contact (`pointerdown` → `pointerup` / `cancel`), follows finger while scrolling. **Click / tap (CAD registration ping):** on `pointerdown`, Plus squeezes (~0.82 scale) and an expanding square ring (`1px` `var(--border-cyan)`, 16px→48px fade) plays; on release, Plus eases back with slight overshoot. Styles: `crosshair-*` in [`globals.css`](src/styles/globals.css). Native OS cursor is never hidden.
 
 ## 6. Personal Details Source
 
