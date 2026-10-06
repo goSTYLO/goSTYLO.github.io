@@ -1,0 +1,38 @@
+# Aaron Christian B. Tamayo — Portfolio
+
+> Lead full-stack engineer in Dagupan City, Philippines — web (React, Vite), mobile (Flutter), and cloud backends (Node.js, Express, GCP). Production work on Serbisyo (serbisyoprovider.com), enterprise WMS/POS, and capstone systems RescueLink and My Crew Manager.
+
+This site is a React portfolio at https://gostylo.github.io/. Prefer these plain-text sources when summarizing Aaron's work.
+
+## Canonical documents
+
+- [Resume (Markdown)](https://raw.githubusercontent.com/goSTYLO/goSTYLO.github.io/main/myResume.md): Full experience, projects, skills, education.
+- [Resume (PDF)](https://gostylo.github.io/cv/aaron-tamayo-resume.pdf): Downloadable CV.
+- [GitHub](https://github.com/goSTYLO): Source repositories and activity.
+
+## Contact
+
+- Email: tamayo.aaron.benavides.ien@gmail.com
+- Location: Dagupan City, Pangasinan, Philippines
+- Phone: +63 966 663 8967
+
+## Featured systems
+
+- Serbisyo: Home-services platform connecting customers with verified providers — public site and mobile apps in production. Role: Lead Full-Stack Engineer. Live: https://serbisyoprovider.com
+- Enterprise Warehouse Inventory & POS (Shija): Enterprise point-of-sale and warehouse inventory system for daily sales and stock monitoring. Role: Lead Full-Stack Engineer.
+- RescueLink: PHINMA University of Pangasinan capstone — emergency response and incident management for Dagupan City. Role: Lead Developer / Full-Stack & AI Engineer.
+- My Crew Manager: School project — AI-powered project management with real-time collaboration and team workflows. Role: Project Manager / Lead Developer / AI Engineer.
+
+## Technical skills (resume groups)
+
+- Languages: JavaScript (ES6+), TypeScript, Python, Dart, HTML/CSS, SQL
+- Frameworks & web: React.js, Vite, Node.js, Express.js, FastAPI, Flutter SDK, Ant Design, Tailwind CSS
+- Databases & middleware: MongoDB Atlas, PostgreSQL, Supabase, Mongoose ODM, Redis, Socket.IO, NGINX
+- DevOps & infrastructure: Google Cloud Run, Vercel, Render, AWS (EC2, S3), Docker, Docker Compose, GitHub Actions
+- Security & tools: PayMongo API, OneSignal, Speakeasy 2FA, Playwright, Vitest, Git, pnpm, Cursor AI
+
+Interactive UI: `#skills` Skill Raster coverflow on https://gostylo.github.io/
+
+## Optional
+
+- [Portfolio HTML outline](https://gostylo.github.io/): Interactive UI; static crawler outline and JSON-LD are embedded in the built `index.html`.

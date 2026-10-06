@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aaron Christian B. Tamayo | Full-Stack Portfolio</title>
+    <title>Aaron Christian B. Tamayo | Lead Full-Stack Engineer</title>
+    <!-- PORTFOLIO_HEAD_INJECT -->
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable site summary" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -37,9 +39,21 @@
       html[data-theme='light'] body {
         background: #f0ece1;
       }
+      .portfolio-crawler-outline {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
     </style>
   </head>
   <body>
+    <!-- PORTFOLIO_CRAWLER_OUTLINE_INJECT -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

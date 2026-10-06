@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react
 import BlueprintCard from '@/components/BlueprintCard';
 import { mailtoHref, profile } from '@/data/profile';
 import { downloadResumeMarkdown } from '@/lib/downloadResume';
+import { downloadResumePdf } from '@/lib/downloadResumePdf';
 
 const PS_PATH = 'C:\\portfolio\\footer';
 const PS_INIT_CMD = '.\\_footer_init.ps1';
@@ -188,6 +189,11 @@ export default function FooterConsole() {
     setStatusLine('EXPORT: resume.md OK');
   }, []);
 
+  const onDownloadCvPdf = useCallback(() => {
+    downloadResumePdf();
+    setStatusLine('EXPORT: resume.pdf OK');
+  }, []);
+
   useEffect(() => {
     if (!statusLine) return;
     const timer = window.setTimeout(() => setStatusLine(null), 4000);
@@ -195,15 +201,9 @@ export default function FooterConsole() {
   }, [statusLine]);
 
   return (
-    <section id="footer-console" className="w-full scroll-mt-24">
-      <p className="font-mono text-xs text-[var(--accent-cyan)]">[CONSOLE]</p>
-      <h2 className="mt-2 font-sans text-xl">Footer Terminal</h2>
-      <p className="mt-1 font-mono text-sm text-[var(--text-muted)]">
-        Contact channel · resume export · quick actions
-      </p>
-
-      <BlueprintCard className="mt-5 scroll-mt-24 p-4 sm:p-5">
-        <div className="powershell-window" role="region" aria-label="Windows PowerShell console">
+    <section id="contact" className="w-full scroll-mt-24">
+      <BlueprintCard frameless>
+        <div className="powershell-window w-full" role="region" aria-label="Windows PowerShell console">
           <div className="powershell-titlebar" aria-hidden="true">
             <span>Windows PowerShell</span>
             <div className="powershell-titlebar-controls">
@@ -258,6 +258,7 @@ export default function FooterConsole() {
         <div className="mt-5 flex flex-wrap gap-3">
           <BracketButton href={mailtoHref()}>[SEND_MESSAGE]</BracketButton>
           <BracketButton onClick={onDownloadCv}>[DOWNLOAD_CV]</BracketButton>
+          <BracketButton onClick={onDownloadCvPdf}>[DOWNLOAD_CV_PDF]</BracketButton>
           <BracketButton href={profile.githubUrl} external>
             [VIEW_GITHUB]
           </BracketButton>

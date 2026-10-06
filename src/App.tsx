@@ -1,20 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
-import BlueprintCard from './components/BlueprintCard';
 import BlueprintCrosshairCursor from './components/BlueprintCrosshairCursor';
 import BlueprintGridBackground from './components/BlueprintGridBackground';
 import HeaderHUD from './components/HeaderHUD';
 import HeroSection from './components/HeroSection';
 import FooterConsole from './components/FooterConsole';
 import ProjectMatrix from './components/ProjectMatrix';
+import SkillRaster from './components/SkillRaster';
+import CvAstOverlay from './components/CvAstOverlay';
 import { PORTFOLIO_NAV, type PortfolioSectionId } from './data/navSections';
-
-const SECTIONS = [
-  { id: 'domains' as const, label: 'Domains Grid', note: 'WEB / MOBILE / BACKEND / CLOUD — Phase 2' },
-];
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<PortfolioSectionId>('hero');
   const [chatbotOpen, setChatbotOpen] = useState(false);
+  const [cvOpen, setCvOpen] = useState(false);
 
   const scrollToSection = useCallback((sectionId: PortfolioSectionId) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
@@ -53,20 +51,29 @@ export default function App() {
         <HeaderHUD
           activeSection={activeSection}
           onNavigate={scrollToSection}
-          onLaunchChatbot={() => setChatbotOpen(true)}
+          onLaunchChatbot={() => {
+            setChatbotOpen(true);
+            setCvOpen(false);
+          }}
         />
 
-        <HeroSection onExploreSystems={() => scrollToSection('project-matrix')} />
+        {cvOpen ? <CvAstOverlay onClose={() => setCvOpen(false)} /> : null}
+
+        <HeroSection
+          cvOpen={cvOpen}
+          onOpenCv={() => {
+            setCvOpen((open) => {
+              const next = !open;
+              if (next) setChatbotOpen(false);
+              return next;
+            });
+          }}
+          onExploreSystems={() => scrollToSection('project-matrix')}
+        />
 
         <main className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
           <ProjectMatrix />
-          {SECTIONS.map((section) => (
-            <BlueprintCard key={section.id} id={section.id} className="scroll-mt-24">
-              <p className="font-mono text-xs text-[var(--accent-cyan)]">[{section.label.toUpperCase()}]</p>
-              <h2 className="mt-2 font-sans text-xl">{section.label}</h2>
-              <p className="mt-1 font-mono text-sm text-[var(--text-muted)]">{section.note}</p>
-            </BlueprintCard>
-          ))}
+          <SkillRaster />
           <FooterConsole />
         </main>
       </div>

@@ -12,6 +12,8 @@ export const profile = {
     'PHINMA University of Pangasinan · BS IT – System Development · Expected 2027',
   copyrightLine: `© ${new Date().getFullYear()} Aaron Christian B. Tamayo · All rights reserved.`,
   cvDownloadFileName: 'Aaron_Tamayo_Resume.md',
+  cvPdfUrl: '/cv/aaron-tamayo-resume.pdf',
+  cvPdfDownloadFileName: 'Aaron_Tamayo_CV.pdf',
   mailtoSubject: 'Portfolio inquiry — Aaron Tamayo',
 } as const;
 

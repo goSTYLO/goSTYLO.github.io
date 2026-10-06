@@ -29,12 +29,12 @@ The visual language follows an architectural CAD/HUD blueprint design system wit
 ──────────────────────────────────────────────────────────────────────────────────────────────────
 [ HERO SECTION ]     - Full-Stack Headline, System Telemetry Strip (React / Flutter / Node / GCP)
 ──────────────────────────────────────────────────────────────────────────────────────────────────
-[ DOMAINS MATRIX ]   - 4-Column Technical Grid:
-01. Web Engineering | 02. Mobile Dev | 03. Backend & APIs | 04. Cloud & DevOps
-──────────────────────────────────────────────────────────────────────────────────────────────────
 [ PROJECT MATRIX ]   - Deployed Systems Grid:
 • Serbisyo (Web/Mobile/GCP)     • RescueLink AI (Cloud Run/Vercel)
 • WaterMarks POS (Offline Web)  • My-Crew-Manager (MERN Stack)
+──────────────────────────────────────────────────────────────────────────────────────────────────
+[ SKILL RASTER ]     - Resume technical skills coverflow (#skills):
+5 groups · chip manifest · drag / keyboard nav
 ──────────────────────────────────────────────────────────────────────────────────────────────────
 [ ACADEMIC & TOOLING]- PIAC Approved Exemptions (ITE 367, ITE 381) & Dev Workflow Stack
 ──────────────────────────────────────────────────────────────────────────────────────────────────
@@ -66,29 +66,19 @@ The visual language follows an architectural CAD/HUD blueprint design system wit
 ### Section 02: Hero Section ("System Architecture Overview")
 * **Headline:** `LEAD FULL-STACK ENGINEER`
 * **Name (secondary):** Aaron Christian B. Tamayo (monospace, muted)
-* **Subtitle (one sentence, no tech list):** Founder-partner value line—planning through staging and production across web, mobile, and backend (see `myResume.md` experience; stack detail lives in Domains + Project Matrix).
+* **Subtitle (one sentence, no tech list):** Founder-partner value line—planning through staging and production across web, mobile, and backend (see `myResume.md` experience; stack detail lives in Skill Raster + Project Matrix).
 * **Contact strip:** Dagupan City, Pangasinan · github.com/goSTYLO
 * **Portrait ASCII overlay:** Subject/coords/node only (no stack diagram on photo).
 * **CTA:** `[EXPLORE_SYSTEMS]` only (chatbot via header / future floating widget).
 
 ---
 
-### Section 03: Core Engineering Domains Matrix (4-Column Grid)
+### Section 03: Technical Skills (Skill Raster)
 
-Each domain card features CAD corner crosshairs (`<Plus/>`), semi-transparent 1px blueprint borders, and parameter metrics:
-
-1. **`01. WEB_ENGINEERING`**
-   * *Technologies:* React, Vite, Tailwind CSS, Redux/Zustand, PostHog Analytics.
-   * *Metrics:* `BUNDLE_SIZE: MINIFIED`, `FPS: 60`, `RESPONSIVE: TRUE`.
-2. **`02. MOBILE_DEVELOPMENT`**
-   * *Technologies:* Flutter, Dart, Cross-Platform Architecture, Play Store / App Store Deployments.
-   * *Metrics:* `PLATFORMS: IOS + ANDROID`, `OFFLINE_FIRST: ENABLED`.
-3. **`03. BACKEND_&_APIS`**
-   * *Technologies:* Node.js, Express, RESTful APIs, WebSockets, PayMongo Disbursements/Payments.
-   * *Metrics:* `AUTH: JWT/OAUTH`, `LATENCY < 45ms`, `UPTIME 99.9%`.
-4. **`04. CLOUD_&_DEVOPS`**
-   * *Technologies:* Google Cloud Run, Docker, Vercel, CI/CD, PostgreSQL, MongoDB, pnpm.
-   * *Metrics:* `CONTAINERIZED: TRUE`, `SERVERLESS: AUTO_SCALE`.
+* **Nav target:** `#skills` / HUD `[SKILLS]`.
+* **Layout:** No outer blueprint card; mono tag `[TECHNICAL_SKILLS]`, title **Skill Raster**, coverflow + caption (same section pattern as Project Matrix).
+* **Data:** Five groups from `myResume.md` → `cvDocument.technicalSkills` (Languages, Frameworks & Web, Databases & Middleware, DevOps & Infrastructure, Security & Tools).
+* **Interaction:** [`CoverflowCarousel`](src/components/ui/coverflow-carousel.tsx) — CAD plates with category icon; caption lists `[skill]` chips for the focused group; square nav buttons; drag, loop, arrow keys; reduced-motion flatten.
 
 ---
 

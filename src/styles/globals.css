@@ -331,6 +331,187 @@ body {
   box-shadow: 0 0 24px color-mix(in srgb, var(--accent-cyan) 22%, transparent);
 }
 
+.blueprint-card--frameless,
+.blueprint-card--frameless:hover {
+  background: transparent;
+  box-shadow: none;
+}
+
+.cv-photo-trigger {
+  cursor: pointer;
+  transition:
+    transform 180ms ease-out,
+    box-shadow 180ms ease-out;
+}
+
+.cv-photo-trigger:hover,
+.cv-photo-trigger--open {
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent-cyan) 35%, transparent);
+}
+
+.cv-photo-trigger:hover {
+  transform: scale(1.03);
+}
+
+.cv-photo-trigger--open img {
+  border-color: var(--accent-cyan);
+}
+
+.cv-photo-trigger__hint {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--bg-primary) 55%, transparent);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--accent-cyan);
+  opacity: 0;
+  backdrop-filter: blur(2px);
+  transition: opacity 180ms ease-out;
+}
+
+@media (min-width: 640px) {
+  .cv-photo-trigger__hint {
+    font-size: 0.75rem;
+  }
+}
+
+.cv-photo-trigger:hover .cv-photo-trigger__hint,
+.cv-photo-trigger:focus-visible .cv-photo-trigger__hint {
+  opacity: 1;
+}
+
+.cv-photo-trigger__corner {
+  pointer-events: none;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: var(--crosshair);
+  opacity: 0;
+  transition: opacity 180ms ease-out;
+}
+
+.cv-photo-trigger:hover .cv-photo-trigger__corner,
+.cv-photo-trigger--open .cv-photo-trigger__corner {
+  opacity: 1;
+}
+
+.cv-photo-trigger__corner--tl {
+  top: -3px;
+  left: -3px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.cv-photo-trigger__corner--tr {
+  top: -3px;
+  right: -3px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.cv-photo-trigger__corner--bl {
+  bottom: -3px;
+  left: -3px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.cv-photo-trigger__corner--br {
+  bottom: -3px;
+  right: -3px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+
+.cv-ast-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 220ms ease-out;
+}
+
+.cv-ast-collapse--open {
+  grid-template-rows: 1fr;
+}
+
+.cv-ast-collapse__inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.cv-ast-collapse__content {
+  opacity: 0.85;
+  transition: opacity 220ms ease-out;
+}
+
+.cv-ast-collapse--open .cv-ast-collapse__content {
+  opacity: 1;
+}
+
+.cv-ast-chevron {
+  transition: transform 180ms ease-out;
+}
+
+.cv-ast-chevron--open {
+  transform: rotate(90deg);
+}
+
+.cv-ast-zoom-scaled {
+  transform-origin: top center;
+  transition: transform 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cv-photo-trigger:hover {
+    transform: none;
+  }
+
+  .cv-photo-trigger__hint {
+    transition: none;
+  }
+
+  .cv-overlay-enter {
+    animation: none;
+  }
+
+  .cv-ast-collapse {
+    transition: none;
+  }
+
+  .cv-ast-collapse__content {
+    transition: none;
+    opacity: 1;
+  }
+
+  .cv-ast-chevron {
+    transition: none;
+  }
+
+  .cv-ast-zoom-scaled {
+    transition: none;
+  }
+}
+
+@keyframes cv-overlay-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.cv-overlay-enter {
+  animation: cv-overlay-fade-in 220ms ease-out;
+}
+
 .status-pulse {
   animation: status-pulse 1.6s ease-in-out infinite;
 }
@@ -463,7 +644,7 @@ body {
   font-family: Consolas, 'Courier New', monospace;
   font-size: 0.8125rem;
   line-height: 1.45;
-  min-height: 14rem;
+  min-height: min(22rem, 50vh);
 }
 
 .powershell-body .powershell-banner {

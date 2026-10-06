@@ -85,3 +85,34 @@
 - Implemented [`FooterConsole`](src/components/FooterConsole.tsx): blueprint card, Windows PowerShell window chrome (`#012456`, title bar, `PS C:\\portfolio\\footer>` prompt), typewriter log (respects `prefers-reduced-motion`), clickable MAIL/TEL/VCS, blinking cursor on idle prompt.
 - Added [`profile.ts`](src/data/profile.ts) and [`downloadResume.ts`](src/lib/downloadResume.ts) — `[DOWNLOAD_CV]` blob-downloads canonical [myResume.md](myResume.md).
 - Replaced footer placeholder in [`App.tsx`](src/App.tsx); updated `PROJECT_BLUEPRINT.md` §4 item 6.
+- HUD nav `[CONSOLE]` → `[CONTACT]` (`#contact`); removed duplicate section heading above PowerShell card.
+- Contact block: `BlueprintCard frameless` — no card border/bg; enlarged PowerShell body; crosshairs retained.
+
+### [2026-10-06] Hidden CV AST overlay
+
+- HUD profile photo (`HeaderHUD`) toggles full-page `[CV_AST_VIEWER]` (`CvAstOverlay`, `z-30` under header); not listed in `navSections.ts`.
+- Structured resume in [`src/data/cv.ts`](src/data/cv.ts) (1:1 [myResume.md](myResume.md) + portrait); expandable AST tree with Esc / `[X]` / photo close; CV vs chatbot mutual exclusion in [`App.tsx`](src/App.tsx).
+- Documented in `PROJECT_BLUEPRINT.md` §4 item 1.
+
+### [2026-10-06] CV UX — hero trigger, zoom, PDF, animations
+
+- CV entry moved to hero portrait (`.cv-photo-trigger`); removed HUD thumbnail trigger.
+- `CvAstOverlay`: header portrait + name; AST identity = location/contact; zoom toolbar; CSS expand/collapse on tree nodes.
+- [`public/cv/aaron-tamayo-resume.pdf`](public/cv/aaron-tamayo-resume.pdf) + [`downloadResumePdf.ts`](src/lib/downloadResumePdf.ts); `[DOWNLOAD_CV_PDF]` in overlay and footer (markdown `[DOWNLOAD_CV]` retained).
+
+### [2026-10-07] AI / crawler-readable portfolio metadata
+
+- [`src/data/portfolioDocument.ts`](src/data/portfolioDocument.ts) derives meta description, Schema.org JSON-LD (`Person`, `ProfilePage`, `ItemList`), static HTML crawler outline, and [`llms.txt`](public/llms.txt) from existing `profile`, `projects`, and `cv` data.
+- Vite plugin in [`vite.config.ts`](vite.config.ts) injects head tags + outline into `index.html` at build/dev, writes `public/llms.txt`, copies `myResume.md` → `dist/resume.md` on production build.
+- [`public/robots.txt`](public/robots.txt) and [`public/sitemap.xml`](public/sitemap.xml) list home, `llms.txt`, resume, and CV PDF for indexers.
+
+### [2026-10-07] Skill Raster (replaces Domains Grid placeholder)
+
+- Removed `#domains` placeholder `BlueprintCard` from [`App.tsx`](src/App.tsx); added [`SkillRaster.tsx`](src/components/SkillRaster.tsx) at `#skills` with resume-driven groups via [`skillGroups.ts`](src/lib/skillGroups.ts).
+- Added blueprint-styled [`coverflow-carousel.tsx`](src/components/ui/coverflow-carousel.tsx) (HUD plates, skill chips caption, reduced-motion flatten).
+- HUD nav `[DOMAINS]` → `[SKILLS]` in [`navSections.ts`](src/data/navSections.ts); updated `PROJECT_BLUEPRINT.md`, `PRD.md`, and `llms.txt` skill copy.
+
+### [2026-10-07] Skill Raster caption panel
+
+- Lifted caption into [`SkillRaster.tsx`](src/components/SkillRaster.tsx) (`SkillCaptionPanel`): surface + border panel, fast typewriter title and sequential skill chips via [`useTypewriter.ts`](src/hooks/useTypewriter.ts); carousel `showCaption={false}`.
+- Simplified section helper line; removed per-slide entry-count subtitle.

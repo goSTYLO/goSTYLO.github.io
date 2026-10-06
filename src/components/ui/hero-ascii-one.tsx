@@ -1,6 +1,6 @@
 import type { HeroSectionProps } from '@/components/HeroSection';
 
-export default function HeroAsciiOne({ onExploreSystems }: HeroSectionProps) {
+export default function HeroAsciiOne({ onExploreSystems, onOpenCv, cvOpen = false }: HeroSectionProps) {
   return (
     <section
       id="hero"
@@ -27,13 +27,28 @@ export default function HeroAsciiOne({ onExploreSystems }: HeroSectionProps) {
       <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-4rem)] w-full max-w-7xl flex-col justify-center gap-10 px-4 py-12 sm:px-6 lg:flex-row lg:items-center lg:gap-12 lg:px-8">
         <div className="flex w-full shrink-0 flex-col items-center lg:w-[42%] lg:max-w-md lg:items-start">
           <div className="relative w-full max-w-[320px] lg:max-w-none">
-            <img
-              src="/aaron-profile.jpg"
-              alt="Aaron Christian B. Tamayo"
-              width={480}
-              height={480}
-              className="aspect-square w-full rounded-sm border border-[var(--border-cyan)] object-cover object-[center_18%] shadow-[0_0_0_1px_color-mix(in_srgb,var(--accent-cyan)_15%,transparent)]"
-            />
+            <button
+              type="button"
+              onClick={onOpenCv}
+              aria-label={cvOpen ? 'Close CV' : 'Open CV'}
+              aria-expanded={cvOpen}
+              className={`cv-photo-trigger relative block w-full overflow-visible p-0 text-left ${cvOpen ? 'cv-photo-trigger--open' : ''}`}
+            >
+              <img
+                src="/aaron-profile.jpg"
+                alt="Aaron Christian B. Tamayo"
+                width={480}
+                height={480}
+                className="aspect-square w-full rounded-sm border border-[var(--border-cyan)] object-cover object-[center_18%] shadow-[0_0_0_1px_color-mix(in_srgb,var(--accent-cyan)_15%,transparent)]"
+              />
+              <span className="cv-photo-trigger__hint" aria-hidden="true">
+                {cvOpen ? '[CLOSE CV]' : '[SHOW CV]'}
+              </span>
+              <span className="cv-photo-trigger__corner cv-photo-trigger__corner--tl" aria-hidden="true" />
+              <span className="cv-photo-trigger__corner cv-photo-trigger__corner--tr" aria-hidden="true" />
+              <span className="cv-photo-trigger__corner cv-photo-trigger__corner--bl" aria-hidden="true" />
+              <span className="cv-photo-trigger__corner cv-photo-trigger__corner--br" aria-hidden="true" />
+            </button>
             <div
               className="absolute inset-x-2 bottom-2 border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_82%,transparent)] p-2 font-mono text-[7px] leading-relaxed text-[var(--accent-cyan)] backdrop-blur-[2px] sm:text-[8px] lg:inset-x-3 lg:bottom-3 lg:p-2.5 lg:text-[9px]"
               aria-label="Profile telemetry"

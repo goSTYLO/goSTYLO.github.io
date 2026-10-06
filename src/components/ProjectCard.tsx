@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import ArchSpecsDisclosure from '@/components/ArchSpecsDisclosure';
 import BlueprintCard from '@/components/BlueprintCard';
 import ProjectImageLightbox from '@/components/ProjectImageLightbox';
+import TypeText from '@/components/TypeText';
+import { useInViewRetype } from '@/hooks/useInViewOnce';
+
+type ScrollTyping = {
+  typingActive: boolean;
+  typingKey: string;
+};
 import {
   Carousel,
   type CarouselApi,
@@ -85,7 +93,7 @@ function SlideMedia({
   );
 }
 
-function ProjectCarousel({ project }: { project: Project }) {
+function ProjectCarousel({ project, typingActive, typingKey }: { project: Project } & ScrollTyping) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -143,7 +151,12 @@ function ProjectCarousel({ project }: { project: Project }) {
           <ChevronLeft className="size-4" aria-hidden="true" />
         </button>
         <p className="flex min-w-0 flex-1 items-center justify-center px-1 text-center font-mono text-[10px] leading-snug tracking-wide text-[var(--accent-cyan)]">
-          {caption}
+          <TypeText
+            text={caption}
+            active={typingActive}
+            charDelayMs={3}
+            resetKey={`${typingKey}-${project.id}-caption-${current}`}
+          />
         </p>
         <button
           type="button"
@@ -171,85 +184,113 @@ function ProjectCarousel({ project }: { project: Project }) {
   );
 }
 
-function TelemetryStrip({ project }: { project: Project }) {
+function TelemetryStrip({ project, typingActive, typingKey }: { project: Project } & ScrollTyping) {
   return (
     <div className="flex flex-wrap gap-x-2 gap-y-1 font-mono text-[10px] tracking-wide text-[var(--text-muted)]">
       {project.sysRef ? (
-        <span className="text-[var(--accent-cyan)]">[SYS_REF: {project.sysRef}]</span>
+        <span className="text-[var(--accent-cyan)]">
+          <TypeText
+            text={`[SYS_REF: ${project.sysRef}]`}
+            active={typingActive}
+            resetKey={typingKey}
+            charDelayMs={3}
+          />
+        </span>
       ) : null}
-      <span>[STATUS: {project.status}]</span>
-      <span>{contextTag(project)}</span>
+      <span>
+        <TypeText
+          text={`[STATUS: ${project.status}]`}
+          active={typingActive}
+          resetKey={typingKey}
+          charDelayMs={3}
+        />
+      </span>
+      <span>
+        <TypeText text={contextTag(project)} active={typingActive} resetKey={typingKey} charDelayMs={3} />
+      </span>
       {project.domains.map((d) => (
-        <span key={d}>[{d}]</span>
+        <span key={d}>
+          <TypeText text={`[${d}]`} active={typingActive} resetKey={typingKey} charDelayMs={3} />
+        </span>
       ))}
     </div>
   );
 }
 
-function RoleBlock({ project }: { project: Project }) {
+function RoleBlock({ project, typingActive, typingKey }: { project: Project } & ScrollTyping) {
   return (
     <div className="mt-3 border-l-2 border-[var(--accent-cyan)] pl-3">
-      <p className="font-mono text-xs text-[var(--accent-cyan)]">[ROLE: {project.roleTag}]</p>
-      <p className="mt-1 font-sans text-base font-medium text-[var(--text-primary)]">
-        {project.roleTitle}
+      <p className="font-mono text-xs text-[var(--accent-cyan)]">
+        <TypeText
+          text={`[ROLE: ${project.roleTag}]`}
+          active={typingActive}
+          resetKey={typingKey}
+          charDelayMs={3}
+        />
       </p>
-      <p className="mt-1 font-sans text-sm text-[var(--text-muted)]">{project.roleSummary}</p>
+      <p className="mt-1 font-sans text-base font-medium text-[var(--text-primary)]">
+        <TypeText text={project.roleTitle} active={typingActive} resetKey={typingKey} charDelayMs={3} />
+      </p>
+      <p className="mt-1 font-sans text-sm text-[var(--text-muted)]">
+        <TypeText text={project.roleSummary} active={typingActive} resetKey={typingKey} charDelayMs={2} />
+      </p>
     </div>
   );
 }
 
-function FeatureList({ project }: { project: Project }) {
+function FeatureList({ project, typingActive, typingKey }: { project: Project } & ScrollTyping) {
   const visibleCount = project.nda ? project.features.length : 3;
   const preview = project.features.slice(0, visibleCount);
   const extra = project.nda ? [] : project.features.slice(visibleCount);
   const showArchSpecs = !project.nda && (extra.length > 0 || project.stack.length > 0);
+  const stackLine = project.stack.join(' · ');
+  const hostLine = project.hosting.join(' · ');
 
   return (
     <div className="mt-4">
-      <p className="font-mono text-[10px] text-[var(--text-muted)]">[CAPABILITIES]</p>
+      <p className="font-mono text-[10px] text-[var(--text-muted)]">
+        <TypeText text="[CAPABILITIES]" active={typingActive} resetKey={typingKey} charDelayMs={4} />
+      </p>
       <ul className="mt-2 list-inside list-disc space-y-1 font-sans text-sm text-[var(--text-primary)]">
         {preview.map((feature) => (
-          <li key={feature}>{feature}</li>
+          <li key={feature}>
+            <TypeText text={feature} active={typingActive} resetKey={typingKey} charDelayMs={2} />
+          </li>
         ))}
       </ul>
       {showArchSpecs ? (
-        <details className="mt-3 font-mono text-xs text-[var(--text-muted)]">
-          <summary className="cursor-pointer border border-[var(--border-cyan)] px-2 py-1 text-[var(--accent-cyan)] hover:bg-[color-mix(in_srgb,var(--bg-surface)_90%,var(--accent-cyan))]">
-            [ARCH_SPECS]
-          </summary>
-          <div className="mt-3 space-y-3 border border-[var(--border-cyan)] p-3">
-            {extra.length > 0 ? (
-              <ul className="list-inside list-disc space-y-1 font-sans text-sm text-[var(--text-primary)]">
-                {extra.map((feature) => (
-                  <li key={feature}>{feature}</li>
-                ))}
-              </ul>
-            ) : null}
-            <div>
-              <p className="text-[var(--accent-cyan)]">[STACK]</p>
-              <p className="mt-1 font-sans text-sm">{project.stack.join(' · ')}</p>
-            </div>
-            {project.hosting.length > 0 ? (
-              <div>
-                <p className="text-[var(--accent-cyan)]">[HOST]</p>
-                <p className="mt-1 font-sans text-sm">{project.hosting.join(' · ')}</p>
-              </div>
-            ) : null}
+        <ArchSpecsDisclosure>
+          {extra.length > 0 ? (
+            <ul className="list-inside list-disc space-y-1 font-sans text-sm text-[var(--text-primary)]">
+              {extra.map((feature) => (
+                <li key={feature}>{feature}</li>
+              ))}
+            </ul>
+          ) : null}
+          <div>
+            <p className="text-[var(--accent-cyan)]">[STACK]</p>
+            <p className="mt-1 font-sans text-sm">{stackLine}</p>
           </div>
-        </details>
+          {project.hosting.length > 0 ? (
+            <div>
+              <p className="text-[var(--accent-cyan)]">[HOST]</p>
+              <p className="mt-1 font-sans text-sm">{hostLine}</p>
+            </div>
+          ) : null}
+        </ArchSpecsDisclosure>
       ) : !project.nda ? (
         <div className="mt-3 space-y-2 font-mono text-xs text-[var(--text-muted)]">
           <p>
             <span className="text-[var(--accent-cyan)]">[STACK]</span>{' '}
             <span className="font-sans text-sm text-[var(--text-primary)]">
-              {project.stack.join(' · ')}
+              <TypeText text={stackLine} active={typingActive} resetKey={typingKey} charDelayMs={2} />
             </span>
           </p>
           {project.hosting.length > 0 ? (
             <p>
               <span className="text-[var(--accent-cyan)]">[HOST]</span>{' '}
               <span className="font-sans text-sm text-[var(--text-primary)]">
-                {project.hosting.join(' · ')}
+                <TypeText text={hostLine} active={typingActive} resetKey={typingKey} charDelayMs={2} />
               </span>
             </p>
           ) : null}
@@ -259,7 +300,7 @@ function FeatureList({ project }: { project: Project }) {
   );
 }
 
-function ProjectLinks({ project }: { project: Project }) {
+function ProjectLinks({ project, typingActive, typingKey }: { project: Project } & ScrollTyping) {
   if (project.links.length === 0) return null;
 
   return (
@@ -273,7 +314,8 @@ function ProjectLinks({ project }: { project: Project }) {
             rel="noopener noreferrer"
             className="border border-[var(--accent-cyan)] px-2 py-1 font-mono text-xs text-[var(--accent-cyan)] hover:bg-[color-mix(in_srgb,var(--bg-surface)_88%,var(--accent-cyan))]"
           >
-            [{link.label}]
+            [
+            <TypeText text={link.label} active={typingActive} resetKey={typingKey} charDelayMs={4} />]
           </a>
         ) : (
           <span
@@ -281,7 +323,14 @@ function ProjectLinks({ project }: { project: Project }) {
             className="cursor-not-allowed border border-[var(--border-cyan)] px-2 py-1 font-mono text-xs text-[var(--text-muted)] opacity-60"
             aria-disabled="true"
           >
-            [{link.label}: PENDING]
+            [
+            <TypeText
+              text={`${link.label}: PENDING`}
+              active={typingActive}
+              resetKey={typingKey}
+              charDelayMs={4}
+            />
+            ]
           </span>
         ),
       )}
@@ -289,39 +338,51 @@ function ProjectLinks({ project }: { project: Project }) {
   );
 }
 
-function ProjectBody({ project }: { project: Project }) {
+function ProjectBody({ project, typingActive, typingKey }: { project: Project } & ScrollTyping) {
   return (
     <>
-      <TelemetryStrip project={project} />
-      <h3 className="mt-2 font-sans text-xl text-[var(--text-primary)]">{project.title}</h3>
-      <p className="mt-1 font-sans text-sm text-[var(--text-muted)]">{project.summary}</p>
-      <RoleBlock project={project} />
-      <FeatureList project={project} />
-      <ProjectLinks project={project} />
+      <TelemetryStrip project={project} typingActive={typingActive} typingKey={typingKey} />
+      <h3 className="mt-2 font-sans text-xl text-[var(--text-primary)]">
+        <TypeText text={project.title} active={typingActive} resetKey={typingKey} charDelayMs={3} />
+      </h3>
+      <p className="mt-1 font-sans text-sm text-[var(--text-muted)]">
+        <TypeText text={project.summary} active={typingActive} resetKey={typingKey} charDelayMs={2} />
+      </p>
+      <RoleBlock project={project} typingActive={typingActive} typingKey={typingKey} />
+      <FeatureList project={project} typingActive={typingActive} typingKey={typingKey} />
+      <ProjectLinks project={project} typingActive={typingActive} typingKey={typingKey} />
     </>
   );
 }
 
 export default function ProjectCard({ project, featured = false }: ProjectCardProps) {
+  const { ref, inView, typingGeneration } = useInViewRetype();
+  const typingKey = String(typingGeneration);
+  const scrollTyping = { typingActive: inView, typingKey };
+
   if (featured) {
     return (
-      <BlueprintCard className="p-3 sm:p-4">
-        <div className="grid w-full gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-start lg:gap-5">
-          <ProjectCarousel project={project} />
-          <div className="min-w-0">
-            <ProjectBody project={project} />
+      <div ref={ref}>
+        <BlueprintCard className="p-3 sm:p-4">
+          <div className="grid w-full gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-start lg:gap-5">
+            <ProjectCarousel project={project} {...scrollTyping} />
+            <div className="min-w-0">
+              <ProjectBody project={project} {...scrollTyping} />
+            </div>
           </div>
-        </div>
-      </BlueprintCard>
+        </BlueprintCard>
+      </div>
     );
   }
 
   return (
-    <BlueprintCard className="flex h-full flex-col p-3 sm:p-4">
-      <ProjectCarousel project={project} />
-      <div className="mt-4 flex flex-1 flex-col">
-        <ProjectBody project={project} />
-      </div>
-    </BlueprintCard>
+    <div ref={ref} className="h-full">
+      <BlueprintCard className="flex h-full flex-col p-3 sm:p-4">
+        <ProjectCarousel project={project} {...scrollTyping} />
+        <div className="mt-4 flex flex-1 flex-col">
+          <ProjectBody project={project} {...scrollTyping} />
+        </div>
+      </BlueprintCard>
+    </div>
   );
 }
