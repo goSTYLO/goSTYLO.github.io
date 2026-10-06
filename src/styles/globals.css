@@ -1,0 +1,376 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+[data-theme='light'] {
+  --bg-primary: #f0ece1;
+  --bg-surface: #e6dfd5;
+  --text-primary: #061224;
+  --text-muted: #2a3d52;
+  --border-cyan: rgba(0, 82, 94, 0.38);
+  --accent-cyan: #00596b;
+  --crosshair: rgba(0, 82, 94, 0.55);
+  --status-online: #12b76a;
+
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+  --card: var(--bg-surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-surface);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent-cyan);
+  --primary-foreground: var(--bg-primary);
+  --secondary: var(--bg-surface);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--bg-surface);
+  --muted-foreground: var(--text-muted);
+  --accent: var(--accent-cyan);
+  --accent-foreground: var(--bg-primary);
+  --destructive: #b42318;
+  --border: var(--border-cyan);
+  --input: var(--border-cyan);
+  --ring: var(--accent-cyan);
+  --radius: 0px;
+
+  --motion-grid-lane-opacity: 0.9;
+  --motion-orb-opacity: 0.95;
+  --motion-lane-glow: 100%;
+  --motion-orb-glow: 28%;
+  --motion-spark-glow: 88%;
+  --motion-orb-blur: 40px;
+}
+
+[data-theme='dark'] {
+  --bg-primary: #061224;
+  --bg-surface: #091a32;
+  --text-primary: #f0ece1;
+  --text-muted: #94a3b8;
+  --border-cyan: rgba(0, 229, 255, 0.2);
+  --accent-cyan: #00e5ff;
+  --crosshair: rgba(0, 229, 255, 0.4);
+  --status-online: #12b76a;
+
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+  --card: var(--bg-surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-surface);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent-cyan);
+  --primary-foreground: var(--bg-primary);
+  --secondary: var(--bg-surface);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--bg-surface);
+  --muted-foreground: var(--text-muted);
+  --accent: var(--accent-cyan);
+  --accent-foreground: var(--bg-primary);
+  --destructive: #f97066;
+  --border: var(--border-cyan);
+  --input: var(--border-cyan);
+  --ring: var(--accent-cyan);
+
+  --motion-grid-lane-opacity: 1;
+  --motion-orb-opacity: 1;
+  --motion-lane-glow: 85%;
+  --motion-orb-glow: 16%;
+  --motion-spark-glow: 70%;
+  --motion-orb-blur: 48px;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Space Grotesk', Inter, sans-serif;
+}
+
+.blueprint-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 1;
+  overflow: hidden;
+}
+
+.blueprint-motion-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.blueprint-data-lane {
+  position: absolute;
+  pointer-events: none;
+  opacity: var(--motion-grid-lane-opacity);
+}
+
+.blueprint-data-lane--h {
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 42%,
+    color-mix(in srgb, var(--accent-cyan) var(--motion-lane-glow), transparent) 50%,
+    transparent 58%,
+    transparent 100%
+  );
+  background-size: 112px 1px;
+  background-repeat: no-repeat;
+  animation: blueprint-lane-h linear infinite;
+  will-change: transform;
+}
+
+.blueprint-data-lane--v {
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 42%,
+    color-mix(in srgb, var(--accent-cyan) var(--motion-lane-glow), transparent) 50%,
+    transparent 58%,
+    transparent 100%
+  );
+  background-size: 1px 112px;
+  background-repeat: no-repeat;
+  animation: blueprint-lane-v linear infinite;
+  will-change: transform;
+}
+
+@keyframes blueprint-lane-h {
+  from {
+    transform: translateX(-120px);
+  }
+  to {
+    transform: translateX(calc(100vw + 120px));
+  }
+}
+
+@keyframes blueprint-lane-v {
+  from {
+    transform: translateY(-120px);
+  }
+  to {
+    transform: translateY(calc(100vh + 120px));
+  }
+}
+
+.blueprint-orb {
+  position: absolute;
+  width: clamp(80px, 14vw, 160px);
+  height: clamp(80px, 14vw, 160px);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: var(--motion-orb-opacity);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent-cyan) var(--motion-orb-glow), transparent) 0%,
+    transparent 68%
+  );
+  filter: blur(var(--motion-orb-blur));
+  will-change: transform, opacity;
+}
+
+.blueprint-orb--a {
+  animation: blueprint-orb-drift-a 32s ease-in-out infinite;
+}
+
+.blueprint-orb--b {
+  animation: blueprint-orb-drift-b 28s ease-in-out infinite;
+}
+
+.blueprint-orb--c {
+  width: clamp(60px, 10vw, 120px);
+  height: clamp(60px, 10vw, 120px);
+  animation: blueprint-orb-drift-c 36s ease-in-out infinite;
+}
+
+.blueprint-orb--d {
+  animation: blueprint-orb-drift-d 30s ease-in-out infinite;
+}
+
+@keyframes blueprint-orb-drift-a {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: calc(var(--motion-orb-opacity) * 0.7);
+  }
+  50% {
+    transform: translate(48px, -32px);
+    opacity: var(--motion-orb-opacity);
+  }
+}
+
+@keyframes blueprint-orb-drift-b {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: var(--motion-orb-opacity);
+  }
+  50% {
+    transform: translate(-56px, 40px);
+    opacity: calc(var(--motion-orb-opacity) * 0.65);
+  }
+}
+
+@keyframes blueprint-orb-drift-c {
+  0%,
+  100% {
+    transform: translate(-24px, 16px);
+    opacity: calc(var(--motion-orb-opacity) * 0.5);
+  }
+  50% {
+    transform: translate(32px, -24px);
+    opacity: calc(var(--motion-orb-opacity) * 0.85);
+  }
+}
+
+@keyframes blueprint-orb-drift-d {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: calc(var(--motion-orb-opacity) * 0.6);
+  }
+  50% {
+    transform: translate(40px, -48px);
+    opacity: var(--motion-orb-opacity);
+  }
+}
+
+.blueprint-spark {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--accent-cyan) var(--motion-spark-glow), transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent-cyan) calc(var(--motion-spark-glow) * 0.65), transparent);
+  opacity: calc(var(--motion-orb-opacity) * 0.75);
+  will-change: transform, opacity;
+}
+
+.blueprint-spark--a {
+  animation: blueprint-spark-drift-a 22s ease-in-out infinite;
+}
+
+.blueprint-spark--b {
+  animation: blueprint-spark-drift-b 26s ease-in-out infinite;
+}
+
+@keyframes blueprint-spark-drift-a {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: calc(var(--motion-orb-opacity) * 0.4);
+  }
+  50% {
+    transform: translate(64px, -48px);
+    opacity: calc(var(--motion-orb-opacity) * 0.9);
+  }
+}
+
+@keyframes blueprint-spark-drift-b {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: calc(var(--motion-orb-opacity) * 0.55);
+  }
+  50% {
+    transform: translate(-72px, 56px);
+    opacity: calc(var(--motion-orb-opacity) * 0.35);
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 450ms;
+  animation-timing-function: ease-in-out;
+}
+
+::view-transition-old(root) {
+  animation-name: theme-crossfade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: theme-crossfade-in;
+}
+
+@keyframes theme-crossfade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes theme-crossfade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.blueprint-card {
+  background: color-mix(in srgb, var(--bg-surface) 85%, transparent);
+  box-shadow: none;
+  transition: box-shadow 180ms ease;
+}
+
+.blueprint-card:hover {
+  box-shadow: 0 0 24px color-mix(in srgb, var(--accent-cyan) 22%, transparent);
+}
+
+.status-pulse {
+  animation: status-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 var(--status-online);
+  }
+  50% {
+    opacity: 0.55;
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+
+.hero-dither-pattern {
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0px, transparent 1px, var(--accent-cyan) 1px, var(--accent-cyan) 2px),
+    repeating-linear-gradient(90deg, transparent 0px, transparent 1px, var(--accent-cyan) 1px, var(--accent-cyan) 2px);
+  background-size: 3px 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-pulse,
+  .blueprint-card,
+  .blueprint-data-lane,
+  .blueprint-orb,
+  .blueprint-spark {
+    animation: none;
+    transition: none;
+  }
+
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
