@@ -4,16 +4,12 @@ import BlueprintCrosshairCursor from './components/BlueprintCrosshairCursor';
 import BlueprintGridBackground from './components/BlueprintGridBackground';
 import HeaderHUD from './components/HeaderHUD';
 import HeroSection from './components/HeroSection';
+import FooterConsole from './components/FooterConsole';
 import ProjectMatrix from './components/ProjectMatrix';
 import { PORTFOLIO_NAV, type PortfolioSectionId } from './data/navSections';
 
 const SECTIONS = [
   { id: 'domains' as const, label: 'Domains Grid', note: 'WEB / MOBILE / BACKEND / CLOUD — Phase 2' },
-  {
-    id: 'footer-console' as const,
-    label: 'Footer Console',
-    note: 'Terminal log & CTAs — Phase 4',
-  },
 ];
 
 export default function App() {
@@ -71,6 +67,7 @@ export default function App() {
               <p className="mt-1 font-mono text-sm text-[var(--text-muted)]">{section.note}</p>
             </BlueprintCard>
           ))}
+          <FooterConsole />
         </main>
       </div>
 

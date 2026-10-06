@@ -69,7 +69,7 @@ All UI color classes MUST use CSS variables so Light/Dark inversion only rewrite
    - Slides from the right edge over the viewport using Framer Motion (`x: '100%'` to `x: 0`).
    - Features socket status header, terminal-style message logs (`> SYSTEM_RESPONSE:`), monospace prompt suggestion chips, and terminal input prompt (`$ ask a question...`).
 
-6. **Footer Console:** Monospace terminal execution log and action buttons (`[SEND_MESSAGE]`, `[DOWNLOAD_CV]`, `[VIEW_GITHUB]`).
+6. **Footer Console:** [`src/components/FooterConsole.tsx`](src/components/FooterConsole.tsx) at `#footer-console`. Windows PowerShell–style window chrome (`powershell-*` in [`globals.css`](src/styles/globals.css): `#012456` console, dark title bar, yellow `PS` prompt, Consolas body). Typewriter log (copyright, education, contact from [`src/data/profile.ts`](src/data/profile.ts) / [myResume.md](myResume.md)) plus blueprint bracket actions: `[SEND_MESSAGE]`, `[DOWNLOAD_CV]` (repo-root [myResume.md](myResume.md) raw import), `[VIEW_GITHUB]`, `[COPY_CONTACT]`.
 
 ## 5. Ambient Motion (Background & Theme)
 

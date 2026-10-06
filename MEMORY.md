@@ -79,3 +79,9 @@
 
 - CAD registration ping on pointer down/up: expanding square ring + Plus press/release (`crosshair-*` keyframes in [`globals.css`](src/styles/globals.css)); mouse, touch, and pen.
 - Updated `PROJECT_BLUEPRINT.md` §5 item 6.
+
+### [2026-10-06] Footer terminal console
+
+- Implemented [`FooterConsole`](src/components/FooterConsole.tsx): blueprint card, Windows PowerShell window chrome (`#012456`, title bar, `PS C:\\portfolio\\footer>` prompt), typewriter log (respects `prefers-reduced-motion`), clickable MAIL/TEL/VCS, blinking cursor on idle prompt.
+- Added [`profile.ts`](src/data/profile.ts) and [`downloadResume.ts`](src/lib/downloadResume.ts) — `[DOWNLOAD_CV]` blob-downloads canonical [myResume.md](myResume.md).
+- Replaced footer placeholder in [`App.tsx`](src/App.tsx); updated `PROJECT_BLUEPRINT.md` §4 item 6.
