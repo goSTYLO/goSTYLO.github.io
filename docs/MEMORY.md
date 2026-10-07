@@ -19,6 +19,10 @@
 
 ## Change Log
 
+### [2026-10-07] Project cards — blueprint window chrome + enlarged grid split
+
+- Sutera-style window frame on all [`ProjectCard`](../src/components/sections/project-matrix/ProjectCard.tsx) instances via [`ProjectWindowChrome.tsx`](../src/components/sections/project-matrix/ProjectWindowChrome.tsx) and `.blueprint-window*` CSS. Grid cards use the same carousel | copy split as featured at `lg+`; wide slides get `lg:min-h-[280px]`. Sys ref and status moved to title bar.
+
 ### [2026-10-07] Documentation consolidated under `docs/`
 
 - Moved `PROJECT_BLUEPRINT.md`, `MEMORY.md`, `PRD.md`, `GITHUB_PAGES_SETUP.md`, `myResume.md` → [`docs/`](README.md); added [`docs/README.md`](README.md) index; AI service prose → [`docs/ai-service.md`](ai-service.md) (stub [`ai-service/README.md`](../ai-service/README.md) points here).

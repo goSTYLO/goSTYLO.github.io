@@ -3,6 +3,11 @@ import { TypingLine, TypingSequence } from '@/components/common/TypingSequence';
 import { projects } from '@/data/projects';
 import { useInViewRetype } from '@/hooks/useInViewOnce';
 
+function projectWindowIndex(projectId: string) {
+  const i = projects.findIndex((p) => p.id === projectId);
+  return i >= 0 ? i + 1 : 1;
+}
+
 export default function ProjectMatrix() {
   const featured = projects.find((p) => p.featured);
   const grid = projects.filter((p) => !p.featured);
@@ -31,11 +36,13 @@ export default function ProjectMatrix() {
       </div>
 
       <div className="mt-5 flex w-full flex-col gap-5">
-        {featured ? <ProjectCard project={featured} featured /> : null}
+        {featured ? (
+          <ProjectCard project={featured} featured windowIndex={projectWindowIndex(featured.id)} />
+        ) : null}
         {grid.length > 0 ? (
           <div className="grid w-full gap-5 lg:grid-cols-2">
             {grid.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard key={project.id} project={project} windowIndex={projectWindowIndex(project.id)} />
             ))}
           </div>
         ) : null}

@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ArchSpecsDisclosure from '@/components/sections/project-matrix/ArchSpecsDisclosure';
 import BlueprintCard from '@/components/common/BlueprintCard';
 import ProjectImageLightbox from '@/components/sections/project-matrix/ProjectImageLightbox';
+import ProjectWindowChrome from '@/components/sections/project-matrix/ProjectWindowChrome';
 import { IndependentTypingLine, TypingLine, TypingSequence } from '@/components/common/TypingSequence';
 import {
   Carousel,
@@ -20,6 +21,8 @@ const FOOTER_NAV =
 type ProjectCardProps = {
   project: Project;
   featured?: boolean;
+  /** 1-based index in `projects` (for CNTR N° footer). */
+  windowIndex: number;
 };
 
 function contextTag(project: Project): string {
@@ -32,7 +35,7 @@ function slideFrameClass(layout: ProjectImageLayout = 'wide') {
   if (layout === 'mobile') {
     return 'relative flex flex-col items-center justify-center overflow-hidden border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))] py-3 sm:min-h-[320px] lg:min-h-[360px]';
   }
-  return 'relative aspect-[16/10] overflow-hidden border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))]';
+  return 'relative aspect-[16/10] overflow-hidden border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))] lg:aspect-auto lg:min-h-[280px]';
 }
 
 function SlideMedia({
@@ -193,15 +196,6 @@ function ProjectCarousel({
 function TelemetryStrip({ project }: { project: Project }) {
   return (
     <div className="flex flex-wrap gap-x-2 gap-y-1 font-mono text-[10px] tracking-wide text-[var(--text-muted)]">
-      {project.sysRef ? (
-        <TypingLine
-          as="span"
-          className="text-[var(--accent-cyan)]"
-          text={`[SYS_REF: ${project.sysRef}]`}
-          charDelayMs={1}
-        />
-      ) : null}
-      <TypingLine as="span" text={`[STATUS: ${project.status}]`} charDelayMs={1} />
       <TypingLine as="span" text={contextTag(project)} charDelayMs={1} />
       {project.domains.map((d) => (
         <TypingLine key={d} as="span" text={`[${d}]`} charDelayMs={1} />
@@ -357,32 +351,35 @@ function ProjectBody({
   );
 }
 
-export default function ProjectCard({ project, featured = false }: ProjectCardProps) {
+function ProjectCardLayout({
+  project,
+  inView,
+  sessionKey,
+}: {
+  project: Project;
+  inView: boolean;
+  sessionKey: string;
+}) {
+  return (
+    <div className="grid w-full gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-start lg:gap-5">
+      <ProjectCarousel project={project} cardEnabled={inView} sessionKey={sessionKey} />
+      <div className="min-w-0 flex flex-col">
+        <ProjectBody project={project} enabled={inView} sessionKey={sessionKey} />
+      </div>
+    </div>
+  );
+}
+
+export default function ProjectCard({ project, featured = false, windowIndex }: ProjectCardProps) {
   const { ref, inView, typingGeneration } = useInViewRetype();
   const sessionKey = String(typingGeneration);
 
-  if (featured) {
-    return (
-      <div ref={ref}>
-        <BlueprintCard className="p-3 sm:p-4">
-          <div className="grid w-full gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-start lg:gap-5">
-            <ProjectCarousel project={project} cardEnabled={inView} sessionKey={sessionKey} />
-            <div className="min-w-0">
-              <ProjectBody project={project} enabled={inView} sessionKey={sessionKey} />
-            </div>
-          </div>
-        </BlueprintCard>
-      </div>
-    );
-  }
-
   return (
-    <div ref={ref} className="h-full">
-      <BlueprintCard className="flex h-full flex-col p-3 sm:p-4">
-        <ProjectCarousel project={project} cardEnabled={inView} sessionKey={sessionKey} />
-        <div className="mt-4 flex flex-1 flex-col">
-          <ProjectBody project={project} enabled={inView} sessionKey={sessionKey} />
-        </div>
+    <div ref={ref} className={featured ? undefined : 'h-full'}>
+      <BlueprintCard className="blueprint-window flex h-full flex-col p-0">
+        <ProjectWindowChrome project={project} windowIndex={windowIndex}>
+          <ProjectCardLayout project={project} inView={inView} sessionKey={sessionKey} />
+        </ProjectWindowChrome>
       </BlueprintCard>
     </div>
   );
