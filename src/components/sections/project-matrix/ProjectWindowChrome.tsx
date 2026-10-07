@@ -19,7 +19,10 @@ export default function ProjectWindowChrome({ project, windowIndex, children }: 
       <header className="blueprint-window__titlebar">
         <span className="blueprint-window__title">{windowLabel(project)}</span>
         <div className="blueprint-window__titlebar-end">
-          <span className="blueprint-window__status">[STATUS: {project.status}]</span>
+          <span className="blueprint-window__status" aria-hidden="true">
+            [STATUS: {project.status}]
+          </span>
+          <span className="sr-only">Status: {project.status}</span>
           <div className="blueprint-window__controls" aria-hidden="true">
             <span className="blueprint-window__control blueprint-window__control--minimize" />
             <span className="blueprint-window__control blueprint-window__control--maximize" />

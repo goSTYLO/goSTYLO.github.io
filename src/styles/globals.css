@@ -357,6 +357,40 @@ body {
   color: var(--text-muted);
 }
 
+@media (max-width: 639px) {
+  .blueprint-window__titlebar {
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .blueprint-window__title {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .blueprint-window__titlebar-end {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    gap: 0.35rem;
+  }
+
+  .blueprint-window__status {
+    display: none;
+  }
+
+  .blueprint-window__body {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .blueprint-window__footer {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+}
+
 .blueprint-window__title {
   min-width: 0;
   overflow: hidden;

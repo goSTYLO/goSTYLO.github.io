@@ -15,7 +15,7 @@ export default function ProjectMatrix() {
   const sessionKey = String(typingGeneration);
 
   return (
-    <section id="project-matrix" className="w-full scroll-mt-24">
+    <section id="project-matrix" className="w-full scroll-mt-28 lg:scroll-mt-24">
       <div ref={ref}>
         <TypingSequence key={sessionKey} enabled={inView} sessionKey={sessionKey}>
           <TypingLine

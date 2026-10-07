@@ -33,7 +33,8 @@ function contextTag(project: Project): string {
 
 function slideFrameClass(layout: ProjectImageLayout = 'wide', splitWide = false) {
   if (layout === 'mobile') {
-    return 'relative flex flex-col items-center justify-center overflow-hidden border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))] py-3 sm:min-h-[320px] lg:min-h-[360px]';
+    // ponytail: no sm:min-h on mixed carousels — Embla viewport height follows tallest slide and leaves a gap under wide heroes on mobile
+    return 'relative flex flex-col items-center justify-center overflow-hidden border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))] py-3 lg:min-h-[360px]';
   }
   if (splitWide) {
     return 'relative aspect-[16/10] overflow-hidden border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))] lg:aspect-auto lg:min-h-[280px]';
@@ -135,7 +136,7 @@ function ProjectCarousel({
   return (
     <div className="w-full border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))]">
       <Carousel className="w-full touch-pan-y" opts={{ loop: true, duration: 25 }} setApi={setApi}>
-        <CarouselContent className="-ml-0">
+        <CarouselContent className="-ml-0 items-start">
           {project.images.map((image, index) => {
             const layout = image.layout ?? 'wide';
             return (
@@ -383,9 +384,12 @@ export default function ProjectCard({ project, featured = false, windowIndex }: 
                 sessionKey={sessionKey}
                 splitWide
               />
-              <div className="min-w-0 flex flex-col">
+              <div className="hidden min-w-0 flex-col lg:flex">
                 <ProjectBody project={project} enabled={inView} sessionKey={sessionKey} />
               </div>
+            </div>
+            <div className="mt-4 lg:hidden">
+              <ProjectBody project={project} enabled={inView} sessionKey={sessionKey} fullTelemetry />
             </div>
           </ProjectWindowChrome>
         </BlueprintCard>
