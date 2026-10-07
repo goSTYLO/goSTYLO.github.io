@@ -21,7 +21,7 @@
 
 ### [2026-10-07] Project cards — blueprint window chrome + enlarged grid split
 
-- Sutera-style window frame on all [`ProjectCard`](../src/components/sections/project-matrix/ProjectCard.tsx) instances via [`ProjectWindowChrome.tsx`](../src/components/sections/project-matrix/ProjectWindowChrome.tsx) and `.blueprint-window*` CSS. Grid cards use the same carousel | copy split as featured at `lg+`; wide slides get `lg:min-h-[280px]`. Sys ref and status moved to title bar.
+- Sutera-style window frame on **featured** [`ProjectCard`](../src/components/sections/project-matrix/ProjectCard.tsx) only via [`ProjectWindowChrome.tsx`](../src/components/sections/project-matrix/ProjectWindowChrome.tsx). Grid cards restored to vertical carousel-over-copy with full telemetry strip; featured keeps split layout at `lg+`.
 
 ### [2026-10-07] Documentation consolidated under `docs/`
 
