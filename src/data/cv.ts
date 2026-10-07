@@ -1,4 +1,4 @@
-/** Canonical CV structure — copy from myResume.md only; portrait is UI-only. */
+/** Canonical CV structure — copy from docs/myResume.md only; portrait is UI-only. */
 
 export type CvContactLink = {
   literal: string;

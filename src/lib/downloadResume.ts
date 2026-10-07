@@ -1,4 +1,4 @@
-import resumeMd from '../../myResume.md?raw';
+import resumeMd from '../../docs/myResume.md?raw';
 import { profile } from '@/data/profile';
 
 export function downloadResumeMarkdown(): void {

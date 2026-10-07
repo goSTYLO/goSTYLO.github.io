@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Plus } from 'lucide-react';
 
-import { CoverflowCarousel } from '@/components/ui/coverflow-carousel';
+import { CoverflowCarousel } from '@/components/common/ui/coverflow-carousel';
 import { usePrefersReducedMotion, useTypewriter } from '@/hooks/useTypewriter';
 import { SKILL_GROUPS, type SkillGroup } from '@/lib/skillGroups';
 

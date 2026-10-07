@@ -1,5 +1,5 @@
 ---
-description: Enforce PROJECT_BLUEPRINT.md design system and MEMORY.md change log on every task
+description: Enforce docs/PROJECT_BLUEPRINT.md design system and docs/MEMORY.md change log on every task
 alwaysApply: true
 ---
 
@@ -7,12 +7,12 @@ alwaysApply: true
 
 Before generating or changing UI, layout, styling, or page structure in this repo:
 
-1. Read [PROJECT_BLUEPRINT.md](../../PROJECT_BLUEPRINT.md) and follow its tokens, typography, section architecture, and CAD/HUD patterns (including `<Plus />` corner crosshairs and semi-transparent 1px blueprint borders on structural cards).
+1. Read [PROJECT_BLUEPRINT.md](../../docs/PROJECT_BLUEPRINT.md) and follow its tokens, typography, section architecture, and CAD/HUD patterns (including `<Plus />` corner crosshairs and semi-transparent 1px blueprint borders on structural cards).
 2. Use https://www.sutera.ch/ as the structural reference for numbered domains, metadata strips, and HUD-style interactivity—do not invent spacing or colors outside the blueprint.
 
 When you change theme tokens, tech stack, or page architecture:
 
-3. Update [PROJECT_BLUEPRINT.md](../../PROJECT_BLUEPRINT.md) in the same change set.
-4. Append a dated entry to the Change Log in [MEMORY.md](../../MEMORY.md) describing what changed and why.
+3. Update [PROJECT_BLUEPRINT.md](../../docs/PROJECT_BLUEPRINT.md) in the same change set.
+4. Append a dated entry to the Change Log in [MEMORY.md](../../docs/MEMORY.md) describing what changed and why.
 
 Stack default unless the blueprint is updated first: React (Vite), Tailwind CSS, Framer Motion, `lucide-react`.

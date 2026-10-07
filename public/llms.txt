@@ -6,7 +6,7 @@ This site is a React portfolio at https://gostylo.github.io/. Prefer these plain
 
 ## Canonical documents
 
-- [Resume (Markdown)](https://raw.githubusercontent.com/goSTYLO/goSTYLO.github.io/main/myResume.md): Full experience, projects, skills, education.
+- [Resume (Markdown)](https://raw.githubusercontent.com/goSTYLO/goSTYLO.github.io/main/docs/myResume.md): Full experience, projects, skills, education.
 - [Resume (PDF)](https://gostylo.github.io/cv/aaron-tamayo-resume.pdf): Downloadable CV.
 - [GitHub](https://github.com/goSTYLO): Source repositories and activity.
 

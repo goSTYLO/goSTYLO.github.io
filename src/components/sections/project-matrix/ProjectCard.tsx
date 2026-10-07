@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import ArchSpecsDisclosure from '@/components/ArchSpecsDisclosure';
-import BlueprintCard from '@/components/BlueprintCard';
-import ProjectImageLightbox from '@/components/ProjectImageLightbox';
-import { IndependentTypingLine, TypingLine, TypingSequence } from '@/components/TypingSequence';
+import ArchSpecsDisclosure from '@/components/sections/project-matrix/ArchSpecsDisclosure';
+import BlueprintCard from '@/components/common/BlueprintCard';
+import ProjectImageLightbox from '@/components/sections/project-matrix/ProjectImageLightbox';
+import { IndependentTypingLine, TypingLine, TypingSequence } from '@/components/common/TypingSequence';
 import {
   Carousel,
   type CarouselApi,
   CarouselContent,
   CarouselItem,
-} from '@/components/ui/carousel';
+} from '@/components/common/ui/carousel';
 import type { Project, ProjectImageLayout } from '@/data/projects';
 import { useInViewRetype } from '@/hooks/useInViewOnce';
 import { cn } from 'cn';

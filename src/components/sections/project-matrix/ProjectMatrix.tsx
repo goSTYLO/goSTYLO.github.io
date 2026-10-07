@@ -1,5 +1,5 @@
-import ProjectCard from '@/components/ProjectCard';
-import { TypingLine, TypingSequence } from '@/components/TypingSequence';
+import ProjectCard from '@/components/sections/project-matrix/ProjectCard';
+import { TypingLine, TypingSequence } from '@/components/common/TypingSequence';
 import { projects } from '@/data/projects';
 import { useInViewRetype } from '@/hooks/useInViewOnce';
 

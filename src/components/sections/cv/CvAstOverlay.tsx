@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useState, type ReactNode } from 'react';
 import { ChevronRight } from 'lucide-react';
-import BlueprintCard from '@/components/BlueprintCard';
+import BlueprintCard from '@/components/common/BlueprintCard';
 import { cvDocument, type CvContactLink } from '@/data/cv';
 import { downloadResumePdf } from '@/lib/downloadResumePdf';
 
@@ -279,7 +279,7 @@ export default function CvAstOverlay({ onClose }: CvAstOverlayProps) {
             <CvHeaderPortrait name={identity.name} portrait={identity.portrait} />
 
             <p className="mb-6 font-mono text-[10px] text-[var(--text-muted)]">
-              {'// Abstract syntax tree — canonical source: myResume.md'}
+              {'// Abstract syntax tree — canonical source: docs/myResume.md'}
             </p>
 
             <div className="flex flex-col gap-2">

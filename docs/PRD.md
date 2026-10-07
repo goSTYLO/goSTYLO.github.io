@@ -78,7 +78,7 @@ The visual language follows an architectural CAD/HUD blueprint design system wit
 * **Nav target:** `#skills` / HUD `[SKILLS]`.
 * **Layout:** No outer blueprint card; mono tag `[TECHNICAL_SKILLS]`, title **Skill Raster**, coverflow + caption (same section pattern as Project Matrix).
 * **Data:** Five groups from `myResume.md` → `cvDocument.technicalSkills` (Languages, Frameworks & Web, Databases & Middleware, DevOps & Infrastructure, Security & Tools).
-* **Interaction:** [`CoverflowCarousel`](src/components/ui/coverflow-carousel.tsx) — CAD plates with category icon; caption lists `[skill]` chips for the focused group; square nav buttons; drag, loop, arrow keys; reduced-motion flatten.
+* **Interaction:** [`CoverflowCarousel`](src/components/common/ui/coverflow-carousel.tsx) — CAD plates with category icon; caption lists `[skill]` chips for the focused group; square nav buttons; drag, loop, arrow keys; reduced-motion flatten.
 
 ---
 
@@ -164,10 +164,8 @@ portfolio-root/
 │   ├── .nojekyll
 │   └── aaron-profile.jpg        # Hero inline portrait
 ├── components.json              # shadcn
-├── PROJECT_BLUEPRINT.md
-├── PRD.md
-├── MEMORY.md
-├── myResume.md                  # Canonical personal details
+├── docs/                        # Blueprint, PRD, MEMORY, resume, setup
+├── ai-service/                  # Cloud Run shell (see docs/ai-service.md)
 ├── index.html
 ├── package.json                 # packageManager: pnpm
 ├── pnpm-lock.yaml
@@ -202,7 +200,7 @@ portfolio-root/
 
 1. **Phase 1: Foundation & Design System Setup**
    * Configure Tailwind CSS with custom CSS variables for inverted light/dark mode design tokens.
-   * Set up `PROJECT_BLUEPRINT.md`, `MEMORY.md`, and `.cursorrules` in project root.
+   * Set up `docs/PROJECT_BLUEPRINT.md`, `docs/MEMORY.md`, and Cursor rules under `.cursor/rules/`.
    * Build reusable `BlueprintCard` component with CAD alignment crosshairs (`<Plus/>`) and border styling.
 
 2. **Phase 2: Core Layout & Domain Matrix**

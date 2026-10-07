@@ -31,7 +31,7 @@ function portfolioDocumentPlugin(): Plugin {
     },
     closeBundle() {
       writeFileSync('dist/llms.txt', buildLlmsTxt(), 'utf8');
-      copyFileSync('myResume.md', 'dist/resume.md');
+      copyFileSync('docs/myResume.md', 'dist/resume.md');
     },
   };
 }

@@ -9,21 +9,35 @@
 - **Public URL:** https://gostylo.github.io/
 - **Core Domains:** Web (React, Vite), Mobile (Flutter), Cloud/Backend (Node.js, Express, Google Cloud Run)
 - **Visual Style:** CAD / HUD Blueprint (Inverted Light/Dark Modes)
-- **Personal Details:** `myResume.md`
+- **Personal Details:** [`docs/myResume.md`](myResume.md)
 - **Serbisyo Live Domain:** serbisyoprovider.com
 
 ## Agent Operational Rules
 
-1. Always reference `PROJECT_BLUEPRINT.md` before generating or modifying UI components.
+1. Always reference [`docs/PROJECT_BLUEPRINT.md`](PROJECT_BLUEPRINT.md) before generating or modifying UI components.
 2. Log all architectural updates, theme adjustments, and new component implementations in the Change Log below.
 
 ## Change Log
 
+### [2026-10-07] Documentation consolidated under `docs/`
+
+- Moved `PROJECT_BLUEPRINT.md`, `MEMORY.md`, `PRD.md`, `GITHUB_PAGES_SETUP.md`, `myResume.md` → [`docs/`](README.md); added [`docs/README.md`](README.md) index; AI service prose → [`docs/ai-service.md`](ai-service.md) (stub [`ai-service/README.md`](../ai-service/README.md) points here).
+- Updated [`vite.config.ts`](../vite.config.ts), [`downloadResume.ts`](../src/lib/downloadResume.ts), [`portfolioDocument.ts`](../src/data/portfolioDocument.ts), and [`.cursor/rules/portfolio-blueprint.mdc`](../.cursor/rules/portfolio-blueprint.mdc) for new paths; build still copies resume to `dist/resume.md`.
+
+### [2026-10-07] Feature-driven modular `src/` reorganization
+
+- **Common:** `BlueprintCard`, `BlueprintGridBackground`, `BlueprintCrosshairCursor`, `TypeText`, `TypingSequence` → `src/components/common/`; shadcn `ui/*` → `src/components/common/ui/`.
+- **HUD:** `HeaderHUD` → `src/components/hud/`; extracted `LocalClock.tsx`, `ThemeToggle.tsx`.
+- **Sections:** `HeroSection` + `hero-ascii-one` → `src/components/sections/hero/`; `SkillRaster` → `src/components/sections/skill-raster/`; `ProjectMatrix`, `ProjectCard`, `ArchSpecsDisclosure`, `ProjectImageLightbox` → `src/components/sections/project-matrix/`; `FooterConsole` → `src/components/sections/footer/`; `CvAstOverlay` → `src/components/sections/cv/`.
+- **AI drawer:** `AIChatDrawer`, `QuickChips`, `TerminalInput` → `src/components/ai-drawer/` (replaces inline panel in `App.tsx`).
+- **Services / backend shell:** `src/services/aiClient.ts`; repo root `ai-service/` (`Dockerfile`, `README.md`).
+- **Tooling:** `components.json` shadcn `ui` alias → `@/components/common/ui`; all `@/` imports updated; `PROJECT_BLUEPRINT.md` source-layout table + path links.
+
 ### [2026-10-07] Mobile HUD, CV toolbar, project carousel
 
-- [`HeaderHUD.tsx`](src/components/HeaderHUD.tsx): below `lg`, compact SYS_ID row + `[MENU]` sheet (nav, clock, theme, chatbot); desktop bar unchanged. Sheet/backdrop use CSS enter/exit (`hud-menu-*` in `globals.css`); `prefers-reduced-motion` disables them.
-- [`CvAstOverlay.tsx`](src/components/CvAstOverlay.tsx): overlay starts below header (`top-14` / `lg:top-[4.5rem]`); sticky toolbar with `[X]` on row one so controls stay visible on small screens.
-- [`ProjectCard.tsx`](src/components/ProjectCard.tsx): wide slides `aspect-[16/10]` + absolute `object-cover`; mobile artboards drop fixed min-height well on phones.
+- [`HeaderHUD.tsx`](../src/components/HeaderHUD.tsx): below `lg`, compact SYS_ID row + `[MENU]` sheet (nav, clock, theme, chatbot); desktop bar unchanged. Sheet/backdrop use CSS enter/exit (`hud-menu-*` in `globals.css`); `prefers-reduced-motion` disables them.
+- [`CvAstOverlay.tsx`](../src/components/CvAstOverlay.tsx): overlay starts below header (`top-14` / `lg:top-[4.5rem]`); sticky toolbar with `[X]` on row one so controls stay visible on small screens.
+- [`ProjectCard.tsx`](../src/components/ProjectCard.tsx): wide slides `aspect-[16/10]` + absolute `object-cover`; mobile artboards drop fixed min-height well on phones.
 
 ### [2026-10-07] CV PDF sync & footer download cleanup
 
@@ -73,65 +87,65 @@
 
 ### [2026-10-06] Project Matrix (Phase 3)
 
-- Added [`src/data/projects.ts`](src/data/projects.ts) for Serbisyo (featured), Shija WMS/POS, RescueLink (capstone), and My Crew Manager (academic).
+- Added [`src/data/projects.ts`](../src/data/projects.ts) for Serbisyo (featured), Shija WMS/POS, RescueLink (capstone), and My Crew Manager (academic).
 - NDA-safe copy for industry projects: resume ceiling only; academic projects may use README feature detail in `[ARCH_SPECS]`.
-- Built [`ProjectCard`](src/components/ProjectCard.tsx) (role-first HUD, carousel placeholders, gated specs) and [`ProjectMatrix`](src/components/ProjectMatrix.tsx).
-- Replaced HUD domain filters with section nav ([`navSections.ts`](src/data/navSections.ts): Overview, Systems, Domains, Console) with smooth scroll and scroll-spy.
+- Built [`ProjectCard`](../src/components/ProjectCard.tsx) (role-first HUD, carousel placeholders, gated specs) and [`ProjectMatrix`](../src/components/ProjectMatrix.tsx).
+- Replaced HUD domain filters with section nav ([`navSections.ts`](../src/data/navSections.ts): Overview, Systems, Domains, Console) with smooth scroll and scroll-spy.
 - Project carousels use [`public/projects/`](public/projects/) (copied from [`assets/`](assets/)); Serbisyo mobile artboards use `layout: mobile` + `object-contain`. Enterprise Warehouse folder pending assets.
 - Installed shadcn `carousel` + `button`; carousel nav restyled to blueprint borders.
-- Mounted matrix at `#project-matrix` in [`App.tsx`](src/App.tsx); updated `PROJECT_BLUEPRINT.md` §4.
+- Mounted matrix at `#project-matrix` in [`App.tsx`](../src/App.tsx); updated `PROJECT_BLUEPRINT.md` §4.
 
 ### [2026-10-06] HUD crosshair cursor follower
 
-- Added [`BlueprintCrosshairCursor`](src/components/BlueprintCrosshairCursor.tsx): spring-trailing Lucide `Plus` (`--crosshair`), mouse-always-on-page vs touch-while-pressed, `prefers-reduced-motion` off, mounted in [`App.tsx`](src/App.tsx).
+- Added [`BlueprintCrosshairCursor`](../src/components/BlueprintCrosshairCursor.tsx): spring-trailing Lucide `Plus` (`--crosshair`), mouse-always-on-page vs touch-while-pressed, `prefers-reduced-motion` off, mounted in [`App.tsx`](../src/App.tsx).
 - Documented in `PROJECT_BLUEPRINT.md` §5.
 
 ### [2026-10-06] Crosshair click / tap ping
 
-- CAD registration ping on pointer down/up: expanding square ring + Plus press/release (`crosshair-*` keyframes in [`globals.css`](src/styles/globals.css)); mouse, touch, and pen.
+- CAD registration ping on pointer down/up: expanding square ring + Plus press/release (`crosshair-*` keyframes in [`globals.css`](../src/styles/globals.css)); mouse, touch, and pen.
 - Updated `PROJECT_BLUEPRINT.md` §5 item 6.
 
 ### [2026-10-06] Footer terminal console
 
-- Implemented [`FooterConsole`](src/components/FooterConsole.tsx): blueprint card, Windows PowerShell window chrome (`#012456`, title bar, `PS C:\\portfolio\\footer>` prompt), typewriter log (respects `prefers-reduced-motion`), clickable MAIL/TEL/VCS, blinking cursor on idle prompt.
-- Added [`profile.ts`](src/data/profile.ts) and [`downloadResume.ts`](src/lib/downloadResume.ts) — `[DOWNLOAD_CV]` blob-downloads canonical [myResume.md](myResume.md).
-- Replaced footer placeholder in [`App.tsx`](src/App.tsx); updated `PROJECT_BLUEPRINT.md` §4 item 6.
+- Implemented [`FooterConsole`](../src/components/FooterConsole.tsx): blueprint card, Windows PowerShell window chrome (`#012456`, title bar, `PS C:\\portfolio\\footer>` prompt), typewriter log (respects `prefers-reduced-motion`), clickable MAIL/TEL/VCS, blinking cursor on idle prompt.
+- Added [`profile.ts`](../src/data/profile.ts) and [`downloadResume.ts`](../src/lib/downloadResume.ts) — `[DOWNLOAD_CV]` blob-downloads canonical [myResume.md](myResume.md).
+- Replaced footer placeholder in [`App.tsx`](../src/App.tsx); updated `PROJECT_BLUEPRINT.md` §4 item 6.
 - HUD nav `[CONSOLE]` → `[CONTACT]` (`#contact`); removed duplicate section heading above PowerShell card.
 - Contact block: `BlueprintCard frameless` — no card border/bg; enlarged PowerShell body; crosshairs retained.
 
 ### [2026-10-06] Hidden CV AST overlay
 
 - HUD profile photo (`HeaderHUD`) toggles full-page `[CV_AST_VIEWER]` (`CvAstOverlay`, `z-30` under header); not listed in `navSections.ts`.
-- Structured resume in [`src/data/cv.ts`](src/data/cv.ts) (1:1 [myResume.md](myResume.md) + portrait); expandable AST tree with Esc / `[X]` / photo close; CV vs chatbot mutual exclusion in [`App.tsx`](src/App.tsx).
+- Structured resume in [`src/data/cv.ts`](../src/data/cv.ts) (1:1 [myResume.md](myResume.md) + portrait); expandable AST tree with Esc / `[X]` / photo close; CV vs chatbot mutual exclusion in [`App.tsx`](../src/App.tsx).
 - Documented in `PROJECT_BLUEPRINT.md` §4 item 1.
 
 ### [2026-10-06] CV UX — hero trigger, zoom, PDF, animations
 
 - CV entry moved to hero portrait (`.cv-photo-trigger`); removed HUD thumbnail trigger.
 - `CvAstOverlay`: header portrait + name; AST identity = location/contact; zoom toolbar; CSS expand/collapse on tree nodes.
-- [`public/cv/aaron-tamayo-resume.pdf`](public/cv/aaron-tamayo-resume.pdf) + [`downloadResumePdf.ts`](src/lib/downloadResumePdf.ts); `[DOWNLOAD_CV_PDF]` in overlay and footer (markdown `[DOWNLOAD_CV]` retained).
+- [`public/cv/aaron-tamayo-resume.pdf`](public/cv/aaron-tamayo-resume.pdf) + [`downloadResumePdf.ts`](../src/lib/downloadResumePdf.ts); `[DOWNLOAD_CV_PDF]` in overlay and footer (markdown `[DOWNLOAD_CV]` retained).
 
 ### [2026-10-07] AI / crawler-readable portfolio metadata
 
-- [`src/data/portfolioDocument.ts`](src/data/portfolioDocument.ts) derives meta description, Schema.org JSON-LD (`Person`, `ProfilePage`, `ItemList`), static HTML crawler outline, and [`llms.txt`](public/llms.txt) from existing `profile`, `projects`, and `cv` data.
-- Vite plugin in [`vite.config.ts`](vite.config.ts) injects head tags + outline into `index.html` at build/dev, writes `public/llms.txt`, copies `myResume.md` → `dist/resume.md` on production build.
+- [`src/data/portfolioDocument.ts`](../src/data/portfolioDocument.ts) derives meta description, Schema.org JSON-LD (`Person`, `ProfilePage`, `ItemList`), static HTML crawler outline, and [`llms.txt`](public/llms.txt) from existing `profile`, `projects`, and `cv` data.
+- Vite plugin in [`vite.config.ts`](../vite.config.ts) injects head tags + outline into `index.html` at build/dev, writes `public/llms.txt`, copies `myResume.md` → `dist/resume.md` on production build.
 - [`public/robots.txt`](public/robots.txt) and [`public/sitemap.xml`](public/sitemap.xml) list home, `llms.txt`, resume, and CV PDF for indexers.
 
 ### [2026-10-07] Skill Raster (replaces Domains Grid placeholder)
 
-- Removed `#domains` placeholder `BlueprintCard` from [`App.tsx`](src/App.tsx); added [`SkillRaster.tsx`](src/components/SkillRaster.tsx) at `#skills` with resume-driven groups via [`skillGroups.ts`](src/lib/skillGroups.ts).
-- Added blueprint-styled [`coverflow-carousel.tsx`](src/components/ui/coverflow-carousel.tsx) (HUD plates, skill chips caption, reduced-motion flatten).
-- HUD nav `[DOMAINS]` → `[SKILLS]` in [`navSections.ts`](src/data/navSections.ts); updated `PROJECT_BLUEPRINT.md`, `PRD.md`, and `llms.txt` skill copy.
+- Removed `#domains` placeholder `BlueprintCard` from [`App.tsx`](../src/App.tsx); added [`SkillRaster.tsx`](../src/components/SkillRaster.tsx) at `#skills` with resume-driven groups via [`skillGroups.ts`](../src/lib/skillGroups.ts).
+- Added blueprint-styled [`coverflow-carousel.tsx`](../src/components/ui/coverflow-carousel.tsx) (HUD plates, skill chips caption, reduced-motion flatten).
+- HUD nav `[DOMAINS]` → `[SKILLS]` in [`navSections.ts`](../src/data/navSections.ts); updated `PROJECT_BLUEPRINT.md`, `PRD.md`, and `llms.txt` skill copy.
 
 ### [2026-10-07] Skill Raster caption panel
 
-- Lifted caption into [`SkillRaster.tsx`](src/components/SkillRaster.tsx) (`SkillCaptionPanel`): surface + border panel, fast typewriter title and sequential skill chips via [`useTypewriter.ts`](src/hooks/useTypewriter.ts); carousel `showCaption={false}`.
+- Lifted caption into [`SkillRaster.tsx`](../src/components/SkillRaster.tsx) (`SkillCaptionPanel`): surface + border panel, fast typewriter title and sequential skill chips via [`useTypewriter.ts`](../src/hooks/useTypewriter.ts); carousel `showCaption={false}`.
 - Simplified section helper line; removed per-slide entry-count subtitle.
 
 ### [2026-10-07] Systems sequential scroll typing
 
-- [`TypingSequence`](src/components/TypingSequence.tsx) / [`TypingLine`](src/components/TypingSequence.tsx): one block at a time, per-line [`useLineInView`](src/hooks/useLineInView.ts), retrigger on card/section leave via [`useInViewRetype`](src/hooks/useInViewOnce.ts).
-- [`ProjectMatrix`](src/components/ProjectMatrix.tsx) header and [`ProjectCard`](src/components/ProjectCard.tsx) body use the queue; carousel captions use [`IndependentTypingLine`](src/components/TypingSequence.tsx). `[ARCH_SPECS]` stays static.
+- [`TypingSequence`](../src/components/TypingSequence.tsx) / [`TypingLine`](../src/components/TypingSequence.tsx): one block at a time, per-line [`useLineInView`](../src/hooks/useLineInView.ts), retrigger on card/section leave via [`useInViewRetype`](../src/hooks/useInViewOnce.ts).
+- [`ProjectMatrix`](../src/components/ProjectMatrix.tsx) header and [`ProjectCard`](../src/components/ProjectCard.tsx) body use the queue; carousel captions use [`IndependentTypingLine`](../src/components/TypingSequence.tsx). `[ARCH_SPECS]` stays static.
 
 ### [2026-10-07] Dark mode blueprint outlines (beige)
 

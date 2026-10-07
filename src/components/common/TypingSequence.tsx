@@ -10,7 +10,7 @@ import {
   type ReactNode,
 } from 'react';
 
-import TypeText from '@/components/TypeText';
+import TypeText from '@/components/common/TypeText';
 import { useLineInView } from '@/hooks/useLineInView';
 import { usePrefersReducedMotion } from '@/hooks/useTypewriter';
 

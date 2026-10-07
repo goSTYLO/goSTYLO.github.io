@@ -1,4 +1,4 @@
-import HeroAsciiOne from '@/components/ui/hero-ascii-one';
+import HeroAsciiOne from '@/components/sections/hero/hero-ascii-one';
 
 export type HeroSectionProps = {
   onExploreSystems?: () => void;

@@ -1,4 +1,4 @@
-import type { HeroSectionProps } from '@/components/HeroSection';
+import type { HeroSectionProps } from '@/components/sections/hero/HeroSection';
 
 export default function HeroAsciiOne({ onExploreSystems, onOpenCv, cvOpen = false }: HeroSectionProps) {
   return (

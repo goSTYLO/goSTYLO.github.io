@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
-import BlueprintCard from '@/components/BlueprintCard';
+import BlueprintCard from '@/components/common/BlueprintCard';
 import { mailtoHref, profile } from '@/data/profile';
 import { downloadResumePdf } from '@/lib/downloadResumePdf';
 
@@ -175,9 +175,14 @@ export default function FooterConsole() {
   const [statusLine, setStatusLine] = useState<string | null>(null);
 
   const copyContact = useCallback(async () => {
+    const text = [
+      `email: ${profile.email}`,
+      `Phone No: ${profile.phone}`,
+      `GitHub: ${profile.githubUrl}`,
+    ].join('\n');
     try {
-      await navigator.clipboard.writeText(profile.email);
-      setStatusLine('COPIED: primary_email');
+      await navigator.clipboard.writeText(text);
+      setStatusLine('COPIED: contact_details');
     } catch {
       setStatusLine('ERR: clipboard_denied — use MAIL link');
     }

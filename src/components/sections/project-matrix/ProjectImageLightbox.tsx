@@ -5,7 +5,7 @@ import {
   type CarouselApi,
   CarouselContent,
   CarouselItem,
-} from '@/components/ui/carousel';
+} from '@/components/common/ui/carousel';
 import type { ProjectImage } from '@/data/projects';
 import { cn } from 'cn';
 

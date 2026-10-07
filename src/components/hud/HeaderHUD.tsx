@@ -1,41 +1,14 @@
 import { useCallback, useEffect, useId, useState } from 'react';
 import { Bot, Menu, X } from 'lucide-react';
 import { PORTFOLIO_NAV, type PortfolioSectionId } from '@/data/navSections';
-import { useTheme } from '@/context/ThemeContext';
+import LocalClock from '@/components/hud/LocalClock';
+import ThemeToggle from '@/components/hud/ThemeToggle';
 
 type HeaderHUDProps = {
   activeSection: PortfolioSectionId;
   onNavigate: (sectionId: PortfolioSectionId) => void;
   onLaunchChatbot: () => void;
 };
-
-function formatClock(date: Date) {
-  const manila = date.toLocaleTimeString('en-GB', {
-    timeZone: 'Asia/Manila',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-  });
-
-  const pacific = date.toLocaleTimeString('en-GB', {
-    timeZone: 'America/Los_Angeles',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-  });
-
-  const pacificZone =
-    new Intl.DateTimeFormat('en-US', {
-      timeZone: 'America/Los_Angeles',
-      timeZoneName: 'short',
-    })
-      .formatToParts(date)
-      .find((part) => part.type === 'timeZoneName')?.value ?? 'PST';
-
-  return { manila, pacific, pacificZone };
-}
 
 function SysIdCluster() {
   return (
@@ -89,15 +62,9 @@ function NavButtons({
 }
 
 function UtilityCluster({
-  clock,
-  theme,
-  onToggleTheme,
   onLaunchChatbot,
   stacked,
 }: {
-  clock: ReturnType<typeof formatClock>;
-  theme: string;
-  onToggleTheme: () => void;
   onLaunchChatbot: () => void;
   stacked?: boolean;
 }) {
@@ -109,16 +76,8 @@ function UtilityCluster({
           : 'flex flex-wrap items-center gap-2 text-[var(--text-muted)]'
       }
     >
-      <time dateTime={new Date().toISOString()}>
-        {clock.manila} UTC+8 / {clock.pacific} {clock.pacificZone}
-      </time>
-      <button
-        type="button"
-        onClick={onToggleTheme}
-        className="border border-[var(--border-cyan)] px-2 py-1 text-left text-[var(--text-primary)]"
-      >
-        [THEME: {theme.toUpperCase()}]
-      </button>
+      <LocalClock />
+      <ThemeToggle />
       <button
         type="button"
         onClick={onLaunchChatbot}
@@ -134,16 +93,9 @@ function UtilityCluster({
 const MENU_EXIT_MS = 180;
 
 export default function HeaderHUD({ activeSection, onNavigate, onLaunchChatbot }: HeaderHUDProps) {
-  const { theme, toggleTheme } = useTheme();
-  const [clock, setClock] = useState(() => formatClock(new Date()));
   const [menuVisible, setMenuVisible] = useState(false);
   const [menuExiting, setMenuExiting] = useState(false);
   const sheetId = useId();
-
-  useEffect(() => {
-    const timer = window.setInterval(() => setClock(formatClock(new Date())), 1000);
-    return () => window.clearInterval(timer);
-  }, []);
 
   const closeMenu = useCallback(() => {
     setMenuVisible((visible) => {
@@ -240,13 +192,7 @@ export default function HeaderHUD({ activeSection, onNavigate, onLaunchChatbot }
           >
             <NavButtons activeSection={activeSection} onNavigate={handleNavigate} vertical />
             <div className="mt-4 border-t border-[var(--border-cyan)] pt-4">
-              <UtilityCluster
-                clock={clock}
-                theme={theme}
-                onToggleTheme={toggleTheme}
-                onLaunchChatbot={handleLaunchChatbot}
-                stacked
-              />
+              <UtilityCluster onLaunchChatbot={handleLaunchChatbot} stacked />
             </div>
           </div>
         </>
@@ -267,12 +213,7 @@ export default function HeaderHUD({ activeSection, onNavigate, onLaunchChatbot }
 
         <NavButtons activeSection={activeSection} onNavigate={onNavigate} />
 
-        <UtilityCluster
-          clock={clock}
-          theme={theme}
-          onToggleTheme={toggleTheme}
-          onLaunchChatbot={onLaunchChatbot}
-        />
+        <UtilityCluster onLaunchChatbot={onLaunchChatbot} />
       </div>
     </header>
   );

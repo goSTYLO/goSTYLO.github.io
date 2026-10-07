@@ -1,4 +1,4 @@
-/** Canonical fields from myResume.md / PROJECT_BLUEPRINT.md §6 — do not invent. */
+/** Canonical fields from docs/myResume.md / docs/PROJECT_BLUEPRINT.md §6 — do not invent. */
 
 export const profile = {
   name: 'Aaron Christian B. Tamayo',

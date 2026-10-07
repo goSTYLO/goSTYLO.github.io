@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
-import BlueprintCrosshairCursor from './components/BlueprintCrosshairCursor';
-import BlueprintGridBackground from './components/BlueprintGridBackground';
-import HeaderHUD from './components/HeaderHUD';
-import HeroSection from './components/HeroSection';
-import FooterConsole from './components/FooterConsole';
-import ProjectMatrix from './components/ProjectMatrix';
-import SkillRaster from './components/SkillRaster';
-import CvAstOverlay from './components/CvAstOverlay';
-import { PORTFOLIO_NAV, type PortfolioSectionId } from './data/navSections';
+import AIChatDrawer from '@/components/ai-drawer/AIChatDrawer';
+import BlueprintCrosshairCursor from '@/components/common/BlueprintCrosshairCursor';
+import BlueprintGridBackground from '@/components/common/BlueprintGridBackground';
+import HeaderHUD from '@/components/hud/HeaderHUD';
+import CvAstOverlay from '@/components/sections/cv/CvAstOverlay';
+import FooterConsole from '@/components/sections/footer/FooterConsole';
+import HeroSection from '@/components/sections/hero/HeroSection';
+import ProjectMatrix from '@/components/sections/project-matrix/ProjectMatrix';
+import SkillRaster from '@/components/sections/skill-raster/SkillRaster';
+import { PORTFOLIO_NAV, type PortfolioSectionId } from '@/data/navSections';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<PortfolioSectionId>('hero');
@@ -78,26 +79,7 @@ export default function App() {
         </main>
       </div>
 
-      {chatbotOpen ? (
-        <aside
-          aria-label="AI Chatbot placeholder"
-          className="fixed inset-y-0 right-0 z-50 w-full max-w-md border-l border-[var(--border-cyan)] bg-[var(--bg-surface)] p-6"
-        >
-          <div className="flex items-center justify-between font-mono text-xs">
-            <span className="text-[var(--accent-cyan)]">[AI_CHATBOT_INTERFACE]</span>
-            <button
-              type="button"
-              onClick={() => setChatbotOpen(false)}
-              className="border border-[var(--border-cyan)] px-2 py-1 text-[var(--text-muted)]"
-            >
-              [X]
-            </button>
-          </div>
-          <p className="mt-6 font-mono text-sm text-[var(--text-muted)]">
-            Placeholder panel. Chat runtime ships in Phase 4.
-          </p>
-        </aside>
-      ) : null}
+      <AIChatDrawer open={chatbotOpen} onClose={() => setChatbotOpen(false)} />
     </div>
   );
 }
