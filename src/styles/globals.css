@@ -39,6 +39,7 @@
   --motion-orb-glow: 28%;
   --motion-spark-glow: 88%;
   --motion-orb-blur: 40px;
+  --profile-portrait-scale: 1.4;
 }
 
 [data-theme='dark'] {
@@ -479,6 +480,19 @@ body {
   color: var(--text-muted);
 }
 
+.profile-portrait-frame {
+  overflow: hidden;
+}
+
+.profile-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  transform: scale(var(--profile-portrait-scale));
+  transform-origin: center 18%;
+}
+
 .cv-photo-trigger {
   cursor: pointer;
   transition:
@@ -495,7 +509,7 @@ body {
   transform: scale(1.03);
 }
 
-.cv-photo-trigger--open img {
+.cv-photo-trigger--open .profile-portrait-frame {
   border-color: var(--accent-cyan);
 }
 

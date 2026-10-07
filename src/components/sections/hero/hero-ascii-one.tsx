@@ -34,13 +34,15 @@ export default function HeroAsciiOne({ onExploreSystems, onOpenCv, cvOpen = fals
               aria-expanded={cvOpen}
               className={`cv-photo-trigger relative block w-full overflow-visible p-0 text-left ${cvOpen ? 'cv-photo-trigger--open' : ''}`}
             >
-              <img
-                src="/aaron-profile.jpg"
-                alt="Aaron Christian B. Tamayo"
-                width={480}
-                height={480}
-                className="aspect-square w-full rounded-sm border border-[var(--border-cyan)] object-cover object-[center_18%] shadow-[0_0_0_1px_color-mix(in_srgb,var(--accent-cyan)_15%,transparent)]"
-              />
+              <div className="profile-portrait-frame aspect-square w-full rounded-sm border border-[var(--border-cyan)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--accent-cyan)_15%,transparent)]">
+                <img
+                  src="/aaron-profile.jpg"
+                  alt="Aaron Christian B. Tamayo"
+                  width={480}
+                  height={480}
+                  className="profile-portrait-img block"
+                />
+              </div>
               <span className="cv-photo-trigger__hint" aria-hidden="true">
                 {cvOpen ? '[CLOSE CV]' : '[SHOW CV]'}
               </span>

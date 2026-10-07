@@ -173,13 +173,9 @@ function CvHeaderPortrait({ name, portrait }: { name: string; portrait: string }
   return (
     <div className="mb-6 flex flex-col items-center gap-4 border-b border-[var(--border-cyan)] pb-6 sm:flex-row sm:items-end sm:gap-6">
       <div className="relative shrink-0">
-        <img
-          src={portrait}
-          alt=""
-          width={152}
-          height={152}
-          className="size-[152px] border border-[var(--border-cyan)] object-cover object-[center_18%] shadow-[0_0_16px_color-mix(in_srgb,var(--accent-cyan)_20%,transparent)]"
-        />
+        <div className="profile-portrait-frame size-[152px] border border-[var(--border-cyan)] shadow-[0_0_16px_color-mix(in_srgb,var(--accent-cyan)_20%,transparent)]">
+          <img src={portrait} alt="" width={152} height={152} className="profile-portrait-img" />
+        </div>
         <span className="pointer-events-none absolute -left-1 -top-1 size-3 border-l-2 border-t-2 border-[var(--crosshair)]" aria-hidden />
         <span className="pointer-events-none absolute -right-1 -top-1 size-3 border-r-2 border-t-2 border-[var(--crosshair)]" aria-hidden />
         <span className="pointer-events-none absolute -bottom-1 -left-1 size-3 border-b-2 border-l-2 border-[var(--crosshair)]" aria-hidden />
