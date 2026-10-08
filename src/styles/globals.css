@@ -480,6 +480,36 @@ body {
   color: var(--text-muted);
 }
 
+.project-slide-shell {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.project-slide-frame {
+  transition:
+    height 360ms ease,
+    width 360ms ease,
+    max-height 360ms ease,
+    aspect-ratio 360ms ease;
+}
+
+.project-slide-frame--landscape {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.project-slide-frame--portrait {
+  width: 100%;
+  max-width: min(100%, 280px);
+  margin-inline: auto;
+}
+
+.project-carousel-viewport {
+  transition: height 360ms ease;
+}
+
 .profile-portrait-frame {
   overflow: hidden;
 }
@@ -935,7 +965,9 @@ body {
   .crosshair-ping-ring,
   .crosshair-plus-pressed,
   .crosshair-plus-idle,
-  .crosshair-plus-release {
+  .crosshair-plus-release,
+  .project-slide-frame,
+  .project-carousel-viewport {
     animation: none;
     transition: none;
     transform: none;

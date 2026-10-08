@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties, type SyntheticEvent } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ArchSpecsDisclosure from '@/components/sections/project-matrix/ArchSpecsDisclosure';
 import BlueprintCard from '@/components/common/BlueprintCard';
@@ -11,7 +11,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/common/ui/carousel';
-import type { Project, ProjectImageLayout } from '@/data/projects';
+import type { Project } from '@/data/projects';
 import { useInViewRetype } from '@/hooks/useInViewOnce';
 import { cn } from 'cn';
 
@@ -31,70 +31,82 @@ function contextTag(project: Project): string {
   return '[CONTEXT: ACADEMIC]';
 }
 
-function slideFrameClass(layout: ProjectImageLayout = 'wide', splitWide = false) {
-  if (layout === 'mobile') {
-    // ponytail: no sm:min-h on mixed carousels — Embla viewport height follows tallest slide and leaves a gap under wide heroes on mobile
-    return 'relative flex flex-col items-center justify-center overflow-hidden border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))] py-3 lg:min-h-[360px]';
+function applyNaturalAspect(img: HTMLImageElement, setAspect: (n: number) => void) {
+  if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+    setAspect(img.naturalWidth / img.naturalHeight);
   }
-  if (splitWide) {
-    return 'relative aspect-[16/10] overflow-hidden border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))] lg:aspect-auto lg:min-h-[280px]';
-  }
-  return 'relative aspect-[16/10] overflow-hidden border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))]';
 }
 
-function SlideMedia({
+function AdaptiveProjectSlide({
   image,
-  layout,
   nda,
   onOpen,
 }: {
   image: Project['images'][number];
-  layout: ProjectImageLayout;
   nda: boolean;
   onOpen: () => void;
 }) {
+  const layout = image.layout ?? 'wide';
+  const [aspect, setAspect] = useState<number | null>(null);
+
+  useEffect(() => {
+    setAspect(null);
+  }, [image.src]);
+
+  const frameStyle: CSSProperties = {
+    aspectRatio: aspect ?? (layout === 'wide' ? 16 / 10 : undefined),
+  };
+
+  const onImgLoad = (e: SyntheticEvent<HTMLImageElement>) => {
+    applyNaturalAspect(e.currentTarget, setAspect);
+  };
+
+  const bindImgRef = (img: HTMLImageElement | null) => {
+    if (img?.complete) applyNaturalAspect(img, setAspect);
+  };
+
+  const isLandscape = aspect !== null ? aspect >= 1 : layout === 'wide';
+
   if (!image.src) {
     return (
-      <div className="flex min-h-[8rem] w-full items-center justify-center font-mono text-xs text-[var(--text-muted)]">
-        {nda ? '[VISUAL: REDACTED]' : '[IMG_PLACEHOLDER]'}
+      <div className="project-slide-shell">
+        <div className="flex min-h-[8rem] w-full max-w-full items-center justify-center border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))] font-mono text-xs text-[var(--text-muted)]">
+          {nda ? '[VISUAL: REDACTED]' : '[IMG_PLACEHOLDER]'}
+        </div>
       </div>
     );
   }
 
-  const media =
-    layout === 'mobile' ? (
-      <div className="relative mx-auto w-full max-w-[220px] px-2 sm:max-w-[280px]">
-        <img
-          src={image.src}
-          alt={image.alt}
-          className="max-h-[min(48vh,380px)] w-full object-contain object-center"
-          loading="lazy"
-        />
-      </div>
-    ) : (
-      <img
-        src={image.src}
-        alt={image.alt}
-        className="absolute inset-0 size-full object-cover object-top"
-        loading="lazy"
-      />
-    );
-
   return (
-    <button
-      type="button"
-      onClick={onOpen}
-      className={cn(
-        'group relative block w-full cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]',
-        layout === 'wide' && 'absolute inset-0',
-      )}
-      aria-label={`View fullscreen: ${image.alt}`}
-    >
-      {media}
-      <span className="pointer-events-none absolute bottom-2 right-2 border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-surface)_90%,transparent)] px-1.5 py-0.5 font-mono text-[9px] text-[var(--text-muted)] opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-        [EXPAND]
-      </span>
-    </button>
+    <div className="project-slide-shell">
+      <div
+        className={cn(
+          'project-slide-frame relative max-h-[min(72vh,520px)] overflow-hidden border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))]',
+          isLandscape ? 'project-slide-frame--landscape' : 'project-slide-frame--portrait',
+          !aspect && layout === 'mobile' && 'min-h-[8rem]',
+        )}
+        style={frameStyle}
+      >
+        <button
+          type="button"
+          onClick={onOpen}
+          className="group relative block size-full cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]"
+          aria-label={`View fullscreen: ${image.alt}`}
+        >
+          <img
+            ref={bindImgRef}
+            src={image.src}
+            alt={image.alt}
+            onLoad={onImgLoad}
+            className="block size-full object-contain object-center"
+            loading="lazy"
+          />
+          <span className="pointer-events-none absolute bottom-2 right-2 border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-surface)_90%,transparent)] px-1.5 py-0.5 font-mono text-[9px] text-[var(--text-muted)] opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+            [EXPAND]
+          </span>
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -102,12 +114,10 @@ function ProjectCarousel({
   project,
   cardEnabled,
   sessionKey,
-  splitWide = false,
 }: {
   project: Project;
   cardEnabled: boolean;
   sessionKey: string;
-  splitWide?: boolean;
 }) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -125,6 +135,46 @@ function ProjectCarousel({
     };
   }, [api]);
 
+  // ponytail: Embla viewport height = tallest slide in track; sync to active slide so wide heroes are not clipped in a taller box
+  useEffect(() => {
+    if (!api) return;
+    let slideObserver: ResizeObserver | null = null;
+
+    const syncViewportHeight = () => {
+      const viewport = api.containerNode();
+      const slide = api.slideNodes()[api.selectedScrollSnap()] as HTMLElement | undefined;
+      if (!viewport || !slide) return;
+      viewport.classList.add('project-carousel-viewport');
+      viewport.style.height = `${slide.offsetHeight}px`;
+    };
+
+    const observeActiveSlide = () => {
+      slideObserver?.disconnect();
+      const slide = api.slideNodes()[api.selectedScrollSnap()] as HTMLElement | undefined;
+      if (!slide) return;
+      slideObserver = new ResizeObserver(syncViewportHeight);
+      slideObserver.observe(slide);
+    };
+
+    const onSlideChange = () => {
+      syncViewportHeight();
+      observeActiveSlide();
+    };
+
+    onSlideChange();
+    api.on('select', onSlideChange);
+    api.on('reInit', onSlideChange);
+    window.addEventListener('resize', syncViewportHeight);
+    return () => {
+      api.off('select', onSlideChange);
+      api.off('reInit', onSlideChange);
+      window.removeEventListener('resize', syncViewportHeight);
+      slideObserver?.disconnect();
+      const viewport = api.containerNode();
+      if (viewport) viewport.style.height = '';
+    };
+  }, [api]);
+
   const caption = project.images[current]?.caption ?? '';
   const canScrollPrev = api?.canScrollPrev() ?? false;
   const canScrollNext = api?.canScrollNext() ?? false;
@@ -137,21 +187,15 @@ function ProjectCarousel({
     <div className="w-full border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-primary)_92%,var(--accent-cyan))]">
       <Carousel className="w-full touch-pan-y" opts={{ loop: true, duration: 25 }} setApi={setApi}>
         <CarouselContent className="-ml-0 items-start">
-          {project.images.map((image, index) => {
-            const layout = image.layout ?? 'wide';
-            return (
-              <CarouselItem key={`${project.id}-slide-${index}`} className="pl-0">
-                <div className={cn(slideFrameClass(layout, splitWide), 'relative border-0')}>
-                  <SlideMedia
-                    image={image}
-                    layout={layout}
-                    nda={project.nda}
-                    onOpen={() => openLightbox(index)}
-                  />
-                </div>
-              </CarouselItem>
-            );
-          })}
+          {project.images.map((image, index) => (
+            <CarouselItem key={`${project.id}-slide-${index}`} className="pl-0">
+              <AdaptiveProjectSlide
+                image={image}
+                nda={project.nda}
+                onOpen={() => openLightbox(index)}
+              />
+            </CarouselItem>
+          ))}
         </CarouselContent>
       </Carousel>
 
@@ -378,12 +422,7 @@ export default function ProjectCard({ project, featured = false, windowIndex }: 
         <BlueprintCard className="blueprint-window flex flex-col p-0">
           <ProjectWindowChrome project={project} windowIndex={windowIndex}>
             <div className="grid w-full gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-start lg:gap-5">
-              <ProjectCarousel
-                project={project}
-                cardEnabled={inView}
-                sessionKey={sessionKey}
-                splitWide
-              />
+              <ProjectCarousel project={project} cardEnabled={inView} sessionKey={sessionKey} />
               <div className="hidden min-w-0 flex-col lg:flex">
                 <ProjectBody project={project} enabled={inView} sessionKey={sessionKey} />
               </div>
