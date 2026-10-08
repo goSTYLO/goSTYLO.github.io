@@ -4,6 +4,9 @@ import { PORTFOLIO_NAV, type PortfolioSectionId } from '@/data/navSections';
 import LocalClock from '@/components/hud/LocalClock';
 import ThemeToggle from '@/components/hud/ThemeToggle';
 
+/** Flip to true when chat runtime ships; drawer + handlers stay wired in App. */
+const SHOW_CHATBOT_LAUNCH = false;
+
 type HeaderHUDProps = {
   activeSection: PortfolioSectionId;
   onNavigate: (sectionId: PortfolioSectionId) => void;
@@ -81,7 +84,11 @@ function UtilityCluster({
       <button
         type="button"
         onClick={onLaunchChatbot}
-        className="inline-flex items-center gap-1.5 border border-[var(--accent-cyan)] bg-[var(--accent-cyan)] px-2 py-1 text-[var(--bg-primary)]"
+        className={
+          SHOW_CHATBOT_LAUNCH
+            ? 'inline-flex items-center gap-1.5 border border-[var(--accent-cyan)] bg-[var(--accent-cyan)] px-2 py-1 text-[var(--bg-primary)]'
+            : 'hidden'
+        }
       >
         <Bot aria-hidden="true" className="size-3.5" />
         [LAUNCH CHATBOT]
