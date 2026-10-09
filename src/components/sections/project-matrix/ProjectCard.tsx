@@ -27,8 +27,8 @@ type ProjectCardProps = {
 
 function contextTag(project: Project): string {
   if (project.nda) return '[NDA: ACTIVE]';
-  if (project.context === 'CAPSTONE') return '[CONTEXT: CAPSTONE]';
-  return '[CONTEXT: ACADEMIC]';
+  if (project.context === 'CAPSTONE') return '[CAPSTONE]';
+  return '[SCHOOL PROJECT]';
 }
 
 function applyNaturalAspect(img: HTMLImageElement, setAspect: (n: number) => void) {
@@ -255,7 +255,16 @@ function TelemetryStrip({ project, full = false }: { project: Project; full?: bo
         />
       ) : null}
       {full ? <TypingLine as="span" text={`[STATUS: ${project.status}]`} charDelayMs={1} /> : null}
-      <TypingLine as="span" text={contextTag(project)} charDelayMs={1} />
+      <TypingLine
+        as="span"
+        className={
+          project.nda
+            ? 'rounded-sm bg-[color-mix(in_srgb,var(--accent-cyan)_22%,transparent)] px-1 font-medium text-[var(--accent-cyan)]'
+            : undefined
+        }
+        text={contextTag(project)}
+        charDelayMs={1}
+      />
       {project.domains.map((d) => (
         <TypingLine key={d} as="span" text={`[${d}]`} charDelayMs={1} />
       ))}
@@ -269,7 +278,7 @@ function RoleBlock({ project }: { project: Project }) {
       <TypingLine
         as="p"
         className="font-mono text-xs text-[var(--accent-cyan)]"
-        text={`[ROLE: ${project.roleTag}]`}
+        text="[ROLE]"
         charDelayMs={1}
       />
       <TypingLine
@@ -301,7 +310,7 @@ function FeatureList({ project }: { project: Project }) {
       <TypingLine
         as="p"
         className="font-mono text-[10px] text-[var(--text-muted)]"
-        text="[CAPABILITIES]"
+        text="[HIGHLIGHTS]"
         charDelayMs={2}
       />
       <ul className="mt-2 list-inside list-disc space-y-1 font-sans text-sm text-[var(--text-primary)]">
@@ -321,12 +330,12 @@ function FeatureList({ project }: { project: Project }) {
             </ul>
           ) : null}
           <div>
-            <p className="text-[var(--accent-cyan)]">[STACK]</p>
+            <p className="text-[var(--accent-cyan)]">[TECH]</p>
             <p className="mt-1 font-sans text-sm">{stackLine}</p>
           </div>
           {project.hosting.length > 0 ? (
             <div>
-              <p className="text-[var(--accent-cyan)]">[HOST]</p>
+              <p className="text-[var(--accent-cyan)]">[DEPLOYED ON]</p>
               <p className="mt-1 font-sans text-sm">{hostLine}</p>
             </div>
           ) : null}
@@ -334,12 +343,12 @@ function FeatureList({ project }: { project: Project }) {
       ) : !project.nda ? (
         <div className="mt-3 space-y-2 font-mono text-xs text-[var(--text-muted)]">
           <p>
-            <span className="text-[var(--accent-cyan)]">[STACK]</span>{' '}
+            <span className="text-[var(--accent-cyan)]">[TECH]</span>{' '}
             <TypingLine as="span" className="font-sans text-sm text-[var(--text-primary)]" text={stackLine} charDelayMs={1} />
           </p>
           {project.hosting.length > 0 ? (
             <p>
-              <span className="text-[var(--accent-cyan)]">[HOST]</span>{' '}
+              <span className="text-[var(--accent-cyan)]">[DEPLOYED ON]</span>{' '}
               <TypingLine as="span" className="font-sans text-sm text-[var(--text-primary)]" text={hostLine} charDelayMs={1} />
             </p>
           ) : null}

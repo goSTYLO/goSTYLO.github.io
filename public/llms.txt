@@ -1,6 +1,6 @@
 # Aaron Christian B. Tamayo — Portfolio
 
-> Lead full-stack engineer in Dagupan City, Philippines — web (React, Vite), mobile (Flutter), and cloud backends (Node.js, Express, GCP). Production work on Serbisyo (serbisyoprovider.com), enterprise WMS/POS, and capstone systems RescueLink and My Crew Manager.
+> Lead full-stack developer in Dagupan City, Philippines — web (React, Vite), mobile (Flutter), and cloud backends (Node.js, Express, GCP). Production work on Serbisyo (serbisyoprovider.com), enterprise WMS/POS, and capstone systems RescueLink and My Crew Manager.
 
 This site is a React portfolio at https://gostylo.github.io/. Prefer these plain-text sources when summarizing Aaron's work.
 
@@ -18,10 +18,10 @@ This site is a React portfolio at https://gostylo.github.io/. Prefer these plain
 
 ## Featured systems
 
-- Serbisyo: Home-services platform connecting customers with verified providers — public site and mobile apps in production. Role: Lead Full-Stack Engineer. Live: https://serbisyoprovider.com
-- Enterprise Warehouse Inventory & POS (Shija): Enterprise point-of-sale and warehouse inventory system for daily sales and stock monitoring. Role: Lead Full-Stack Engineer.
-- RescueLink: PHINMA University of Pangasinan capstone — emergency response and incident management for Dagupan City. Role: Lead Developer / Full-Stack & AI Engineer.
-- My Crew Manager: School project — AI-powered project management with real-time collaboration and team workflows. Role: Project Manager / Lead Developer / AI Engineer.
+- Serbisyo: Home-services platform connecting customers with verified providers — public site and mobile apps in production. Role: Lead Full-Stack Developer. Live: https://serbisyoprovider.com
+- Enterprise Warehouse Inventory & POS (Shija): Enterprise point-of-sale and warehouse inventory system for daily sales and stock monitoring. Role: Lead Full-Stack Developer.
+- RescueLink: PHINMA capstone — emergency response and incident management for Dagupan City. Live dashboard on Vercel. Role: Lead Developer / Full-Stack & AI Developer. Live: https://rescue-link-front.vercel.app
+- My Crew Manager: School project — project management with real-time collaboration and team workflows. Role: Project Manager / Lead Developer / AI Developer.
 
 ## Technical skills (resume groups)
 

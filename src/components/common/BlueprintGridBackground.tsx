@@ -1,3 +1,6 @@
+/** Blueprint cell size (px). Try 32 | 48 | 64. */
+const GRID_CELL_PX = 64;
+
 const H_LANES = [
   { row: 4, duration: 11, delay: -2 },
   { row: 9, duration: 8, delay: -5 },
@@ -35,8 +38,18 @@ export default function BlueprintGridBackground() {
     <div className="blueprint-grid" aria-hidden="true">
       <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <pattern id="blueprint-grid" width="32" height="32" patternUnits="userSpaceOnUse">
-            <path d="M 32 0 L 0 0 0 32" fill="none" stroke="var(--border-cyan)" strokeWidth="1" />
+          <pattern
+            id="blueprint-grid"
+            width={GRID_CELL_PX}
+            height={GRID_CELL_PX}
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d={`M ${GRID_CELL_PX} 0 L 0 0 0 ${GRID_CELL_PX}`}
+              fill="none"
+              stroke="var(--border-cyan)"
+              strokeWidth="1"
+            />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#blueprint-grid)" />
@@ -48,7 +61,7 @@ export default function BlueprintGridBackground() {
             key={`h-${lane.row}`}
             className="blueprint-data-lane blueprint-data-lane--h"
             style={{
-              top: `${lane.row * 32}px`,
+              top: `${lane.row * GRID_CELL_PX}px`,
               animationDuration: `${lane.duration}s`,
               animationDelay: `${lane.delay}s`,
             }}
@@ -59,7 +72,7 @@ export default function BlueprintGridBackground() {
             key={`v-${lane.col}`}
             className="blueprint-data-lane blueprint-data-lane--v"
             style={{
-              left: `${lane.col * 32}px`,
+              left: `${lane.col * GRID_CELL_PX}px`,
               animationDuration: `${lane.duration}s`,
               animationDelay: `${lane.delay}s`,
             }}

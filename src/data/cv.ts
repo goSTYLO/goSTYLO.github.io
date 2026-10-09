@@ -44,7 +44,7 @@ export const cvDocument = {
     {
       company: 'Serbisyo & Shija Corporation',
       location: 'Dagupan City, Pangasinan',
-      role: 'Lead Full-Stack Engineer (Freelance / Contract)',
+      role: 'Lead Full-Stack Developer (Freelance / Contract)',
       dates: 'Jan. 2026 – Present',
       bullets: [
         'Lead full-stack software development across web, mobile, and backend microservices to support expanding enterprise and consumer operations.',
@@ -68,7 +68,7 @@ export const cvDocument = {
     },
     {
       name: 'MyCrewManager',
-      role: 'Project Manager / Lead Developer / AI Engineer',
+      role: 'Project Manager / Lead Developer / AI Developer',
       stack: 'Node.js, Express, React, Flutter, Python, PyTorch, Redis, Docker',
       dates: 'Aug. 2025 – Oct. 2025',
       bullets: [
@@ -80,13 +80,13 @@ export const cvDocument = {
     },
     {
       name: 'RescueLink',
-      role: 'Lead Developer / Full-Stack & AI Engineer',
+      role: 'Lead Developer / Full-Stack & AI Developer',
       stack: 'React, Node.js, FastAPI, Docker, Vercel, Render, GCP Cloud Run, Supabase',
       dates: 'Aug. 2026 – Present',
       bullets: [
         'Architected a multi-platform emergency dispatching system across web, mobile, and REST APIs.',
         'Containerized a FastAPI AI service on Google Cloud Run for Whisper speech-to-text workflows.',
-        'Deployed React (Vite) dashboard to Vercel and Node.js backend to Render with Supabase PostgreSQL.',
+        'Deployed live React (Vite) dashboard at rescue-link-front.vercel.app and Node.js backend to Render with Supabase PostgreSQL.',
       ],
     },
     {
@@ -116,7 +116,7 @@ export const cvDocument = {
     degree: 'Bachelor of Science in Information Technology – System Development',
     expected: 'Expected 2027',
     academicExemptions:
-      'Granted official academic exemptions for Managing IT Resources and IT Business Solutions in recognition of demonstrated production-level software engineering and industry work.',
+      'Granted official academic exemptions for Managing IT Resources and IT Business Solutions in recognition of demonstrated production-level software development and industry work.',
     certifications: [
       {
         title: 'AWS Fundamentals Certificate of Completion — Zuitt Learning Institute Incorporated',

@@ -25,11 +25,11 @@ export default function ProjectMatrix() {
             charDelayMs={4}
             showCursor
           />
-          <TypingLine as="h2" className="mt-2 font-sans text-xl" text="Systems Portfolio" charDelayMs={3} />
+          <TypingLine as="h2" className="mt-2 font-sans text-xl" text="Selected Projects" charDelayMs={3} />
           <TypingLine
             as="p"
             className="mt-1 font-mono text-sm text-[var(--text-muted)]"
-            text="Role-first telemetry · NDA-safe industry cards"
+            text="Live products, capstone work, and school builds — some client details are redacted."
             charDelayMs={2}
           />
         </TypingSequence>

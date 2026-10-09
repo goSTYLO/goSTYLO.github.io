@@ -19,6 +19,26 @@
 
 ## Change Log
 
+### [2026-10-09] NDA telemetry tag
+
+- Industry cards (Serbisyo, Shija) show highlighted `[NDA: ACTIVE]` in [`ProjectCard.tsx`](../src/components/sections/project-matrix/ProjectCard.tsx) telemetry strip.
+
+### [2026-10-09] Project Matrix copy humanized
+
+- Section H2 **Selected Projects** and plain subtitle; card labels `[ROLE]`, `[HIGHLIGHTS]`, `[STACK & HOSTING]`, `[TECH]`, `[DEPLOYED ON]`; friendlier context tags and resume-aligned text in [`projects.ts`](../src/data/projects.ts).
+
+### [2026-10-09] RescueLink live site
+
+- Set `[LIVE_SITE]` on RescueLink in [`projects.ts`](../src/data/projects.ts) to https://rescue-link-front.vercel.app; status `ONLINE`; aligned CV/resume deployment bullet.
+
+### [2026-10-09] Portfolio role copy — engineer → developer
+
+- Replaced “engineer” role/title wording with “developer” across hero, [`portfolioDocument.ts`](../src/data/portfolioDocument.ts), [`cv.ts`](../src/data/cv.ts), [`projects.ts`](../src/data/projects.ts), [`myResume.md`](myResume.md), and PRD/blueprint docs for internship-facing positioning.
+
+### [2026-10-09] Ambient blueprint grid — 64px cells
+
+- Increased ambient SVG grid and data-lane alignment from 32px to **64px** via `GRID_CELL_PX` in [`BlueprintGridBackground.tsx`](../src/components/common/BlueprintGridBackground.tsx); scaled lane glow `background-size` 112→224 in [`globals.css`](../src/styles/globals.css) for visual parity.
+
 ### [2026-10-07] Project cards — blueprint window chrome + enlarged grid split
 
 - Sutera-style window frame on **featured** [`ProjectCard`](../src/components/sections/project-matrix/ProjectCard.tsx) only via [`ProjectWindowChrome.tsx`](../src/components/sections/project-matrix/ProjectWindowChrome.tsx). Grid cards restored to vertical carousel-over-copy with full telemetry strip; featured keeps split layout at `lg+`.
@@ -85,7 +105,7 @@
 
 ### [2026-10-06] Hero redundancy trim
 
-- Hero H1 `LEAD FULL-STACK ENGINEER`; single founder-partner subtitle; location + GitHub strip; removed telemetry grid and hero chatbot CTA.
+- Hero H1 `LEAD FULL-STACK DEVELOPER`; single founder-partner subtitle; location + GitHub strip; removed telemetry grid and hero chatbot CTA.
 - Portrait telemetry overlay highlights Serbisyo pioneer role, live org link, and stack strip; broader stack detail in Domains + Project Matrix.
 - Updated `PRD.md`, `PROJECT_BLUEPRINT.md`.
 

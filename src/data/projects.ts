@@ -41,8 +41,8 @@ const placeholderSlides = (redacted: boolean): ProjectImage[] =>
     src: '',
     alt: redacted ? 'Redacted system capture' : `System capture ${n}`,
     caption: redacted
-      ? `[CAPTURE_0${n}] SYSTEM_VIEW // REDACTED`
-      : `[CAPTURE_0${n}] SYSTEM_VIEW // PENDING`,
+      ? `[SHOT_0${n}] Redacted preview`
+      : `[SHOT_0${n}] Preview pending`,
   }));
 
 export const projects: Project[] = [
@@ -56,9 +56,8 @@ export const projects: Project[] = [
     context: 'INDUSTRY_NDA',
     domains: ['WEB', 'MOBILE', 'CLOUD'],
     roleTag: 'PIONEER_LEAD_FULL_STACK',
-    roleTitle: 'Lead Full-Stack Engineer',
-    roleSummary:
-      'End-to-end ownership of web, mobile, and backend for a live home-services marketplace.',
+    roleTitle: 'Lead Full-Stack Developer',
+    roleSummary: 'Lead development on the live web and mobile marketplace.',
     summary:
       'Home-services platform connecting customers with verified providers — public site and mobile apps in production.',
     stack: [],
@@ -84,25 +83,25 @@ export const projects: Project[] = [
       {
         src: '/projects/serbisyo/hero.png',
         alt: 'Serbisyo marketing hero',
-        caption: '[CAPTURE_01] WEB_HERO // PUBLIC',
+        caption: '[SHOT_01] Public marketing site',
         layout: 'wide',
       },
       {
         src: '/projects/serbisyo/mobile-01.jpg',
         alt: 'Serbisyo mobile app screen 1',
-        caption: '[CAPTURE_02] MOBILE_UI // ARTBOARD_1',
+        caption: '[SHOT_02] Mobile app screen',
         layout: 'mobile',
       },
       {
         src: '/projects/serbisyo/mobile-02.jpg',
         alt: 'Serbisyo mobile app screen 2',
-        caption: '[CAPTURE_03] MOBILE_UI // ARTBOARD_2',
+        caption: '[SHOT_03] Mobile app screen',
         layout: 'mobile',
       },
       {
         src: '/projects/serbisyo/mobile-03.jpg',
         alt: 'Serbisyo mobile app screen 3',
-        caption: '[CAPTURE_04] MOBILE_UI // ARTBOARD_3',
+        caption: '[SHOT_04] Mobile app screen',
         layout: 'mobile',
       },
     ],
@@ -115,15 +114,15 @@ export const projects: Project[] = [
     context: 'INDUSTRY_NDA',
     domains: ['WEB', 'CLOUD'],
     roleTag: 'LEAD_FULL_STACK',
-    roleTitle: 'Lead Full-Stack Engineer',
+    roleTitle: 'Lead Full-Stack Developer',
     roleSummary:
-      'POS, inventory dashboards, and warehouse workflows for multi-location enterprise operations.',
+      'Point-of-sale, inventory dashboards, and warehouse tools for multi-location operations.',
     summary:
       'Enterprise point-of-sale and warehouse inventory system for daily sales and stock monitoring.',
     stack: [],
     features: [
       'Built point-of-sale interfaces and real-time inventory monitoring dashboards for daily sales.',
-      'Delivered warehouse management capabilities across operational workflows.',
+      'Built warehouse management features for stock and daily operations.',
       'Containerized multi-location services using Docker Compose for standardized deployment.',
     ],
     hosting: [],
@@ -134,16 +133,15 @@ export const projects: Project[] = [
     id: 'rescue-link',
     sysRef: 'RESCUELINK',
     title: 'RescueLink',
-    status: 'ACTIVE',
+    status: 'ONLINE',
     nda: false,
     context: 'CAPSTONE',
     domains: ['WEB', 'MOBILE', 'CLOUD'],
     roleTag: 'LEAD_FULL_STACK_AI',
-    roleTitle: 'Lead Developer / Full-Stack & AI Engineer',
-    roleSummary:
-      'Architected multi-platform emergency dispatch across web, mobile, REST APIs, and AI services.',
+    roleTitle: 'Lead Developer / Full-Stack & AI Developer',
+    roleSummary: 'Emergency dispatch across web, mobile, APIs, and AI services.',
     summary:
-      'PHINMA University of Pangasinan capstone — emergency response and incident management for Dagupan City.',
+      'PHINMA capstone — emergency response and incident management for Dagupan City. Live dashboard on Vercel.',
     stack: [
       'React',
       'Flutter',
@@ -163,38 +161,38 @@ export const projects: Project[] = [
     ],
     hosting: ['Vercel', 'Render', 'GCP Cloud Run', 'Supabase PostgreSQL'],
     links: [
-      { label: 'LIVE_DEMO', href: null },
+      { label: 'LIVE_SITE', href: 'https://rescue-link-front.vercel.app' },
       { label: 'GITHUB_REPO', href: null },
     ],
     images: [
       {
         src: '/projects/rescue-link/01.png',
         alt: 'RescueLink system capture 1',
-        caption: '[CAPTURE_01] DISPATCH_VIEW',
+        caption: '[SHOT_01] Dispatch dashboard',
         layout: 'wide',
       },
       {
         src: '/projects/rescue-link/02.png',
         alt: 'RescueLink system capture 2',
-        caption: '[CAPTURE_02] INCIDENT_FLOW',
+        caption: '[SHOT_02] Incident flow',
         layout: 'wide',
       },
       {
         src: '/projects/rescue-link/03.png',
         alt: 'RescueLink system capture 3',
-        caption: '[CAPTURE_03] MOBILE_REPORT',
+        caption: '[SHOT_03] Mobile reporting',
         layout: 'mobile',
       },
       {
         src: '/projects/rescue-link/04.png',
         alt: 'RescueLink system capture 4',
-        caption: '[CAPTURE_04] OPS_DASHBOARD',
+        caption: '[SHOT_04] Operations dashboard',
         layout: 'wide',
       },
       {
         src: '/projects/rescue-link/05.png',
         alt: 'RescueLink system capture 5',
-        caption: '[CAPTURE_05] SYSTEM_OVERVIEW',
+        caption: '[SHOT_05] System overview',
         layout: 'wide',
       },
     ],
@@ -208,11 +206,10 @@ export const projects: Project[] = [
     context: 'ACADEMIC',
     domains: ['WEB', 'MOBILE', 'CLOUD'],
     roleTag: 'PM_LEAD_DEV_AI',
-    roleTitle: 'Project Manager / Lead Developer / AI Engineer',
+    roleTitle: 'Project Manager / Lead Developer / AI Developer',
     roleSummary:
-      'Led full-stack delivery and LLM workflows across web and mobile for an AI project management platform.',
-    summary:
-      'School project — AI-powered project management with real-time collaboration and team workflows.',
+      'Led full-stack development of a project management platform across web and mobile.',
+    summary: 'School project — project management with real-time collaboration and team workflows.',
     stack: ['Node.js', 'Express', 'React', 'Flutter', 'Python', 'PyTorch', 'Redis', 'Docker'],
     features: [
       'AI proposal analysis with automatic epics, user stories, tasks, and sprint planning.',
@@ -226,7 +223,7 @@ export const projects: Project[] = [
       {
         src: '/projects/my-crew-manager/hero.png',
         alt: 'My Crew Manager platform hero',
-        caption: '[CAPTURE_01] PLATFORM_HERO',
+        caption: '[SHOT_01] Platform home',
         layout: 'wide',
       },
     ],

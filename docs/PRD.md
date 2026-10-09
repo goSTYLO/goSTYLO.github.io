@@ -4,7 +4,7 @@ Here is the complete, uncut `PRD.md` file formatted in Markdown ready to save in
 # PRODUCT REQUIREMENT DOCUMENT (PRD)
 
 **Project Name:** Full-Stack Developer Blueprint Portfolio  
-**Target Role:** Full-Stack Software Engineer (Web, Mobile, Cloud)  
+**Target Role:** Full-Stack Software Developer (Web, Mobile, Cloud)  
 **Design Reference:** CAD / HUD Blueprint (Inverted Light/Dark Modes — inspired by `sutera.ch`)  
 **Core Stack:** React + Vite + TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Lucide React, Node.js/Express, Google Cloud Run, Flutter  
 **Package Manager:** `pnpm`  
@@ -14,7 +14,7 @@ Here is the complete, uncut `PRD.md` file formatted in Markdown ready to save in
 
 ## 1. System Goals & Overview
 
-The primary objective of this portfolio is to showcase end-to-end full-stack capabilities across three core engineering pillars: **Web Engineering**, **Mobile App Development**, and **Cloud Infrastructure & Backend Systems**.
+The primary objective of this portfolio is to showcase end-to-end full-stack capabilities across three core development pillars: **Web Development**, **Mobile App Development**, and **Cloud Infrastructure & Backend Systems**.
 
 The visual language follows an architectural CAD/HUD blueprint design system with semi-transparent borders, corner alignment crosshairs, technical metadata tags, and an inverted color scheme between Light and Dark modes. It features a right slide-over AI chatbot drawer allowing recruiters and clients to query project architectures, stack details, and system specs interactively.
 
@@ -64,7 +64,7 @@ The visual language follows an architectural CAD/HUD blueprint design system wit
 ---
 
 ### Section 02: Hero Section ("System Architecture Overview")
-* **Headline:** `LEAD FULL-STACK ENGINEER`
+* **Headline:** `LEAD FULL-STACK DEVELOPER`
 * **Name (secondary):** Aaron Christian B. Tamayo (monospace, muted)
 * **Subtitle (one sentence, no tech list):** Founder-partner value line—planning through staging and production across web, mobile, and backend (see `myResume.md` experience; stack detail lives in Skill Raster + Project Matrix).
 * **Contact strip:** Dagupan City, Pangasinan · github.com/goSTYLO
@@ -140,7 +140,7 @@ Showcases real-world full-stack applications with architectural details:
 Before launching, compile and place these media and document assets into the repository:
 
 ### Documentation
-* [ ] `Aaron_Tamayo_FullStack_Engineer_CV.pdf` (Clean monospace-accented PDF resume).
+* [ ] `Aaron_Tamayo_FullStack_Developer_CV.pdf` (Clean monospace-accented PDF resume).
 * [ ] PIAC Committee Exemption Approval Documentation for ITE 367 and ITE 381.
 * [ ] System Architecture Diagrams (SVG format) for Serbisyo and RescueLink AI.
 

@@ -128,7 +128,7 @@ body {
     transparent 58%,
     transparent 100%
   );
-  background-size: 112px 1px;
+  background-size: 224px 1px;
   background-repeat: no-repeat;
   animation: blueprint-lane-h linear infinite;
   will-change: transform;
@@ -146,7 +146,7 @@ body {
     transparent 58%,
     transparent 100%
   );
-  background-size: 1px 112px;
+  background-size: 1px 224px;
   background-repeat: no-repeat;
   animation: blueprint-lane-v linear infinite;
   will-change: transform;

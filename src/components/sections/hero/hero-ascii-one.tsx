@@ -93,7 +93,7 @@ export default function HeroAsciiOne({ onExploreSystems, onOpenCv, cvOpen = fals
               id="hero-headline"
               className="mb-2 break-words font-sans text-3xl font-bold leading-tight tracking-wide text-[var(--text-primary)] lg:text-4xl xl:text-5xl"
             >
-              LEAD FULL-STACK ENGINEER
+              LEAD FULL-STACK DEVELOPER
             </h1>
             <p className="mb-4 font-mono text-sm text-[var(--text-muted)] lg:text-base">Aaron Christian B. Tamayo</p>
 
@@ -104,8 +104,7 @@ export default function HeroAsciiOne({ onExploreSystems, onOpenCv, cvOpen = fals
             </div>
 
             <p className="mb-5 font-sans text-sm leading-relaxed text-[var(--text-muted)] lg:text-base">
-              Partner with founders and teams to take products from planning through staging and production—web,
-              mobile, and backend under one lead.
+            Partnering with founders and technical teams to build products from initial planning through development to live production. Web, mobile, and backend developed under one lead.
             </p>
 
             <p className="mb-6 font-mono text-xs leading-relaxed text-[var(--text-muted)]">

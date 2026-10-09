@@ -21,7 +21,7 @@ export default function ArchSpecsDisclosure({ children }: ArchSpecsDisclosurePro
         onClick={() => setOpen((value) => !value)}
         className="flex w-full cursor-pointer items-center justify-between gap-2 border border-[var(--border-cyan)] px-2 py-1 text-left text-[var(--accent-cyan)] transition-colors hover:bg-[color-mix(in_srgb,var(--bg-surface)_90%,var(--accent-cyan))]"
       >
-        <span>[ARCH_SPECS]</span>
+        <span>{'[STACK & HOSTING]'}</span>
         <span aria-hidden="true" className="text-[10px] text-[var(--text-muted)]">
           {open ? '[−]' : '[+]'}
         </span>

@@ -7,15 +7,15 @@ import { assertSkillGroupsReady } from '../lib/skillGroups';
 
 export const PORTFOLIO_SITE_URL = 'https://gostylo.github.io/';
 
-export const PORTFOLIO_TITLE = 'Aaron Christian B. Tamayo | Lead Full-Stack Engineer';
+export const PORTFOLIO_TITLE = 'Aaron Christian B. Tamayo | Lead Full-Stack Developer';
 
 export const PORTFOLIO_DESCRIPTION =
-  'Lead full-stack engineer in Dagupan City, Philippines — web (React, Vite), mobile (Flutter), and cloud backends (Node.js, Express, GCP). Production work on Serbisyo (serbisyoprovider.com), enterprise WMS/POS, and capstone systems RescueLink and My Crew Manager.';
+  'Lead full-stack developer in Dagupan City, Philippines — web (React, Vite), mobile (Flutter), and cloud backends (Node.js, Express, GCP). Production work on Serbisyo (serbisyoprovider.com), enterprise WMS/POS, and capstone systems RescueLink and My Crew Manager.';
 
 const RESUME_RAW_URL =
   'https://raw.githubusercontent.com/goSTYLO/goSTYLO.github.io/main/docs/myResume.md';
 
-const JOB_TITLE = 'Lead Full-Stack Engineer';
+const JOB_TITLE = 'Lead Full-Stack Developer';
 
 const KNOWS_ABOUT = Object.values(cvDocument.technicalSkills)
   .join(', ')
