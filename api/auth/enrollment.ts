@@ -1,4 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
+import { enrollmentQrAllowed } from '../../server/enrollmentBlob';
 
 function bypassAllowed(): boolean {
   return (
@@ -22,6 +23,13 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     res.end(JSON.stringify({ error: 'NOT_FOUND' }));
     return;
   }
+
+  if (!(await enrollmentQrAllowed())) {
+    res.statusCode = 404;
+    res.end(JSON.stringify({ error: 'ENROLLMENT_CLOSED' }));
+    return;
+  }
+
   const secret = process.env.TOTP_SECRET;
   if (!secret) {
     res.statusCode = 503;

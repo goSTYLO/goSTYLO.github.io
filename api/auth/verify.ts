@@ -1,5 +1,6 @@
 import { createHmac } from 'node:crypto';
 import type { IncomingMessage, ServerResponse } from 'node:http';
+import { isAdminEnrolled, markAdminEnrolled } from '../../server/enrollmentBlob';
 
 const SESSION_COOKIE = 'admin_session';
 const MAX_AGE = 8 * 60 * 60;
@@ -111,6 +112,10 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
       return;
     }
 
+    if (!(await isAdminEnrolled())) {
+      await markAdminEnrolled();
+    }
+
     const token = createSessionToken();
     res.setHeader('set-cookie', cookieHeader(token, secure(req)));
     res.statusCode = 200;
@@ -120,6 +125,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
         bypass: bypassAllowed(),
         storage: storageMode(),
         totpConfigured: true,
+        enrolled: true,
       }),
     );
   } catch (error) {

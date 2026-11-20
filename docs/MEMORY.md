@@ -20,6 +20,10 @@
 
 ## Change Log
 
+### [2026-11-20] Admin studio and enrollment lock
+
+- `/console` is a blueprint **studio**: [`AdminStudio.tsx`](../src/components/admin/AdminStudio.tsx) left rail, dirty/`Cmd+S` save chrome, [`adminPanels.tsx`](../src/components/admin/adminPanels.tsx) document windows with full list CRUD and `@dnd-kit` reorder. Enrollment QR closes after the first successful PIN (`server/enrollmentBlob.ts`, `auth/enrollment.json`); optional `ADMIN_ALLOW_ENROLLMENT=1` for recovery (see [`GITHUB_PAGES_SETUP.md`](GITHUB_PAGES_SETUP.md)).
+
 ### [2026-11-20] Admin PIN gate polish
 
 - Unauthenticated `/console` uses [`AdminPinSheet.tsx`](../src/components/admin/AdminPinSheet.tsx): blueprint grid, centered card, `[BACK_TO_SITE]`, and collapsed `[FIRST_TIME_SETUP]` with `GET /api/auth/enrollment` (QR via `qrcode` + shared [`server/totp.ts`](../server/totp.ts)). Enrollment is visible only after expanding setup; anyone with `/console` access can scan it (personal admin gate tradeoff). `session` JSON includes `totpConfigured`.

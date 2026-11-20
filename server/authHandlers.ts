@@ -1,5 +1,6 @@
 import { adminBypassAllowed, storageMode } from '../src/lib/portfolioPure';
 import { SESSION_COOKIE, readCookie, sessionIsValid } from './session';
+import { enrollmentQrAllowed, isAdminEnrolled } from './enrollmentBlob';
 import { totpFromEnv } from './totp';
 
 function json(data: unknown, status = 200): Response {
@@ -9,17 +10,20 @@ function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), { status, headers });
 }
 
-export function sessionGet(request: Request): Response {
+export async function sessionGet(request: Request): Promise<Response> {
+  const bypass = adminBypassAllowed(process.env);
   return json({
     authenticated: sessionIsValid(readCookie(request.headers.get('cookie'), SESSION_COOKIE)),
-    bypass: adminBypassAllowed(process.env),
+    bypass,
     storage: storageMode(process.env),
-    totpConfigured: Boolean(process.env.TOTP_SECRET) && !adminBypassAllowed(process.env),
+    totpConfigured: Boolean(process.env.TOTP_SECRET) && !bypass,
+    enrolled: bypass ? false : await isAdminEnrolled(),
   });
 }
 
 export async function enrollmentGet(): Promise<Response> {
   if (adminBypassAllowed(process.env)) return json({ error: 'NOT_FOUND' }, 404);
+  if (!(await enrollmentQrAllowed())) return json({ error: 'ENROLLMENT_CLOSED' }, 404);
   const totp = totpFromEnv();
   if (!totp) return json({ error: 'TOTP_NOT_CONFIGURED' }, 503);
   try {

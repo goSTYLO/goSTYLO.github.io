@@ -7,6 +7,7 @@ test('console skips the pin, keeps the session, and signs out', async ({ page })
   await expect(page.getByTestId('dev-bypass')).toBeVisible();
   await page.reload();
   await expect(page.getByTestId('admin-shell')).toContainText('[ADMIN_CONSOLE]');
+  await expect(page.getByTestId('admin-rail')).toBeVisible();
   await page.getByTestId('sign-out').click();
   await expect(page.getByTestId('admin-shell')).toHaveCount(0);
   await expect(page.locator('#hero')).toBeVisible();

@@ -5,13 +5,15 @@ test('profile, skills, education, and certifications can be edited and toggled',
   await page.getByTestId('admin-tab-profile').click();
   await page.getByTestId('profile-name').fill('E2E Name');
   await page.getByTestId('admin-tab-skills').click();
-  await page.getByTestId('skill-languages').fill('E2ELang');
+  await page.getByTestId('skill-languages').locator('textarea').fill('E2ELang');
   await page.getByTestId('admin-tab-education').click();
   await page.getByTestId('add-education').click();
-  await page.getByTestId('education-school').last().fill('E2E Institute');
+  await page.getByRole('button', { name: '[UNTITLED]' }).last().click();
+  await page.getByTestId('education-school').fill('E2E Institute');
   await page.getByTestId('admin-tab-certifications').click();
   await page.getByTestId('add-certification').click();
-  await page.getByTestId('cert-title').last().fill('E2E Certificate');
+  await page.getByRole('button', { name: '[CERT]' }).last().click();
+  await page.getByTestId('cert-title').fill('E2E Certificate');
   await saveAdmin(page);
 
   await page.goto('/');

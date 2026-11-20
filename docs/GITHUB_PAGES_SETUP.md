@@ -38,7 +38,9 @@ pnpm totp:setup
 
 In Microsoft Authenticator choose **Other account** and scan the printed URI. Put the printed `TOTP_SECRET` and a long random `SESSION_SECRET` in the Vercel project environment. Both are server-only. Never prefix them with `VITE_`. Do not commit the command output.
 
-On production `/console`, expand `[FIRST_TIME_SETUP]` to load the same enrollment QR from `GET /api/auth/enrollment` (only when TOTP is configured and auth bypass is off).
+On production `/console`, expand `[FIRST_TIME_SETUP]` to load the enrollment QR from `GET /api/auth/enrollment` only **before** the first successful PIN (the server writes `auth/enrollment.json` in Blob on that login). After enrollment, the endpoint returns 404 and the setup block stays hidden when `session.enrolled` is true.
+
+If you lose the Authenticator device: set **`ADMIN_ALLOW_ENROLLMENT=1`** on the Vercel project (Production), redeploy or wait for a cold start, open `/console`, scan the QR once, sign in, then **remove** that env var and redeploy. Do not leave the override on in production.
 
 Link a Blob store so Vercel injects `BLOB_READ_WRITE_TOKEN`. The first time `content/portfolio.json` is missing, the function writes the seed once. Later deploys do not overwrite it.
 

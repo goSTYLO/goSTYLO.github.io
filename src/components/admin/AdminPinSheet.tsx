@@ -12,6 +12,7 @@ type AdminPinSheetProps = {
   code: string;
   status: string;
   totpConfigured: boolean;
+  enrolled: boolean;
   onCodeChange: (value: string) => void;
   onVerify: () => void;
 };
@@ -20,6 +21,7 @@ export default function AdminPinSheet({
   code,
   status,
   totpConfigured,
+  enrolled,
   onCodeChange,
   onVerify,
 }: AdminPinSheetProps) {
@@ -109,7 +111,7 @@ export default function AdminPinSheet({
           </button>
           <p className={`mt-3 font-mono text-xs ${statusTone}`}>{status}</p>
 
-          {totpConfigured ? (
+          {totpConfigured && !enrolled ? (
             <details className="mt-6 border-t border-[var(--border-cyan)] pt-4" onToggle={onSetupToggle}>
               <summary className="cursor-pointer list-none font-mono text-xs text-[var(--accent-cyan)] marker:content-none [&::-webkit-details-marker]:hidden">
                 [FIRST_TIME_SETUP]

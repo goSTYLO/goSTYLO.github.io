@@ -49,7 +49,10 @@ export async function route(request: Request): Promise<Response> {
   const path = url.pathname.replace(/\/$/, '') || '/';
   const method = request.method;
 
-  if (path === '/api/auth/session' && method === 'GET') return json(sessionPayload(request));
+  if (path === '/api/auth/session' && method === 'GET') {
+    const { sessionGet } = await import('./authHandlers');
+    return sessionGet(request);
+  }
   if (path === '/api/auth/dev-session' && method === 'POST') return devSession(request);
   if (path === '/api/auth/verify' && method === 'POST') return verify(request);
   if (path === '/api/auth/sign-out' && method === 'POST') return signOut(request);
@@ -67,16 +70,19 @@ export async function route(request: Request): Promise<Response> {
   return json({ error: 'NOT_FOUND' }, 404);
 }
 
-function sessionPayload(request: Request) {
+async function sessionPayload(request: Request) {
+  const { isAdminEnrolled } = await import('./enrollmentBlob');
+  const bypass = adminBypassAllowed(process.env);
   return {
     authenticated: authed(request),
-    bypass: adminBypassAllowed(process.env),
+    bypass,
     storage: storageMode(process.env),
-    totpConfigured: Boolean(process.env.TOTP_SECRET) && !adminBypassAllowed(process.env),
+    totpConfigured: Boolean(process.env.TOTP_SECRET) && !bypass,
+    enrolled: bypass ? false : await isAdminEnrolled(),
   };
 }
 
-function withSession(request: Request, token: string | null, clear = false): Response {
+async function withSession(request: Request, token: string | null, clear = false): Promise<Response> {
   const secure = requestIsSecure(request);
   const headers = new Headers();
   headers.set('content-type', 'application/json; charset=utf-8');
@@ -85,11 +91,11 @@ function withSession(request: Request, token: string | null, clear = false): Res
   else if (token) headers.set('set-cookie', cookieHeader(token, secure));
   const body = clear
     ? { authenticated: false, bypass: adminBypassAllowed(process.env), storage: storageMode(process.env) }
-    : { ...sessionPayload(request), authenticated: true };
+    : { ...(await sessionPayload(request)), authenticated: true };
   return new Response(JSON.stringify(body), { status: 200, headers });
 }
 
-function devSession(request: Request): Response {
+async function devSession(request: Request): Promise<Response> {
   if (!adminBypassAllowed(process.env)) return json({ error: 'NOT_FOUND' }, 404);
   return withSession(request, createSessionToken());
 }
@@ -119,10 +125,12 @@ async function verify(request: Request): Promise<Response> {
   lock.lockedUntil = 0;
   lock.lastStep = result.step;
   await writeLockout(lock);
+  const { isAdminEnrolled, markAdminEnrolled } = await import('./enrollmentBlob');
+  if (!(await isAdminEnrolled())) await markAdminEnrolled();
   return withSession(request, createSessionToken());
 }
 
-function signOut(request: Request): Response {
+function signOut(request: Request): Promise<Response> {
   return withSession(request, null, true);
 }
 

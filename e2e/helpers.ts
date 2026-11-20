@@ -20,7 +20,7 @@ export async function saveAdmin(page: import('@playwright/test').Page) {
     page.waitForResponse(
       (response) => response.url().includes('/api/content') && response.request().method() === 'PUT' && response.ok(),
     ),
-    page.getByRole('button', { name: '[SAVE]' }).click(),
+    page.getByTestId('admin-save').click(),
   ]);
 }
 
