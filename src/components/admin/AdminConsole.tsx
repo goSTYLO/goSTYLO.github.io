@@ -33,7 +33,7 @@ const field =
 
 async function readSession(): Promise<Session> {
   const res = await fetch('/api/auth/session', { cache: 'no-store' });
-  if (!res.ok) return { authenticated: false, bypass: false, storage: 'file' };
+  if (!res.ok) return { authenticated: false, bypass: false, storage: 'file', totpConfigured: false };
   return (await res.json()) as Session;
 }
 
@@ -121,7 +121,7 @@ export default function AdminConsole() {
       <AdminPinSheet
         code={code}
         status={status}
-        totpConfigured={session.totpConfigured ?? !session.bypass}
+        totpConfigured={session.totpConfigured === true}
         onCodeChange={setCode}
         onVerify={() => void submitPin()}
       />

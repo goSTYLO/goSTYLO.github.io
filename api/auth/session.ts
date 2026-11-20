@@ -1,4 +1,4 @@
 import { nodeAdapter } from '../../server/http';
-import { route } from '../../server/route';
+import { sessionGet } from '../../server/authHandlers';
 
-export default nodeAdapter(route);
+export default nodeAdapter((request) => Promise.resolve(sessionGet(request)));

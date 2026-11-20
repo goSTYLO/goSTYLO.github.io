@@ -41,7 +41,15 @@ export default function AdminPinSheet({
     try {
       const res = await fetch('/api/auth/enrollment', { cache: 'no-store' });
       if (!res.ok) {
-        setQrError(res.status === 503 ? 'TOTP not configured on the server.' : 'Could not load enrollment QR.');
+        if (res.status === 503) {
+          setQrError('TOTP not configured on the server.');
+          return;
+        }
+        if (res.status === 401 || res.status === 403) {
+          setQrError('This deployment is access-protected. Open the site on your production domain or disable Vercel Authentication for Production.');
+          return;
+        }
+        setQrError(`Could not load enrollment QR (HTTP ${res.status}).`);
         return;
       }
       const body = (await res.json()) as { qrDataUrl?: string };
