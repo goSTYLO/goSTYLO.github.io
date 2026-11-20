@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AdminConsole from '@/components/admin/AdminConsole';
 import AIChatDrawer from '@/components/ai-drawer/AIChatDrawer';
+import AsciiRasterBackground from '@/components/common/AsciiRasterBackground';
 import BlueprintCrosshairCursor from '@/components/common/BlueprintCrosshairCursor';
 import BlueprintGridBackground from '@/components/common/BlueprintGridBackground';
 import HeaderHUD from '@/components/hud/HeaderHUD';
+import AsciiPlates from '@/components/sections/ascii-plates/AsciiPlates';
 import CvAstOverlay from '@/components/sections/cv/CvAstOverlay';
 import { CertificationsSection, EducationSection } from '@/components/sections/education/RecordSections';
 import FooterConsole from '@/components/sections/footer/FooterConsole';
@@ -73,6 +75,7 @@ export default function App() {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[var(--bg-primary)] text-[var(--text-primary)]">
       <BlueprintGridBackground />
+      <AsciiRasterBackground />
       <BlueprintCrosshairCursor />
 
       <div className="relative z-[1] min-w-0">
@@ -116,6 +119,8 @@ export default function App() {
           ) : null}
           {content.sections.contact.enabled ? <FooterConsole /> : null}
         </main>
+
+        <AsciiPlates />
       </div>
 
       <AIChatDrawer open={chatbotOpen} onClose={() => setChatbotOpen(false)} />

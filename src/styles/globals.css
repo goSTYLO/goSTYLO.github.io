@@ -40,6 +40,7 @@
   --motion-spark-glow: 88%;
   --motion-orb-blur: 40px;
   --profile-portrait-scale: 1.4;
+  --ascii-bg-opacity: 0.07;
 }
 
 [data-theme='dark'] {
@@ -77,6 +78,7 @@
   --motion-orb-glow: 16%;
   --motion-spark-glow: 70%;
   --motion-orb-blur: 48px;
+  --ascii-bg-opacity: 0.1;
 }
 
 html,
@@ -124,6 +126,15 @@ body {
   pointer-events: none;
   opacity: 1;
   overflow: hidden;
+}
+
+.ascii-raster-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: var(--ascii-bg-opacity);
 }
 
 .blueprint-motion-layer {
@@ -798,13 +809,6 @@ body {
     opacity: 0.55;
     box-shadow: 0 0 0 6px transparent;
   }
-}
-
-.hero-dither-pattern {
-  background-image:
-    repeating-linear-gradient(0deg, transparent 0px, transparent 1px, var(--accent-cyan) 1px, var(--accent-cyan) 2px),
-    repeating-linear-gradient(90deg, transparent 0px, transparent 1px, var(--accent-cyan) 1px, var(--accent-cyan) 2px);
-  background-size: 3px 3px;
 }
 
 @keyframes crosshair-ping-ring {

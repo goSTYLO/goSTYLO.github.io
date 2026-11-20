@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test:e2e": "playwright test",
-    "check": "node --experimental-strip-types scripts/check-content.ts",
+    "check": "node --experimental-strip-types scripts/check-content.ts && node --experimental-strip-types scripts/check-ascii-raster.ts",
     "totp:setup": "node scripts/totp-setup.mjs"
   },
   "dependencies": {

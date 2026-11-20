@@ -20,6 +20,24 @@
 
 ## Change Log
 
+### [2026-11-20] ASCII stickers stay outside `main`
+
+- Stickers no longer use `left-3`/`right-3` (that painted them on top of the `max-w-7xl` column at typical laptop widths). They pin to the leftover gutter outside 80rem; `overflow: hidden` clips them when there is no gutter.
+
+### [2026-11-20] ASCII stickers — both gutters, mixed frames, more rasters
+
+- Stickers use `!absolute` so they actually pin left *and* right (`BlueprintCard`’s `relative` had stacked every card on the left). Smaller wide/tall/square frames; dither of Adam hands, portrait, Serbisyo, RescueLink, and a mobile artboard, plus a globe. `lg+` only, `pointer-events-none`.
+
+### [2026-11-20] Scattered ASCII stickers + Adam hands
+
+- Removed the `[RASTER_ARRAY]` gallery strip. [`AsciiPlates.tsx`](../src/components/sections/ascii-plates/AsciiPlates.tsx) is now a `pointer-events-none` page overlay (`lg+`): small rotated `BlueprintCard` stickers.
+- `[ADAM]` dithers a public-domain Wikimedia crop of Michelangelo’s *Creation of Adam* hands (`public/ascii/creation-of-adam-hands.jpg`; PD, author died 1564). Hero portrait unchanged.
+
+### [2026-11-20] Hybrid ASCII raster (background + HUD plates)
+
+- Canvas2D raster engine [`asciiRaster.ts`](../src/lib/asciiRaster.ts) + [`AsciiRaster.tsx`](../src/components/common/AsciiRaster.tsx): Bayer dither, glyphs, dots, hexagons, rings, stars, Lambert globe. Pulse or yaw; sample-once except globe/ambient; pause offscreen / hidden tab; freeze on `prefers-reduced-motion`.
+- Faint full-page [`AsciiRasterBackground.tsx`](../src/components/common/AsciiRasterBackground.tsx) over the CAD grid (`--ascii-bg-opacity`). Decorative plates later became overlay stickers (see above). Hero photo unchanged. No 21st.dev install, no CMS section.
+
 ### [2026-11-20] Admin studio and enrollment lock
 
 - `/console` is a blueprint **studio**: [`AdminStudio.tsx`](../src/components/admin/AdminStudio.tsx) left rail, dirty/`Cmd+S` save chrome, [`adminPanels.tsx`](../src/components/admin/adminPanels.tsx) document windows with full list CRUD and `@dnd-kit` reorder. Enrollment QR closes after the first successful PIN (`server/enrollmentBlob.ts`, `auth/enrollment.json`); optional `ADMIN_ALLOW_ENROLLMENT=1` for recovery (see [`GITHUB_PAGES_SETUP.md`](GITHUB_PAGES_SETUP.md)).

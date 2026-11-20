@@ -16,9 +16,9 @@ Public URL: the Vercel production host. Canonical tags use `VERCEL_PROJECT_PRODU
 
 | Domain | Path | Role |
 |--------|------|------|
-| Common | [`src/components/common/`](../src/components/common/) | `BlueprintCard`, grid/crosshair ambient, typing primitives, shadcn [`ui/`](../src/components/common/ui/) |
+| Common | [`src/components/common/`](../src/components/common/) | `BlueprintCard`, grid/crosshair ambient, `AsciiRaster` Canvas2D, typing primitives, shadcn [`ui/`](../src/components/common/ui/) |
 | HUD | [`src/components/hud/`](../src/components/hud/) | `HeaderHUD`, `LocalClock`, `ThemeToggle` |
-| Sections | [`src/components/sections/`](../src/components/sections/) | `hero/`, `skill-raster/`, `project-matrix/`, `footer/`, `cv/` |
+| Sections | [`src/components/sections/`](../src/components/sections/) | `hero/`, `ascii-plates/`, `skill-raster/`, `project-matrix/`, `footer/`, `cv/` |
 | AI drawer | [`src/components/ai-drawer/`](../src/components/ai-drawer/) | `AIChatDrawer`, `QuickChips`, `TerminalInput` (Phase 4 runtime) |
 | Data | [`src/data/`](../src/data/) | Seed modules. Live copy is the Blob document. |
 | Content | [`src/content/`](../src/content/) | Document types, `buildSeed()`, public `ContentProvider` |
@@ -100,8 +100,9 @@ Fixed full-viewport layer: [`BlueprintGridBackground.tsx`](../src/components/com
 2. **Data highway lanes:** Horizontal and vertical glowing segments aligned to the same cell pitch as `GRID_CELL_PX`; CSS `@keyframes` with desynced durations (6–18s). Intensity tokens: `--motion-grid-lane-opacity`, `--motion-lane-glow`, `--motion-orb-glow`, `--motion-orb-blur` (light mode uses high lane/orb opacity and stronger teal mix on sand canvas).
 3. **Orbs & sparks:** Soft blurred accent orbs plus tiny spark dots; drift keyframes (25–40s). Intensity token: `--motion-orb-opacity`.
 4. **Theme crossfade:** View Transitions API (`document.startViewTransition`) on HUD `[THEME: …]` toggle (~450ms opacity crossfade on `:root`). Theme tokens apply inside `flushSync` so the new snapshot matches CSS variables. Implemented in [`src/context/ThemeContext.tsx`](../src/context/ThemeContext.tsx).
-5. **`prefers-reduced-motion`:** Lanes, orbs, sparks, theme crossfade, and HUD crosshair follower disabled; instant theme swap.
+5. **`prefers-reduced-motion`:** Lanes, orbs, sparks, theme crossfade, HUD crosshair follower, and ASCII raster rAF (background + stickers) disabled; instant theme swap; rasters freeze at frame 0.
 6. **HUD crosshair follower:** [`BlueprintCrosshairCursor.tsx`](../src/components/common/BlueprintCrosshairCursor.tsx) — fixed `pointer-events: none` layer (`z-index: 90`), centered Lucide `Plus` using `var(--crosshair)`. Spring-smoothed rAF trail (slight lag + bounce). **Mouse:** visible while the pointer is over the page; hides on `mouseleave` of `<html>`. **Touch / pen:** visible only during active contact (`pointerdown` → `pointerup` / `cancel`), follows finger while scrolling. **Click / tap (CAD registration ping):** on `pointerdown`, Plus squeezes (~0.82 scale) and an expanding square ring (`1px` `var(--border-cyan)`, 16px→48px fade) plays; on release, Plus eases back with slight overshoot. Styles: `crosshair-*` in [`globals.css`](../src/styles/globals.css). Native OS cursor is never hidden.
+7. **ASCII raster (hybrid):** [`AsciiRasterBackground.tsx`](../src/components/common/AsciiRasterBackground.tsx) is a second `z-index: 0` layer **after** the CAD grid (`pointer-events: none`, `fixed inset-0`). Canvas2D ambient globe + sparse hex/dot field at `--ascii-bg-opacity` (0.07 light / 0.10 dark). Engine: [`asciiRaster.ts`](../src/lib/asciiRaster.ts) + [`AsciiRaster.tsx`](../src/components/common/AsciiRaster.tsx). [`AsciiPlates.tsx`](../src/components/sections/ascii-plates/AsciiPlates.tsx) is a `pointer-events-none` overlay (`absolute inset-0 z-10`, `lg+` only, `overflow: hidden`) of compact `BlueprintCard` stickers. Each sticker is parked in the viewport gutter **outside** `main`’s `max-w-7xl` (`left/right: calc(50% - min(40rem, 50%) - width - 0.5rem)`), so they never cover column text; when the gutter is narrower than the card they clip off-screen. Frames mix square / 16:10 / 3:4. `[ADAM]` dithers the PD hands crop; `[SUBJECT]`, `[SERBISYO]`, `[RESCUE]`, `[PHONE]` dither live content images; `[GLOBE]` is procedural. Hero portrait stays a photo (CV trigger). Stickers sit under the HUD (`z-40`) and CV overlay (`z-30`). `prefers-reduced-motion` freezes rAF.
 
 ## 6. Personal Details Source
 
