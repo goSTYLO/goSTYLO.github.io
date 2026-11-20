@@ -6,8 +6,14 @@ import type { CvExperience, CvProject } from '@/data/cv';
 import { encodeWebp } from '@/lib/encodeWebp';
 import { go } from '@/lib/route';
 import { uploadAsset } from '@/lib/uploadAsset';
+import AdminPinSheet from '@/components/admin/AdminPinSheet';
 
-type Session = { authenticated: boolean; bypass: boolean; storage: 'file' | 'blob' };
+type Session = {
+  authenticated: boolean;
+  bypass: boolean;
+  storage: 'file' | 'blob';
+  totpConfigured?: boolean;
+};
 type Tab = 'profile' | 'sections' | 'projects' | 'education' | 'certifications' | 'skills' | 'cv';
 
 const TABS: { id: Tab; label: string }[] = [
@@ -112,25 +118,13 @@ export default function AdminConsole() {
 
   if (!session.authenticated) {
     return (
-      <div data-testid="pin-sheet" className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-end gap-3 p-4 pb-8">
-        <p className="font-mono text-xs text-[var(--accent-cyan)]">[ADMIN_PIN]</p>
-        <p className="font-sans text-sm text-[var(--text-muted)]">
-          Enter the 6-digit code from Microsoft Authenticator.
-        </p>
-        <input
-          inputMode="numeric"
-          autoComplete="one-time-code"
-          maxLength={6}
-          value={code}
-          onChange={(event) => setCode(event.target.value)}
-          className={field}
-          aria-label="Authenticator code"
-        />
-        <button type="button" className={control} onClick={() => void submitPin()}>
-          [VERIFY]
-        </button>
-        <p className="font-mono text-xs text-[var(--text-muted)]">{status}</p>
-      </div>
+      <AdminPinSheet
+        code={code}
+        status={status}
+        totpConfigured={session.totpConfigured ?? !session.bypass}
+        onCodeChange={setCode}
+        onVerify={() => void submitPin()}
+      />
     );
   }
 

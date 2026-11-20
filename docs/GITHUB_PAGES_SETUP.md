@@ -38,6 +38,8 @@ pnpm totp:setup
 
 In Microsoft Authenticator choose **Other account** and scan the printed URI. Put the printed `TOTP_SECRET` and a long random `SESSION_SECRET` in the Vercel project environment. Both are server-only. Never prefix them with `VITE_`. Do not commit the command output.
 
+On production `/console`, expand `[FIRST_TIME_SETUP]` to load the same enrollment QR from `GET /api/auth/enrollment` (only when TOTP is configured and auth bypass is off).
+
 Link a Blob store so Vercel injects `BLOB_READ_WRITE_TOKEN`. The first time `content/portfolio.json` is missing, the function writes the seed once. Later deploys do not overwrite it.
 
 Optional `VITE_CONTENT_BLOB_URL` is the public URL of that JSON. It is not a secret. Without it, the page reads `GET /api/content`.

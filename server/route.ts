@@ -1,4 +1,5 @@
 import { randomBytes } from 'node:crypto';
+import QRCode from 'qrcode';
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
 import type { PortfolioContent } from '../src/content/types';
 import { SECTION_ORDER } from '../src/content/types';
@@ -13,6 +14,7 @@ import {
   sessionIsValid,
   verifyTotp,
 } from './session';
+import { totpFromEnv } from './totp';
 import {
   readContent,
   readLocalMedia,
@@ -53,6 +55,7 @@ export async function route(request: Request): Promise<Response> {
   if (path === '/api/auth/dev-session' && method === 'POST') return devSession(request);
   if (path === '/api/auth/verify' && method === 'POST') return verify(request);
   if (path === '/api/auth/sign-out' && method === 'POST') return signOut(request);
+  if (path === '/api/auth/enrollment' && method === 'GET') return enrollment();
   if (path === '/api/content' && method === 'GET') return getContent();
   if (path === '/api/content' && method === 'PUT') return putContent(request);
   if (path === '/api/media' && method === 'POST') return postMedia(request);
@@ -68,6 +71,7 @@ function sessionPayload(request: Request) {
     authenticated: authed(request),
     bypass: adminBypassAllowed(process.env),
     storage: storageMode(process.env),
+    totpConfigured: Boolean(process.env.TOTP_SECRET) && !adminBypassAllowed(process.env),
   };
 }
 
@@ -87,6 +91,18 @@ function withSession(request: Request, token: string | null, clear = false): Res
 function devSession(request: Request): Response {
   if (!adminBypassAllowed(process.env)) return json({ error: 'NOT_FOUND' }, 404);
   return withSession(request, createSessionToken());
+}
+
+async function enrollment(): Promise<Response> {
+  if (adminBypassAllowed(process.env)) return json({ error: 'NOT_FOUND' }, 404);
+  const totp = totpFromEnv();
+  if (!totp) return json({ error: 'TOTP_NOT_CONFIGURED' }, 503);
+  const qrDataUrl = await QRCode.toDataURL(totp.toString(), {
+    errorCorrectionLevel: 'M',
+    margin: 1,
+    width: 220,
+  });
+  return json({ qrDataUrl });
 }
 
 async function verify(request: Request): Promise<Response> {

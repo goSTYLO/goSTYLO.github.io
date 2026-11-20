@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
-import * as OTPAuth from 'otpauth';
 import { adminBypassAllowed } from '../src/lib/portfolioPure';
+import { totpFromEnv } from './totp';
 
 export const SESSION_COOKIE = 'admin_session';
 const MAX_AGE = 8 * 60 * 60;
@@ -66,18 +66,10 @@ export function requestIsSecure(request: Request): boolean {
 }
 
 export function verifyTotp(code: string): { ok: true; step: number } | { ok: false } {
-  const secret = process.env.TOTP_SECRET;
-  if (!secret) return { ok: false };
+  const totp = totpFromEnv();
+  if (!totp) return { ok: false };
   const digits = code.replace(/\s/g, '');
   if (!/^\d{6}$/.test(digits)) return { ok: false };
-  const totp = new OTPAuth.TOTP({
-    issuer: 'Aaron Portfolio',
-    label: 'admin',
-    algorithm: 'SHA1',
-    digits: 6,
-    period: 30,
-    secret: OTPAuth.Secret.fromBase32(secret),
-  });
   const delta = totp.validate({ token: digits, window: 1 });
   if (delta === null) return { ok: false };
   const step = Math.floor(Date.now() / 30000) + delta;

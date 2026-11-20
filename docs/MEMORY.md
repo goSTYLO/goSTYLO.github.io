@@ -20,6 +20,10 @@
 
 ## Change Log
 
+### [2026-11-20] Admin PIN gate polish
+
+- Unauthenticated `/console` uses [`AdminPinSheet.tsx`](../src/components/admin/AdminPinSheet.tsx): blueprint grid, centered card, `[BACK_TO_SITE]`, and collapsed `[FIRST_TIME_SETUP]` with `GET /api/auth/enrollment` (QR via `qrcode` + shared [`server/totp.ts`](../server/totp.ts)). Enrollment is visible only after expanding setup; anyone with `/console` access can scan it (personal admin gate tradeoff). `session` JSON includes `totpConfigured`.
+
 ### [2026-11-20] Vercel admin CMS
 
 - Hosting moves to Vercel. `.github/workflows/pages.yml` and the `404.html` copy step are gone. SPA fallback is `vercel.json`. Set GitHub Pages source to **None** in repo settings (that switch is outside the repo).
