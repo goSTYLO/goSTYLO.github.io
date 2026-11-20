@@ -7,7 +7,7 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="border border-[var(--border-cyan)] px-2 py-1 text-left text-[var(--text-primary)]"
+      className="inline-flex min-h-11 items-center border border-[var(--border-cyan)] px-3 text-left text-[var(--text-primary)]"
     >
       [THEME: {theme.toUpperCase()}]
     </button>

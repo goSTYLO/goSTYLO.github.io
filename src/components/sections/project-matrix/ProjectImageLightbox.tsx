@@ -17,6 +17,7 @@ type ProjectImageLightboxProps = {
   index: number;
   onClose: () => void;
   onIndexChange: (index: number) => void;
+  dialogLabel?: string;
 };
 
 export default function ProjectImageLightbox({
@@ -24,6 +25,7 @@ export default function ProjectImageLightbox({
   index,
   onClose,
   onIndexChange,
+  dialogLabel = 'Fullscreen project capture',
 }: ProjectImageLightboxProps) {
   const viewableIndexes = useMemo(
     () => images.map((image, i) => (image.src ? i : -1)).filter((i) => i >= 0),
@@ -93,7 +95,7 @@ export default function ProjectImageLightbox({
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[color-mix(in_srgb,var(--bg-primary)_15%,#000)] p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
-      aria-label="Fullscreen project capture"
+      aria-label={dialogLabel}
       onClick={onClose}
     >
       <button

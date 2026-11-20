@@ -1,148 +1,51 @@
-# GitHub Pages setup — goSTYLO.github.io
+# Hosting — Vercel
 
-Personal checklist to publish this portfolio as a **user site** at **https://gostylo.github.io/**.
+GitHub Pages publishing is retired. `.github/workflows/pages.yml` is gone, and the build no longer copies `index.html` to `404.html`. The site is a Vite SPA on Vercel. `vercel.json` sends every path except `/api` to `/index.html`, so a refresh on `/console` stays in the app.
 
-This repo is already a static Vite + React SPA. Pages serves the **built** `dist/` folder. There is no Node/Express runtime on Pages.
+https://gostylo.github.io/ can keep serving the last Pages deploy until you turn Pages off. That switch is outside the repo:
 
----
+**GitHub → Settings → Pages → Build and deployment → Source: None.**
 
-## What this repo already has
+## Local
 
-Do **not** recreate these. They are the deploy path.
-
-| Piece | Why it matters |
-|---|---|
-| Repo name `goSTYLO.github.io` | User sites must be `<username>.github.io` (lowercase). That is why the URL has no extra path. |
-| `vite.config.ts` → `base: '/'` | User site is served from the domain root. Project sites (`username.github.io/repo`) would use `base: '/repo/'` instead. |
-| `.github/workflows/pages.yml` | On every push to `main` (or manual run): `pnpm install --frozen-lockfile` → `pnpm build` → upload `dist/` → deploy. |
-| `packageManager: pnpm@9.15.9` + committed `pnpm-lock.yaml` | CI uses frozen lockfile. Missing lockfile = failed build. |
-| `public/.nojekyll` | Pages used to run Jekyll. Files/folders starting with `_` get dropped unless this file is present. Vite emits `_`-prefixed assets. |
-| `scripts/copy-404.mjs` | Copies `dist/index.html` → `dist/404.html` so SPA routes do not 404 on refresh. |
-| `dist/` in `.gitignore` | Source lives on `main`. The workflow builds; you never commit the output. |
-
----
-
-## 0. One-time machine setup
-
-```bash
-# Node 22+ (matches CI)
-node -v
-
-# pnpm 9 (matches package.json packageManager)
-corepack enable
-corepack prepare pnpm@9.15.9 --activate
-pnpm -v
-```
-
-From the repo root:
+Node 22. pnpm 9.15.9 (`packageManager` in `package.json`).
 
 ```bash
 pnpm install
-pnpm dev          # local: http://localhost:5173
-pnpm build        # must succeed before you push
-pnpm preview      # serves dist/ — closest local stand-in for Pages
+pnpm dev
 ```
 
-If `pnpm build` fails locally, GitHub Actions will fail the same way. Fix it here first.
+`pnpm dev` serves the UI and the local API. It writes `tmp/e2e-content.json` and skips the Authenticator PIN. `vercel dev` is the path that talks to the real Blob store.
 
----
-
-## 1. GitHub repo checklist
-
-1. Remote is **https://github.com/goSTYLO/goSTYLO.github.io** (or your SSH equivalent).
-2. Default branch is **`main`**. The workflow only deploys that branch.
-3. Repo is **public** (GitHub Free cannot publish Pages from a private user site).
-4. You are the owner (or have admin). Pages settings and the `github-pages` environment need that.
-
-Push source, not `dist/`:
+## Production project
 
 ```bash
-git add -A
-git status          # dist/ and node_modules/ must not appear
-git commit -m "…"
-git push origin main
+pnpm exec vercel login
+pnpm exec vercel --yes
 ```
 
----
+Framework is Vite. Install command `pnpm install`. Build command `pnpm build`. Output directory `dist`.
 
-## 2. The one setting that is outside the repo
+The production hostname is whatever Vercel assigns. The build reads `VERCEL_PROJECT_PRODUCTION_URL` for canonical and JSON-LD tags. Do not hardcode a guessed `*.vercel.app` name in the repo.
 
-GitHub does not turn Pages on from the workflow file alone.
+Do **not** set `ADMIN_AUTH_BYPASS` on Preview or Production. Those environments always ask for the PIN.
 
-1. Open the repo on GitHub → **Settings** → **Pages**.
-2. **Build and deployment** → **Source:** **GitHub Actions** (not “Deploy from a branch”).
-3. Leave custom domain empty unless you later add one.
+### One-time Authenticator setup
 
-If Source is still “Deploy from a branch” (`main` / `/docs` / `gh-pages`), this Vite workflow never publishes. That is the usual “Actions is green but the URL is 404” cause.
-
----
-
-## 3. First deploy
-
-1. Push to `main`, or run **Actions** → **Deploy GitHub Pages** → **Run workflow**.
-2. Open **Actions**. You should see two jobs: **build** then **deploy**.
-3. First run: GitHub may ask you to **approve** the `github-pages` environment (**Settings** → **Environments**). Approve it once.
-4. When **deploy** is green, wait up to a few minutes, then open **https://gostylo.github.io/**.
-
-Workflow permissions already in `.github/workflows/pages.yml`:
-
-```yaml
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+```bash
+pnpm totp:setup
 ```
 
-If deploy fails with a Pages permission error, also check **Settings** → **Actions** → **General** → **Workflow permissions** → **Read and write**.
+In Microsoft Authenticator choose **Other account** and scan the printed URI. Put the printed `TOTP_SECRET` and a long random `SESSION_SECRET` in the Vercel project environment. Both are server-only. Never prefix them with `VITE_`. Do not commit the command output.
 
----
+Link a Blob store so Vercel injects `BLOB_READ_WRITE_TOKEN`. The first time `content/portfolio.json` is missing, the function writes the seed once. Later deploys do not overwrite it.
 
-## 4. What you should see when it works
+Optional `VITE_CONTENT_BLOB_URL` is the public URL of that JSON. It is not a secret. Without it, the page reads `GET /api/content`.
 
-- Root URL loads the HUD portfolio (not a Jekyll / README page).
-- Hard refresh does not 404.
-- Theme toggle and assets load (if CSS 404s, `base` is wrong or `.nojekyll` is missing from the artifact).
-- **Settings** → **Pages** shows the live URL.
+Hobby Blob limits to design around: 1 GB storage, 10 GB transfer, 10,000 simple operations, 2,000 advanced operations per month. Going over pauses Blob for the rest of that 30-day window. There is no overage charge.
 
----
+Images are WebP (longest edge 1600px, quality 0.72, reject over 1.5 MB). The CV PDF cap is 4 MB. The build still copies the seed PDF into `public/cv` as a fallback. The live download URL is `cvPdf.url` in the document, so a rebuild does not replace an uploaded PDF.
 
-## 5. Rules for this site (do not “fix” these)
+## Tests
 
-- **Do not** set Vite `base` to `'/goSTYLO.github.io/'`. That is for project sites.
-- **Do not** commit `dist/` or use the `gh-pages` npm package. Actions is the publisher.
-- **Do not** put API keys, `.env`, or a Node server here. Pages is static files only. Chatbot backends belong on Cloud Run / another host.
-- **Do** keep static files (CV, screenshots, favicon, `aaron-profile.jpg`) under `public/` so Vite copies them into `dist/`.
-- **Do** commit `pnpm-lock.yaml`. Never delete it to “make CI install.”
-
----
-
-## 6. When something breaks
-
-| Symptom | Likely cause |
-|---|---|
-| `https://gostylo.github.io/` is 404 | Pages Source is not **GitHub Actions**, first deploy not approved, or DNS still propagating (~10 min). |
-| Actions **build** fails on install | `pnpm-lock.yaml` out of date. Run `pnpm install` locally and commit the lockfile. |
-| Actions **build** fails on `tsc` / Vite | Same as local `pnpm build`. Fix on your machine. |
-| Site loads, CSS/JS 404 | `base` is not `'/'`, or Pages is serving the repo root instead of `dist/`. |
-| Blank page, underscore asset 404s | `public/.nojekyll` missing so it never lands in `dist/`. |
-| Direct URL / refresh 404 | `404.html` missing — `pnpm build` must run `scripts/copy-404.mjs`. |
-| Old site after a green deploy | Browser cache. Hard refresh. Confirm the Action timestamp is newer than the page. |
-
-Inspect the published artifact: **Actions** → latest run → **build** → artifact `github-pages`. It should contain `index.html`, `404.html`, `.nojekyll`, and hashed assets.
-
----
-
-## 7. Optional later
-
-- **Custom domain** (e.g. `aarontamayo.dev`): Settings → Pages → Custom domain, then a CNAME at your DNS. Vite `base` stays `'/'`.
-- **HTTPS**: GitHub Pages enforces it after the domain verifies.
-- **Project-site sibling** (a different repo at `gostylo.github.io/some-app`): that repo needs `base: '/some-app/'`. This user-site repo does not.
-
----
-
-## Related files
-
-- Product/scope: [`PRD.md`](PRD.md) §7
-- Design/stack: [`PROJECT_BLUEPRINT.md`](PROJECT_BLUEPRINT.md) §7
-- Workflow: [`.github/workflows/pages.yml`](.github/workflows/pages.yml)
-- Build: [`package.json`](package.json), [`vite.config.ts`](vite.config.ts), [`scripts/copy-404.mjs`](scripts/copy-404.mjs)
+`.github/workflows/e2e.yml` runs `pnpm check` and `pnpm test:e2e` on pull requests and on `main`. CI sets `ADMIN_AUTH_BYPASS=1` and `CONTENT_STORE=file`, and it does not set `VERCEL_ENV`. It does not write production Blob and it does not deploy the bypass flag.

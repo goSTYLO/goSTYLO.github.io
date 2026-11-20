@@ -4,9 +4,10 @@
 
 - **Project:** Full-Stack Developer Blueprint Portfolio
 - **Inspiration Anchor:** https://www.sutera.ch/
-- **Tech Stack:** React, Vite, TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Lucide React
+- **Tech Stack:** React, Vite, TypeScript, Tailwind CSS, shadcn/ui, Lucide React. Motion is CSS.
 - **Package Manager:** pnpm
-- **Public URL:** https://gostylo.github.io/
+- **Public URL:** Vercel production host (`VERCEL_PROJECT_PRODUCTION_URL` at build time). GitHub Pages is retired.
+- **Live content:** `content/portfolio.json` in Vercel Blob. [`docs/myResume.md`](myResume.md) and `src/data/` are the seed.
 - **Core Domains:** Web (React, Vite), Mobile (Flutter), Cloud/Backend (Node.js, Express, Google Cloud Run)
 - **Visual Style:** CAD / HUD Blueprint (Inverted Light/Dark Modes)
 - **Personal Details:** [`docs/myResume.md`](myResume.md)
@@ -19,7 +20,17 @@
 
 ## Change Log
 
-### [2026-10-09] NDA telemetry tag
+### [2026-11-20] Vercel admin CMS
+
+- Hosting moves to Vercel. `.github/workflows/pages.yml` and the `404.html` copy step are gone. SPA fallback is `vercel.json`. Set GitHub Pages source to **None** in repo settings (that switch is outside the repo).
+- Live copy is one Blob JSON document plus separate image and CV PDF objects. The TypeScript modules and [`myResume.md`](myResume.md) seed the first missing document and are not rewritten on later deploys.
+- `/console` edits profile, section visibility, projects, education, certifications, skills, and the structured CV. A 700ms long-press on `[SYS_ID]` opens it. Production and Preview require a Microsoft Authenticator TOTP. Local dev and Playwright skip the PIN only when `ADMIN_AUTH_BYPASS=1` and `VERCEL_ENV` is not `production` or `preview`.
+- Education and Certifications are public sections. Project card titles render immediately. The CV overlay starts lower (`top-16` / `lg:top-28`) so `[X]` clears the header.
+- Playwright covers public, console, projects, sections, and CV at 390×844 and 1280×800. CI is `.github/workflows/e2e.yml` with a file store, not production Blob.
+- Certifications can store one WebP image. The on-site CV editor lists every experience role and every CV project; the PDF section still writes only `cvPdf`.
+- Admin `[STAR]` marks any number of projects as full-width `[FEATURED]` windows. Education is a station-log rail. Certifications are a horizontal plate gallery.
+- Certifications use `CoverflowCarousel` in dossier mode: full `BlueprintCard` slides with skill-raster motion.
+- Certificate images open the project lightbox. Scrollbars are a 6px square thumb site-wide, including `/console`.
 
 - Industry cards (Serbisyo, Shija) show highlighted `[NDA: ACTIVE]` in [`ProjectCard.tsx`](../src/components/sections/project-matrix/ProjectCard.tsx) telemetry strip.
 

@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Plus } from 'lucide-react';
 
 import { CoverflowCarousel } from '@/components/common/ui/coverflow-carousel';
+import { useContent } from '@/content/ContentContext';
 import { usePrefersReducedMotion, useTypewriter } from '@/hooks/useTypewriter';
-import { SKILL_GROUPS, type SkillGroup } from '@/lib/skillGroups';
+import { skillGroupsFrom, type SkillGroup } from '@/lib/skillGroups';
 
 function SkillPlate({ group }: { group: SkillGroup }) {
   const Icon = group.icon;
@@ -119,10 +120,12 @@ const SKILLS_IN_VIEW_OPTIONS: IntersectionObserverInit = {
 };
 
 export default function SkillRaster() {
+  const { content } = useContent();
+  const groups = useMemo(() => skillGroupsFrom(content.skills), [content.skills]);
   const sectionRef = useRef<HTMLElement>(null);
   const [skillsInView, setSkillsInView] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const group = SKILL_GROUPS[selectedIndex] ?? SKILL_GROUPS[0];
+  const group = groups[selectedIndex] ?? groups[0];
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -136,7 +139,7 @@ export default function SkillRaster() {
     return () => observer.disconnect();
   }, []);
 
-  const slides = SKILL_GROUPS.map((g) => ({
+  const slides = groups.map((g) => ({
     alt: g.hudTag,
     title: g.hudTag,
     skills: g.skills,

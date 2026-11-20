@@ -1,22 +1,69 @@
-import { useCallback, useEffect, useId, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { Bot, Menu, X } from 'lucide-react';
-import { PORTFOLIO_NAV, type PortfolioSectionId } from '@/data/navSections';
 import LocalClock from '@/components/hud/LocalClock';
 import ThemeToggle from '@/components/hud/ThemeToggle';
+
+export type HudNavItem = { id: string; label: string };
+
+function useLongPress(onLong: () => void) {
+  const timer = useRef<number | null>(null);
+  const origin = useRef<{ x: number; y: number } | null>(null);
+  const clear = () => {
+    if (timer.current != null) window.clearTimeout(timer.current);
+    timer.current = null;
+  };
+  return {
+    onPointerDown(event: ReactPointerEvent) {
+      origin.current = { x: event.clientX, y: event.clientY };
+      clear();
+      timer.current = window.setTimeout(() => {
+        timer.current = null;
+        onLong();
+      }, 700);
+    },
+    onPointerMove(event: ReactPointerEvent) {
+      if (!origin.current || timer.current == null) return;
+      const dx = event.clientX - origin.current.x;
+      const dy = event.clientY - origin.current.y;
+      if (dx * dx + dy * dy > 100) clear();
+    },
+    onPointerUp: clear,
+    onPointerCancel: clear,
+    onContextMenu(event: { preventDefault(): void }) {
+      event.preventDefault();
+    },
+  };
+}
 
 /** Flip to true when chat runtime ships; drawer + handlers stay wired in App. */
 const SHOW_CHATBOT_LAUNCH = false;
 
 type HeaderHUDProps = {
-  activeSection: PortfolioSectionId;
-  onNavigate: (sectionId: PortfolioSectionId) => void;
+  nav: HudNavItem[];
+  activeSection: string;
+  onNavigate: (sectionId: string) => void;
   onLaunchChatbot: () => void;
+  onAdmin: () => void;
 };
 
-function SysIdCluster() {
+function SysIdButton({ onAdmin, tall }: { onAdmin: () => void; tall?: boolean }) {
+  const press = useLongPress(onAdmin);
+  return (
+    <button
+      type="button"
+      data-testid="sys-id"
+      className={`min-w-0 truncate text-left ${tall ? 'min-h-11' : ''}`}
+      {...press}
+    >
+      [SYS_ID: TAMAYO_AARON_FULLSTACK]
+    </button>
+  );
+}
+
+function SysIdCluster({ onAdmin }: { onAdmin: () => void }) {
   return (
     <div className="flex min-w-0 items-center gap-2 text-[var(--text-primary)] sm:gap-3">
-      <span className="truncate">[SYS_ID: TAMAYO_AARON_FULLSTACK]</span>
+      <SysIdButton onAdmin={onAdmin} tall />
       <span className="inline-flex shrink-0 items-center gap-2 text-[var(--text-muted)]">
         <span
           aria-hidden="true"
@@ -30,12 +77,14 @@ function SysIdCluster() {
 }
 
 function NavButtons({
+  nav,
   activeSection,
   onNavigate,
   vertical,
 }: {
-  activeSection: PortfolioSectionId;
-  onNavigate: (sectionId: PortfolioSectionId) => void;
+  nav: HudNavItem[];
+  activeSection: string;
+  onNavigate: (sectionId: string) => void;
   vertical?: boolean;
 }) {
   return (
@@ -43,14 +92,14 @@ function NavButtons({
       aria-label="Portfolio sections"
       className={vertical ? 'flex flex-col gap-2' : 'flex flex-wrap items-center gap-1'}
     >
-      {PORTFOLIO_NAV.map((section) => {
+      {nav.map((section) => {
         const active = activeSection === section.id;
         return (
           <button
             key={section.id}
             type="button"
             onClick={() => onNavigate(section.id)}
-            className={`border px-2 py-1 text-left ${
+            className={`border px-3 text-left ${vertical ? 'min-h-11' : 'py-1'} ${
               active
                 ? 'border-[var(--accent-cyan)] text-[var(--accent-cyan)]'
                 : 'border-[var(--border-cyan)] text-[var(--text-muted)]'
@@ -99,7 +148,7 @@ function UtilityCluster({
 
 const MENU_EXIT_MS = 180;
 
-export default function HeaderHUD({ activeSection, onNavigate, onLaunchChatbot }: HeaderHUDProps) {
+export default function HeaderHUD({ activeSection, onNavigate, onLaunchChatbot, nav, onAdmin }: HeaderHUDProps) {
   const [menuVisible, setMenuVisible] = useState(false);
   const [menuExiting, setMenuExiting] = useState(false);
   const sheetId = useId();
@@ -140,7 +189,7 @@ export default function HeaderHUD({ activeSection, onNavigate, onLaunchChatbot }
     };
   }, [menuVisible, closeMenu]);
 
-  const handleNavigate = (sectionId: PortfolioSectionId) => {
+  const handleNavigate = (sectionId: string) => {
     onNavigate(sectionId);
     closeMenu();
   };
@@ -158,14 +207,14 @@ export default function HeaderHUD({ activeSection, onNavigate, onLaunchChatbot }
     >
       {/* Mobile / tablet compact bar */}
       <div className="relative z-[42] mx-auto flex w-full max-w-7xl items-center justify-between gap-2 px-4 py-3 sm:px-6 lg:hidden lg:px-8">
-        <SysIdCluster />
+        <SysIdCluster onAdmin={onAdmin} />
         <button
           type="button"
           aria-expanded={menuVisible}
           aria-controls={sheetId}
           aria-label={menuVisible ? 'Close navigation menu' : 'Open navigation menu'}
           onClick={toggleMenu}
-          className="inline-flex shrink-0 items-center gap-1.5 border border-[var(--border-cyan)] px-2 py-1 text-[var(--text-primary)]"
+          className="inline-flex min-h-11 shrink-0 items-center gap-1.5 border border-[var(--border-cyan)] px-3 text-[var(--text-primary)]"
         >
           {menuVisible ? (
             <>
@@ -197,7 +246,7 @@ export default function HeaderHUD({ activeSection, onNavigate, onLaunchChatbot }
               menuExiting ? 'hud-menu-sheet-exit' : 'hud-menu-sheet-enter'
             }`}
           >
-            <NavButtons activeSection={activeSection} onNavigate={handleNavigate} vertical />
+            <NavButtons nav={nav} activeSection={activeSection} onNavigate={handleNavigate} vertical />
             <div className="mt-4 border-t border-[var(--border-cyan)] pt-4">
               <UtilityCluster onLaunchChatbot={handleLaunchChatbot} stacked />
             </div>
@@ -208,7 +257,7 @@ export default function HeaderHUD({ activeSection, onNavigate, onLaunchChatbot }
       {/* Desktop full HUD row */}
       <div className="mx-auto hidden w-full max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:flex lg:px-8">
         <div className="flex flex-wrap items-center gap-3 text-[var(--text-primary)]">
-          <span>[SYS_ID: TAMAYO_AARON_FULLSTACK]</span>
+          <SysIdButton onAdmin={onAdmin} />
           <span className="inline-flex items-center gap-2 text-[var(--text-muted)]">
             <span
               aria-hidden="true"
@@ -218,7 +267,7 @@ export default function HeaderHUD({ activeSection, onNavigate, onLaunchChatbot }
           </span>
         </div>
 
-        <NavButtons activeSection={activeSection} onNavigate={onNavigate} />
+        <NavButtons nav={nav} activeSection={activeSection} onNavigate={onNavigate} />
 
         <UtilityCluster onLaunchChatbot={onLaunchChatbot} />
       </div>

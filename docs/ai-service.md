@@ -10,7 +10,7 @@ Set in the Vite app (e.g. `.env.local`, not committed):
 VITE_AI_SERVICE_URL=https://your-service.run.app
 ```
 
-The static GitHub Pages frontend calls this origin via [`src/services/aiClient.ts`](../src/services/aiClient.ts) (Phase 4). See also [`docs/README.md`](README.md).
+The Vite site on Vercel calls this origin via [`src/services/aiClient.ts`](../src/services/aiClient.ts) (Phase 4). See also [`docs/README.md`](README.md).
 
 ## Planned API (sketch)
 

@@ -159,7 +159,7 @@ export function TypingLine({
   const showFull = ctx.reducedMotion && ctx.enabled;
 
   return (
-    <Component ref={ref} className={className}>
+    <Component ref={ref} className={className} aria-label={Component === 'h1' || Component === 'h2' || Component === 'h3' ? text : undefined}>
       {showFull || isComplete ? (
         text
       ) : isActive ? (

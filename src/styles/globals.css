@@ -96,6 +96,27 @@ body {
   font-family: 'Space Grotesk', Inter, sans-serif;
 }
 
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-cyan) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--accent-cyan) 55%, var(--border-cyan));
+    border-radius: 0;
+  }
+}
+
 .blueprint-grid {
   position: fixed;
   inset: 0;

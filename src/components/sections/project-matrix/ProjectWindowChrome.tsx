@@ -17,7 +17,10 @@ export default function ProjectWindowChrome({ project, windowIndex, children }: 
   return (
     <>
       <header className="blueprint-window__titlebar">
-        <span className="blueprint-window__title">{windowLabel(project)}</span>
+        <span className="blueprint-window__title flex min-w-0 items-center gap-2">
+          <span className="truncate">{windowLabel(project)}</span>
+          {project.featured ? <span className="shrink-0 text-[var(--accent-cyan)]">[FEATURED]</span> : null}
+        </span>
         <div className="blueprint-window__titlebar-end">
           <span className="blueprint-window__status" aria-hidden="true">
             [STATUS: {project.status}]

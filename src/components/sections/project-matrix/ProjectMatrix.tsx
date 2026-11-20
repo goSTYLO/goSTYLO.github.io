@@ -1,15 +1,17 @@
 import ProjectCard from '@/components/sections/project-matrix/ProjectCard';
 import { TypingLine, TypingSequence } from '@/components/common/TypingSequence';
-import { projects } from '@/data/projects';
+import { useContent } from '@/content/ContentContext';
 import { useInViewRetype } from '@/hooks/useInViewOnce';
 
-function projectWindowIndex(projectId: string) {
+function projectWindowIndex(projectId: string, projects: { id: string }[]) {
   const i = projects.findIndex((p) => p.id === projectId);
   return i >= 0 ? i + 1 : 1;
 }
 
 export default function ProjectMatrix() {
-  const featured = projects.find((p) => p.featured);
+  const { content } = useContent();
+  const projects = [...content.projects].sort((a, b) => a.order - b.order);
+  const featured = projects.filter((p) => p.featured);
   const grid = projects.filter((p) => !p.featured);
   const { ref, inView, typingGeneration } = useInViewRetype();
   const sessionKey = String(typingGeneration);
@@ -36,13 +38,18 @@ export default function ProjectMatrix() {
       </div>
 
       <div className="mt-5 flex w-full flex-col gap-5">
-        {featured ? (
-          <ProjectCard project={featured} featured windowIndex={projectWindowIndex(featured.id)} />
-        ) : null}
+        {featured.map((project) => (
+          <ProjectCard
+            key={project.id}
+            project={project}
+            featured
+            windowIndex={projectWindowIndex(project.id, projects)}
+          />
+        ))}
         {grid.length > 0 ? (
           <div className="grid w-full gap-5 lg:grid-cols-2">
             {grid.map((project) => (
-              <ProjectCard key={project.id} project={project} windowIndex={projectWindowIndex(project.id)} />
+              <ProjectCard key={project.id} project={project} windowIndex={projectWindowIndex(project.id, projects)} />
             ))}
           </div>
         ) : null}

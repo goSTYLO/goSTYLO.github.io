@@ -1,6 +1,9 @@
 import type { HeroSectionProps } from '@/components/sections/hero/HeroSection';
+import { useContent } from '@/content/ContentContext';
 
 export default function HeroAsciiOne({ onExploreSystems, onOpenCv, cvOpen = false }: HeroSectionProps) {
+  const { content } = useContent();
+  const { profile } = content;
   return (
     <section
       id="hero"
@@ -32,12 +35,13 @@ export default function HeroAsciiOne({ onExploreSystems, onOpenCv, cvOpen = fals
               onClick={onOpenCv}
               aria-label={cvOpen ? 'Close CV' : 'Open CV'}
               aria-expanded={cvOpen}
+              disabled={!onOpenCv}
               className={`cv-photo-trigger relative block w-full overflow-visible p-0 text-left ${cvOpen ? 'cv-photo-trigger--open' : ''}`}
             >
               <div className="profile-portrait-frame aspect-square w-full rounded-sm border border-[var(--border-cyan)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--accent-cyan)_15%,transparent)]">
                 <img
-                  src="/aaron-profile.jpg"
-                  alt="Aaron Christian B. Tamayo"
+                  src={profile.portraitUrl}
+                  alt={profile.name}
                   width={480}
                   height={480}
                   className="profile-portrait-img block"
@@ -93,9 +97,9 @@ export default function HeroAsciiOne({ onExploreSystems, onOpenCv, cvOpen = fals
               id="hero-headline"
               className="mb-2 break-words font-sans text-3xl font-bold leading-tight tracking-wide text-[var(--text-primary)] lg:text-4xl xl:text-5xl"
             >
-              LEAD FULL-STACK DEVELOPER
+              {profile.roleTitle}
             </h1>
-            <p className="mb-4 font-mono text-sm text-[var(--text-muted)] lg:text-base">Aaron Christian B. Tamayo</p>
+            <p className="mb-4 font-mono text-sm text-[var(--text-muted)] lg:text-base">{profile.name}</p>
 
             <div className="mb-3 hidden gap-1 lg:flex" aria-hidden="true">
               {Array.from({ length: 40 }).map((_, i) => (
@@ -104,17 +108,17 @@ export default function HeroAsciiOne({ onExploreSystems, onOpenCv, cvOpen = fals
             </div>
 
             <p className="mb-5 font-sans text-sm leading-relaxed text-[var(--text-muted)] lg:text-base">
-            Partnering with founders and technical teams to build products from initial planning through development to live production. Web, mobile, and backend developed under one lead.
+              {profile.subtitle}
             </p>
 
             <p className="mb-6 font-mono text-xs leading-relaxed text-[var(--text-muted)]">
-              Dagupan City, Pangasinan
+              {profile.location}
               {' · '}
               <a
-                href="https://github.com/goSTYLO"
+                href={profile.githubUrl}
                 className="font-medium text-[var(--accent-cyan)] underline-offset-2 hover:underline"
               >
-                github.com/goSTYLO
+                {profile.githubLabel}
               </a>
             </p>
 
@@ -122,7 +126,7 @@ export default function HeroAsciiOne({ onExploreSystems, onOpenCv, cvOpen = fals
               <button
                 type="button"
                 onClick={onExploreSystems}
-                className="group relative border border-[var(--accent-cyan)] px-5 py-2 font-mono text-xs font-medium text-[var(--text-primary)] transition-colors duration-200 hover:bg-[var(--accent-cyan)] hover:text-[var(--bg-primary)] lg:px-6 lg:text-sm"
+                className="group relative inline-flex min-h-11 items-center border border-[var(--accent-cyan)] px-5 py-2 font-mono text-xs font-medium text-[var(--text-primary)] transition-colors duration-200 hover:bg-[var(--accent-cyan)] hover:text-[var(--bg-primary)] lg:px-6 lg:text-sm"
               >
                 <span className="absolute -left-1 -top-1 hidden size-2 border-l border-t border-[var(--accent-cyan)] opacity-0 transition-opacity group-hover:opacity-100 lg:block" />
                 <span className="absolute -bottom-1 -right-1 hidden size-2 border-b border-r border-[var(--accent-cyan)] opacity-0 transition-opacity group-hover:opacity-100 lg:block" />

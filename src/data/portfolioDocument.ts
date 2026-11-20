@@ -5,7 +5,12 @@ import { profile } from './profile';
 import { projects, type Project } from './projects';
 import { assertSkillGroupsReady } from '../lib/skillGroups';
 
-export const PORTFOLIO_SITE_URL = 'https://gostylo.github.io/';
+export const PORTFOLIO_SITE_URL = (() => {
+  const raw = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  if (!raw) return 'https://gostylo.github.io/';
+  const withProto = raw.startsWith('http') ? raw : `https://${raw}`;
+  return withProto.endsWith('/') ? withProto : `${withProto}/`;
+})();
 
 export const PORTFOLIO_TITLE = 'Aaron Christian B. Tamayo | Lead Full-Stack Developer';
 

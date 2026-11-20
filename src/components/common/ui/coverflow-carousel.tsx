@@ -47,6 +47,10 @@ export interface CoverflowCarouselProps {
   className?: string;
   cardClassName?: string;
   navButtonClassName?: string;
+  /** Inner 3D stage height. Defaults to `var(--cf-card)` for square slides. */
+  frameHeight?: string;
+  /** Square skill plates when true (default). Tall dossiers when false. */
+  square?: boolean;
   onSelectedChange?: (index: number) => void;
   /** Ms of idle time before advancing one slide; repeats while idle. Pass `0` to disable. */
   autoAdvanceAfterMs?: number;
@@ -74,10 +78,13 @@ export function CoverflowCarousel({
   className,
   cardClassName,
   navButtonClassName,
+  frameHeight,
+  square = true,
   onSelectedChange,
   autoAdvanceAfterMs = 5000,
   autoAdvanceActive = true,
 }: CoverflowCarouselProps) {
+  const stageHeight = frameHeight ?? (square ? 'var(--cf-card)' : 'calc(var(--cf-card) * 1.5)');
   const count = slides.length;
   const reducedMotion = usePrefersReducedMotion();
   const effectiveRotate = reducedMotion ? 0 : rotate;
@@ -347,7 +354,7 @@ export function CoverflowCarousel({
           <div
             className="relative select-none"
             style={{
-              height: 'var(--cf-card)',
+              height: stageHeight,
               transformStyle: reducedMotion ? 'flat' : 'preserve-3d',
             }}
           >
@@ -361,10 +368,11 @@ export function CoverflowCarousel({
                 aria-roledescription="slide"
                 aria-label={`${index + 1} of ${count}${slide.title ? `: ${slide.title}` : ''}`}
                 className={cn(
-                  'absolute left-1/2 top-0 aspect-square overflow-hidden rounded-none border border-[var(--border-cyan)] bg-[var(--bg-surface)] will-change-transform',
+                  'absolute left-1/2 top-0 overflow-hidden rounded-none border border-[var(--border-cyan)] bg-[var(--bg-surface)] will-change-transform',
+                  square && 'aspect-square',
                   cardClassName,
                 )}
-                style={{ width: 'var(--cf-card)' }}
+                style={{ width: 'var(--cf-card)', ...(square ? {} : { height: stageHeight }) }}
               >
                 {slide.content ??
                   (slide.src ? (

@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import BlueprintCard from '@/components/common/BlueprintCard';
-import { mailtoHref, profile } from '@/data/profile';
-import { downloadResumePdf } from '@/lib/downloadResumePdf';
+import { deriveEducationLine } from '@/content/buildSeed';
+import { useContent } from '@/content/ContentContext';
+import type { PortfolioProfile } from '@/content/types';
 
 const PS_PATH = 'C:\\portfolio\\footer';
 const PS_INIT_CMD = '.\\_footer_init.ps1';
@@ -13,7 +14,7 @@ type TerminalLine =
   | { kind: 'tel' }
   | { kind: 'vcs' };
 
-function linePlainText(line: TerminalLine): string {
+function linePlainText(line: TerminalLine, profile: PortfolioProfile): string {
   switch (line.kind) {
     case 'ps-command':
       return `PS ${PS_PATH}> ${line.command}`;
@@ -42,7 +43,7 @@ function PsPrompt({ children }: { children?: ReactNode }) {
   );
 }
 
-function useTerminalTypewriter(lines: TerminalLine[], charDelayMs = 18) {
+function useTerminalTypewriter(lines: TerminalLine[], profile: PortfolioProfile, charDelayMs = 18) {
   const [lineIndex, setLineIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [instant, setInstant] = useState(false);
@@ -55,7 +56,7 @@ function useTerminalTypewriter(lines: TerminalLine[], charDelayMs = 18) {
     return () => mq.removeEventListener('change', apply);
   }, []);
 
-  const plainLines = useMemo(() => lines.map(linePlainText), [lines]);
+  const plainLines = useMemo(() => lines.map((line) => linePlainText(line, profile)), [lines, profile]);
   const allDone = instant || lineIndex >= lines.length;
 
   useEffect(() => {
@@ -87,7 +88,7 @@ function BracketButton({
   external?: boolean;
 }) {
   const className =
-    'group relative border border-[var(--border-cyan)] bg-[var(--bg-surface)] px-4 py-2 font-mono text-xs font-medium text-[var(--text-primary)] transition-colors duration-200 hover:border-[var(--accent-cyan)] hover:bg-[var(--accent-cyan)] hover:text-[var(--bg-primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]';
+    'group relative inline-flex min-h-11 items-center border border-[var(--border-cyan)] bg-[var(--bg-surface)] px-4 py-2 font-mono text-xs font-medium text-[var(--text-primary)] transition-colors duration-200 hover:border-[var(--accent-cyan)] hover:bg-[var(--accent-cyan)] hover:text-[var(--bg-primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]';
 
   if (href) {
     return (
@@ -112,7 +113,7 @@ function BracketButton({
   );
 }
 
-function renderCompleteLine(line: TerminalLine) {
+function renderCompleteLine(line: TerminalLine, profile: PortfolioProfile) {
   switch (line.kind) {
     case 'ps-command':
       return (
@@ -126,7 +127,7 @@ function renderCompleteLine(line: TerminalLine) {
       return (
         <>
           {'MAIL: '}
-          <a href={mailtoHref()} className="powershell-link">
+          <a href={`mailto:${profile.email}?subject=${encodeURIComponent(profile.mailtoSubject)}`} className="powershell-link">
             {profile.email}
           </a>
         </>
@@ -159,19 +160,23 @@ function renderCompleteLine(line: TerminalLine) {
   }
 }
 
-const TERMINAL_LINES: TerminalLine[] = [
-  { kind: 'ps-command', command: PS_INIT_CMD },
-  { kind: 'text', text: profile.copyrightLine },
-  { kind: 'text', text: `EDU: ${profile.educationLine}` },
-  { kind: 'text', text: `LOC: ${profile.location}` },
-  { kind: 'mail' },
-  { kind: 'tel' },
-  { kind: 'vcs' },
-];
-
 export default function FooterConsole() {
-  const { lines, plainLines, lineIndex, charIndex, instant, allDone } =
-    useTerminalTypewriter(TERMINAL_LINES);
+  const { content } = useContent();
+  const profile = content.profile;
+  const pdf = content.cvPdf;
+  const lines = useMemo<TerminalLine[]>(
+    () => [
+      { kind: 'ps-command', command: PS_INIT_CMD },
+      { kind: 'text', text: profile.copyrightLine },
+      { kind: 'text', text: `EDU: ${deriveEducationLine(content.education)}` },
+      { kind: 'text', text: `LOC: ${profile.location}` },
+      { kind: 'mail' },
+      { kind: 'tel' },
+      { kind: 'vcs' },
+    ],
+    [content.education, profile],
+  );
+  const { plainLines, lineIndex, charIndex, instant, allDone } = useTerminalTypewriter(lines, profile);
   const [statusLine, setStatusLine] = useState<string | null>(null);
 
   const copyContact = useCallback(async () => {
@@ -186,12 +191,7 @@ export default function FooterConsole() {
     } catch {
       setStatusLine('ERR: clipboard_denied — use MAIL link');
     }
-  }, []);
-
-  const onDownloadCvPdf = useCallback(() => {
-    downloadResumePdf();
-    setStatusLine('EXPORT: resume.pdf OK');
-  }, []);
+  }, [profile]);
 
   useEffect(() => {
     if (!statusLine) return;
@@ -222,7 +222,7 @@ export default function FooterConsole() {
               if (instant || i < lineIndex) {
                 return (
                   <p key={i} className="powershell-line">
-                    {renderCompleteLine(line)}
+                    {renderCompleteLine(line, profile)}
                   </p>
                 );
               }
@@ -255,8 +255,10 @@ export default function FooterConsole() {
         </div>
 
         <div className="mt-5 flex flex-wrap gap-3">
-          <BracketButton href={mailtoHref()}>[SEND_MESSAGE]</BracketButton>
-          <BracketButton onClick={onDownloadCvPdf}>[DOWNLOAD_CV_PDF]</BracketButton>
+          <BracketButton href={`mailto:${profile.email}?subject=${encodeURIComponent(profile.mailtoSubject)}`}>
+            [SEND_MESSAGE]
+          </BracketButton>
+          <BracketButton href={pdf?.url ?? '/cv/aaron-tamayo-resume.pdf'}>[DOWNLOAD_CV_PDF]</BracketButton>
           <BracketButton href={profile.githubUrl} external>
             [VIEW_GITHUB]
           </BracketButton>

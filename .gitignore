@@ -2,3 +2,9 @@ graphify-out/
 Myprojectreadmes/
 node_modules/
 dist/
+tmp/
+playwright-report/
+test-results/
+.env.local
+.env*.local
+

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useId, useState, type ReactNode } from 'react';
 import { ChevronRight } from 'lucide-react';
 import BlueprintCard from '@/components/common/BlueprintCard';
-import { cvDocument, type CvContactLink } from '@/data/cv';
-import { downloadResumePdf } from '@/lib/downloadResumePdf';
+import { useContent } from '@/content/ContentContext';
+import type { CvContactLink } from '@/data/cv';
 
 type CvAstOverlayProps = {
   onClose: () => void;
@@ -237,7 +237,22 @@ export default function CvAstOverlay({ onClose }: CvAstOverlayProps) {
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
 
-  const { identity, experience, projects, technicalSkills, education } = cvDocument;
+  const { content } = useContent();
+  const identity = {
+    name: content.profile.name,
+    location: content.profile.location,
+    portrait: content.profile.portraitUrl,
+    contact: [
+      { literal: content.profile.phone, href: `tel:${content.profile.phoneTel}` },
+      { literal: content.profile.email, href: `mailto:${content.profile.email}` },
+      { literal: content.profile.githubLabel, href: content.profile.githubUrl },
+    ] satisfies CvContactLink[],
+  };
+  const experience = content.cv.experience;
+  const projects = content.cv.projects;
+  const technicalSkills = content.skills;
+  const education = content.education;
+  const certifications = content.certifications;
   const rootPath = 'CvDocument';
 
   return (
@@ -245,7 +260,7 @@ export default function CvAstOverlay({ onClose }: CvAstOverlayProps) {
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
-      className={`fixed bottom-0 left-0 right-0 top-14 z-30 overflow-y-auto bg-[color-mix(in_srgb,var(--bg-primary)_96%,transparent)] backdrop-blur-[2px] lg:top-[4.5rem] ${
+      className={`fixed bottom-0 left-0 right-0 top-16 z-30 overflow-y-auto bg-[color-mix(in_srgb,var(--bg-primary)_96%,transparent)] backdrop-blur-[2px] lg:top-28 ${
         reducedMotion ? '' : 'cv-overlay-enter'
       }`}
     >
@@ -261,7 +276,12 @@ export default function CvAstOverlay({ onClose }: CvAstOverlayProps) {
             <ToolbarButton onClick={zoomOut}>[ZOOM −]</ToolbarButton>
             <span className="min-w-[3rem] text-center text-[var(--text-muted)]">{zoomLabel}</span>
             <ToolbarButton onClick={zoomIn}>[ZOOM +]</ToolbarButton>
-            <ToolbarButton onClick={() => downloadResumePdf()}>[DOWNLOAD_CV_PDF]</ToolbarButton>
+            <a
+              href={content.cvPdf?.url ?? '/cv/aaron-tamayo-resume.pdf'}
+              className="inline-flex min-h-11 items-center border border-[var(--border-cyan)] px-2 py-1"
+            >
+              [DOWNLOAD_CV_PDF]
+            </a>
           </div>
         </div>
 
@@ -275,7 +295,7 @@ export default function CvAstOverlay({ onClose }: CvAstOverlayProps) {
             <CvHeaderPortrait name={identity.name} portrait={identity.portrait} />
 
             <p className="mb-6 font-mono text-[10px] text-[var(--text-muted)]">
-              {'// Abstract syntax tree — canonical source: docs/myResume.md'}
+              {'// Abstract syntax tree — canonical source: portfolio content document'}
             </p>
 
             <div className="flex flex-col gap-2">
@@ -410,37 +430,59 @@ export default function CvAstOverlay({ onClose }: CvAstOverlayProps) {
                 sectionRow
                 reducedMotion={reducedMotion}
               >
-                <StringLeaf depth={1} keyName="school" value={education.school} />
-                <StringLeaf depth={1} keyName="location" value={education.location} />
-                <StringLeaf depth={1} keyName="degree" value={education.degree} />
-                <StringLeaf depth={1} keyName="expected" value={education.expected} />
-                <StringLeaf depth={1} keyName="academicExemptions" value={education.academicExemptions} />
-                <AstRow
-                  path={`${rootPath}.education.certifications`}
-                  collapsed={isCollapsed(`${rootPath}.education.certifications`)}
-                  onToggle={toggle}
-                  depth={1}
-                  label="certifications"
-                  reducedMotion={reducedMotion}
-                >
-                  {education.certifications.map((cert, ci) => {
-                    const certPath = `${rootPath}.education.certifications[${ci}]`;
-                    return (
-                      <AstRow
-                        key={cert.title}
-                        path={certPath}
-                        collapsed={isCollapsed(certPath)}
-                        onToggle={toggle}
-                        depth={2}
-                        label={`[${ci}]`}
-                        reducedMotion={reducedMotion}
-                      >
-                        <StringLeaf depth={3} keyName="title" value={cert.title} />
-                        <StringLeaf depth={3} keyName="body" value={cert.body} />
-                      </AstRow>
-                    );
-                  })}
-                </AstRow>
+                {education.map((entry, index) => (
+                  <AstRow
+                    key={entry.id}
+                    path={`${rootPath}.education[${index}]`}
+                    collapsed={isCollapsed(`${rootPath}.education[${index}]`)}
+                    onToggle={toggle}
+                    depth={1}
+                    label={`[${index}]`}
+                    reducedMotion={reducedMotion}
+                  >
+                    <StringLeaf depth={2} keyName="school" value={entry.school} />
+                    <StringLeaf depth={2} keyName="location" value={entry.location} />
+                    <StringLeaf depth={2} keyName="credential" value={entry.credential} />
+                    <StringLeaf depth={2} keyName="dates" value={entry.dates} />
+                    <StringLeaf depth={2} keyName="details" value={entry.details} />
+                  </AstRow>
+                ))}
+              </AstRow>
+
+              <AstRow
+                path={`${rootPath}.certifications`}
+                collapsed={isCollapsed(`${rootPath}.certifications`)}
+                onToggle={toggle}
+                depth={0}
+                label="certifications"
+                sectionRow
+                reducedMotion={reducedMotion}
+              >
+                {certifications.map((cert, index) => (
+                  <AstRow
+                    key={cert.id}
+                    path={`${rootPath}.certifications[${index}]`}
+                    collapsed={isCollapsed(`${rootPath}.certifications[${index}]`)}
+                    onToggle={toggle}
+                    depth={1}
+                    label={`[${index}]`}
+                    reducedMotion={reducedMotion}
+                  >
+                    <StringLeaf depth={2} keyName="title" value={cert.title} />
+                    <StringLeaf depth={2} keyName="issuer" value={cert.issuer} />
+                    <StringLeaf depth={2} keyName="issued" value={cert.issued} />
+                    <StringLeaf depth={2} keyName="summary" value={cert.summary} />
+                    {cert.image?.src ? (
+                      <img
+                        src={cert.image.src}
+                        alt={cert.image.alt || cert.title}
+                        className="mt-2 aspect-[16/10] w-full max-w-sm object-cover"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : null}
+                  </AstRow>
+                ))}
               </AstRow>
             </div>
           </BlueprintCard>

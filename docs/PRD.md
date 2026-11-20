@@ -6,9 +6,9 @@ Here is the complete, uncut `PRD.md` file formatted in Markdown ready to save in
 **Project Name:** Full-Stack Developer Blueprint Portfolio  
 **Target Role:** Full-Stack Software Developer (Web, Mobile, Cloud)  
 **Design Reference:** CAD / HUD Blueprint (Inverted Light/Dark Modes — inspired by `sutera.ch`)  
-**Core Stack:** React + Vite + TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Lucide React, Node.js/Express, Google Cloud Run, Flutter  
+**Core Stack:** React + Vite + TypeScript, Tailwind CSS, shadcn/ui, Lucide React, Node.js functions on Vercel, Google Cloud Run, Flutter  
 **Package Manager:** `pnpm`  
-**Public URL:** https://gostylo.github.io/
+**Public URL:** the Vercel production host (`VERCEL_PROJECT_PRODUCTION_URL`). GitHub Pages is retired.
 
 ---
 
@@ -159,7 +159,8 @@ Before launching, compile and place these media and document assets into the rep
 ```
 
 portfolio-root/
-├── .github/workflows/pages.yml  # pnpm build + GitHub Pages deploy
+├── .github/workflows/e2e.yml    # Playwright on pull requests and main
+├── vercel.json                  # SPA rewrite, /api excluded
 ├── public/
 │   ├── .nojekyll
 │   └── aaron-profile.jpg        # Hero inline portrait
@@ -219,12 +220,11 @@ portfolio-root/
 
 ---
 
-## 7. GitHub Pages Deployment
+## 7. Vercel hosting
 
-This repo is the user site **https://gostylo.github.io/**. It is a static Vite SPA.
+The site is a Vite SPA on Vercel, with `/api` functions for the admin CMS. GitHub Pages publishing is removed.
 
-* `vite.config.ts` `base: '/'` (served from the domain root).
-* CI uses **pnpm** (`pnpm install --frozen-lockfile` then `pnpm build`).
-* `.github/workflows/pages.yml` uploads `dist/` with `actions/upload-pages-artifact` and deploys with `actions/deploy-pages`.
-* `dist/` is gitignored. `pnpm-lock.yaml` is committed.
-* GitHub → Settings → Pages → Source: **GitHub Actions**.
+* `vercel.json` rewrites non-API paths to `/index.html`.
+* CI for browser tests is `.github/workflows/e2e.yml` (`pnpm test:e2e`). It does not deploy the site.
+* In GitHub → Settings → Pages, set Source to **None**.
+* Setup steps: [`docs/GITHUB_PAGES_SETUP.md`](GITHUB_PAGES_SETUP.md).

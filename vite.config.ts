@@ -2,6 +2,7 @@ import { copyFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 import react from '@vitejs/plugin-react';
 import { defineConfig, type Plugin } from 'vite';
+import { attachApi } from './server/attachApi';
 import {
   assertPortfolioDocumentReady,
   buildLlmsTxt,
@@ -37,7 +38,7 @@ function portfolioDocumentPlugin(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), portfolioDocumentPlugin()],
+  plugins: [react(), portfolioDocumentPlugin(), attachApi()],
   base: '/',
   resolve: {
     alias: {

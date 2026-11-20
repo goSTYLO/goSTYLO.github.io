@@ -100,6 +100,7 @@ function AdaptiveProjectSlide({
             onLoad={onImgLoad}
             className="block size-full object-contain object-center"
             loading="lazy"
+            decoding="async"
           />
           <span className="pointer-events-none absolute bottom-2 right-2 border border-[var(--border-cyan)] bg-[color-mix(in_srgb,var(--bg-surface)_90%,transparent)] px-1.5 py-0.5 font-mono text-[9px] text-[var(--text-muted)] opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
             [EXPAND]
@@ -402,12 +403,7 @@ function ProjectBody({
   return (
     <TypingSequence key={sessionKey} enabled={enabled} sessionKey={sessionKey}>
       <TelemetryStrip project={project} full={fullTelemetry} />
-      <TypingLine
-        as="h3"
-        className="mt-2 font-sans text-xl text-[var(--text-primary)]"
-        text={project.title}
-        charDelayMs={1}
-      />
+      <h3 className="mt-2 font-sans text-xl text-[var(--text-primary)]">{project.title}</h3>
       <TypingLine
         as="p"
         className="mt-1 font-sans text-sm text-[var(--text-muted)]"
